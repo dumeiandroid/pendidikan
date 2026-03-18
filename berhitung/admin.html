@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Game Matematika</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#07080f;
+  --surface:#0e1018;
+  --surface2:#141622;
+  --border:rgba(255,255,255,.07);
+  --border2:rgba(255,255,255,.12);
+  --accent:#ffa502;
+  --accent2:#ff6348;
+  --green:#2ed573;
+  --red:#ff4757;
+  --blue:#3742fa;
+  --text:#f0f0f0;
+  --muted:#666;
+  --muted2:#444;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  font-family:'DM Sans',sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ── LOGIN ADMIN ── */
+#page-admin-login{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 30% 40%,rgba(255,165,2,.08) 0%,transparent 60%),
+             radial-gradient(ellipse at 70% 80%,rgba(55,66,250,.06) 0%,transparent 60%),
+             var(--bg);
+}
+.admin-login-box{
+  width:360px;padding:40px 36px;
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.admin-login-box .lock-icon{
+  text-align:center;font-size:40px;margin-bottom:20px;
+  filter:drop-shadow(0 0 20px rgba(255,165,2,.4));
+}
+.admin-login-box h1{
+  font-family:'Space Mono',monospace;
+  font-size:20px;color:var(--accent);
+  text-align:center;margin-bottom:6px;letter-spacing:2px;
+}
+.admin-login-box p{
+  text-align:center;color:var(--muted);
+  font-size:13px;margin-bottom:28px;
+}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:.5px;text-transform:uppercase;}
+.field input{
+  width:100%;padding:12px 14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border2);
+  border-radius:10px;font-size:15px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  transition:border-color .2s, box-shadow .2s;
+}
+.field input:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(255,165,2,.15);
+}
+.field input::placeholder{color:var(--muted2);}
+.btn-admin-login{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#1a1a1a;border:none;border-radius:10px;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:all .3s;font-family:'DM Sans',sans-serif;
+  box-shadow:0 4px 20px rgba(255,165,2,.3);
+  margin-top:4px;
+}
+.btn-admin-login:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,165,2,.4);}
+.login-err{
+  color:var(--red);font-size:13px;
+  text-align:center;margin-top:12px;display:none;
+}
+
+/* ── MAIN DASHBOARD ── */
+#page-dashboard{display:none;}
+
+/* SIDEBAR */
+.layout{display:flex;min-height:100vh;}
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+}
+.sidebar-logo{
+  padding:24px 20px 16px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-logo .logo-text{
+  font-family:'Space Mono',monospace;
+  color:var(--accent);font-size:13px;
+  letter-spacing:1px;line-height:1.4;
+}
+.sidebar-logo .logo-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.sidebar-nav{padding:12px 0;flex:1;}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 20px;cursor:pointer;
+  font-size:13px;font-weight:600;color:var(--muted);
+  transition:all .2s;border-left:3px solid transparent;
+  letter-spacing:.3px;
+}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.03);}
+.nav-item.active{
+  color:var(--accent);
+  background:rgba(255,165,2,.08);
+  border-left-color:var(--accent);
+}
+.nav-item i{width:16px;text-align:center;}
+.sidebar-footer{
+  padding:16px 20px;border-top:1px solid var(--border);
+}
+.admin-badge{
+  display:flex;align-items:center;gap:10px;
+}
+.admin-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#1a1a1a;font-weight:700;
+}
+.admin-info .name{font-size:13px;font-weight:700;}
+.admin-info .role{font-size:11px;color:var(--muted);}
+.btn-logout-side{
+  width:100%;margin-top:10px;padding:8px;
+  background:transparent;border:1px solid var(--muted2);
+  border-radius:8px;color:var(--muted);
+  font-size:12px;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.btn-logout-side:hover{border-color:var(--red);color:var(--red);}
+
+/* MAIN CONTENT */
+.main-content{flex:1;overflow:hidden;}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 28px;border-bottom:1px solid var(--border);
+  background:var(--surface);position:sticky;top:0;z-index:10;
+}
+.topbar-title{
+  font-family:'Space Mono',monospace;
+  font-size:14px;color:var(--accent);letter-spacing:1px;
+}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.live-dot-wrap{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:var(--muted);
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+
+.page-content{padding:24px 28px;}
+
+/* ── SECTION ── */
+.section{display:none;}
+.section.active{display:block;}
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:24px;
+}
+.section-title{
+  font-family:'Space Mono',monospace;
+  font-size:16px;color:var(--text);letter-spacing:.5px;
+}
+.section-title span{color:var(--accent);}
+
+/* ── STAT CARDS ── */
+.stat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;margin-bottom:28px;
+}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:18px 20px;
+  transition:border-color .2s;
+}
+.stat-card:hover{border-color:var(--border2);}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.stat-val{
+  font-family:'Space Mono',monospace;
+  font-size:28px;font-weight:700;color:var(--accent);
+}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+.stat-icon{
+  float:right;font-size:24px;opacity:.3;margin-top:-4px;
+}
+
+/* ── CREATE TOKEN ── */
+.token-create-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:24px;margin-bottom:24px;
+}
+.token-create-box h3{
+  font-size:14px;font-weight:700;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;color:var(--text);
+}
+.token-create-box h3 i{color:var(--accent);}
+.token-options{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;}
+.option-group{display:flex;flex-direction:column;gap:6px;}
+.option-group label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.option-group input[type=number],
+.option-group select{
+  padding:10px 14px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border2);
+  border-radius:8px;font-size:14px;
+  color:var(--text);font-family:'DM Sans',sans-serif;
+  width:120px;
+}
+.option-group select{width:160px;}
+.option-group input:focus,
+.option-group select:focus{
+  outline:none;border-color:var(--accent);
+}
+
+.btn-create{
+  padding:10px 22px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#1a1a1a;border:none;border-radius:8px;
+  font-size:14px;font-weight:700;cursor:pointer;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 3px 12px rgba(255,165,2,.3);
+  white-space:nowrap;
+}
+.btn-create:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(255,165,2,.4);}
+.btn-create:disabled{background:#2a2a2a;color:#555;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* TOKEN RESULT TABLE */
+.token-result{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px;
+}
+.token-result-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;flex-wrap:wrap;gap:10px;
+}
+.token-result-header h3{
+  font-size:14px;font-weight:700;
+  display:flex;align-items:center;gap:8px;
+}
+.token-result-header h3 i{color:var(--green);}
+.btn-export{
+  padding:8px 16px;
+  background:rgba(46,213,115,.15);
+  border:1px solid rgba(46,213,115,.3);
+  color:var(--green);border-radius:8px;
+  font-size:12px;font-weight:700;cursor:pointer;
+  transition:all .2s;font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-export:hover{background:rgba(46,213,115,.25);}
+.token-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:10px;
+}
+.token-chip{
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:10px;padding:10px 12px;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:border-color .2s;
+}
+.token-chip:hover{border-color:var(--border2);}
+.token-chip .tok-val{
+  font-family:'Space Mono',monospace;
+  font-size:13px;color:var(--accent);
+  letter-spacing:1px;
+}
+.token-chip .tok-copy{
+  background:none;border:none;color:var(--muted);
+  cursor:pointer;padding:2px 4px;font-size:12px;
+  transition:color .2s;
+}
+.token-chip .tok-copy:hover{color:var(--accent);}
+
+/* ── DATA RESULTS TABLE ── */
+.table-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+}
+.table-controls{
+  display:flex;align-items:center;gap:10px;
+  padding:16px 20px;border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.search-box{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border2);border-radius:8px;
+  padding:8px 12px;flex:1;max-width:280px;
+}
+.search-box i{color:var(--muted);font-size:13px;}
+.search-box input{
+  background:none;border:none;color:var(--text);
+  font-size:13px;width:100%;
+  font-family:'DM Sans',sans-serif;
+}
+.search-box input:focus{outline:none;}
+.search-box input::placeholder{color:var(--muted2);}
+.filter-sel{
+  padding:8px 12px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border2);border-radius:8px;
+  color:var(--text);font-size:13px;
+  font-family:'DM Sans',sans-serif;
+}
+.filter-sel:focus{outline:none;}
+.btn-refresh{
+  padding:8px 14px;
+  background:rgba(255,165,2,.1);border:1px solid rgba(255,165,2,.2);
+  color:var(--accent);border-radius:8px;font-size:12px;
+  font-weight:700;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-refresh:hover{background:rgba(255,165,2,.2);}
+
+.data-table{width:100%;border-collapse:collapse;}
+.data-table thead tr{background:rgba(255,255,255,.03);}
+.data-table th{
+  padding:12px 14px;text-align:left;
+  font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.8px;
+  border-bottom:1px solid var(--border);
+  font-weight:600;
+}
+.data-table th.center{text-align:center;}
+.data-table tbody tr{
+  border-bottom:1px solid var(--border);
+  transition:background .15s;
+}
+.data-table tbody tr:last-child{border-bottom:none;}
+.data-table tbody tr:hover{background:rgba(255,255,255,.02);}
+.data-table td{
+  padding:12px 14px;font-size:13px;vertical-align:middle;
+}
+.data-table td.center{text-align:center;}
+
+.tok-badge{
+  font-family:'Space Mono',monospace;
+  font-size:12px;background:rgba(255,165,2,.1);
+  color:var(--accent);padding:3px 8px;border-radius:5px;
+  border:1px solid rgba(255,165,2,.2);
+}
+.status-badge{
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;
+  letter-spacing:.3px;display:inline-block;
+}
+.status-used{background:rgba(46,213,115,.15);color:var(--green);border:1px solid rgba(46,213,115,.2);}
+.status-unused{background:rgba(255,71,87,.12);color:var(--red);border:1px solid rgba(255,71,87,.2);}
+
+.skor-cell{
+  font-family:'Space Mono',monospace;
+  font-size:15px;font-weight:700;color:var(--accent);
+  text-align:center;
+}
+.game-scores{display:flex;gap:4px;flex-wrap:wrap;}
+.gs-chip{
+  background:var(--surface2);border-radius:5px;
+  padding:2px 6px;font-size:10px;color:var(--muted);
+  border:1px solid var(--border);
+  font-family:'Space Mono',monospace;
+}
+.gs-chip b{color:var(--text);}
+.gs-chip.done b{color:var(--green);}
+
+.nama-cell{font-weight:600;font-size:14px;}
+.kelas-cell{font-size:11px;color:var(--muted);margin-top:1px;}
+
+.btn-detail{
+  padding:5px 12px;
+  background:rgba(55,66,250,.15);border:1px solid rgba(55,66,250,.3);
+  color:var(--blue);border-radius:6px;font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.btn-detail:hover{background:rgba(55,66,250,.25);}
+
+.btn-del{
+  padding:5px 10px;
+  background:rgba(255,71,87,.12);border:1px solid rgba(255,71,87,.2);
+  color:var(--red);border-radius:6px;font-size:11px;
+  cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+}
+.btn-del:hover{background:rgba(255,71,87,.22);}
+
+/* ── RANK COLUMN ── */
+.rank-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border2);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:var(--muted);
+  font-family:'Space Mono',monospace;
+}
+.rank-num.gold{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.3);color:#ffd700;}
+.rank-num.silver{background:rgba(192,192,192,.1);border-color:rgba(192,192,192,.25);color:#c0c0c0;}
+.rank-num.bronze{background:rgba(205,127,50,.15);border-color:rgba(205,127,50,.3);color:#cd7f32;}
+
+/* ── MODAL DETAIL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.85);z-index:1000;
+  align-items:center;justify-content:center;
+}
+.modal-overlay.show{display:flex;}
+.modal-box{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:20px;padding:28px;width:480px;max-width:92vw;
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 24px 64px rgba(0,0,0,.6);
+}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.modal-header h3{
+  font-family:'Space Mono',monospace;
+  font-size:14px;color:var(--accent);letter-spacing:1px;
+}
+.modal-close{
+  background:none;border:none;color:var(--muted);
+  font-size:20px;cursor:pointer;transition:color .2s;line-height:1;
+}
+.modal-close:hover{color:var(--red);}
+.detail-row{
+  display:flex;gap:10px;margin-bottom:10px;
+  padding-bottom:10px;border-bottom:1px solid var(--border);
+}
+.detail-row:last-child{border:none;margin-bottom:0;}
+.detail-row .key{
+  min-width:110px;font-size:12px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;padding-top:1px;
+}
+.detail-row .val{font-size:14px;font-weight:600;word-break:break-all;}
+.game-detail-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:4px;
+}
+.game-detail-item{
+  background:var(--surface2);border-radius:10px;padding:10px 12px;
+  border:1px solid var(--border);
+}
+.gdi-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.gdi-val{
+  font-family:'Space Mono',monospace;
+  font-size:20px;font-weight:700;
+}
+.gdi-awal{font-size:10px;color:var(--muted);margin-top:2px;}
+.progress-bar{
+  height:3px;border-radius:2px;
+  background:rgba(255,255,255,.07);
+  margin-top:6px;overflow:hidden;
+}
+.progress-fill{height:100%;border-radius:2px;transition:width .6s ease;}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:28px;right:28px;
+  padding:12px 20px;border-radius:10px;
+  font-size:13px;font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  z-index:9999;transform:translateY(80px);opacity:0;
+  transition:all .3s;pointer-events:none;
+  font-family:'DM Sans',sans-serif;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.success{background:var(--green);color:#0a1a10;}
+#toast.error{background:var(--red);color:#fff;}
+#toast.info{background:var(--accent);color:#1a1a1a;}
+
+/* ── PAGINATION ── */
+.pagination{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--muted);
+}
+.page-btns{display:flex;gap:6px;}
+.page-btn{
+  padding:6px 12px;border-radius:6px;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text);font-size:12px;cursor:pointer;transition:all .2s;
+  font-family:'DM Sans',sans-serif;
+}
+.page-btn:hover{border-color:var(--accent);color:var(--accent);}
+.page-btn.active{background:rgba(255,165,2,.15);border-color:var(--accent);color:var(--accent);}
+.page-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--muted);
+}
+.empty-state i{font-size:40px;margin-bottom:12px;display:block;opacity:.3;}
+
+/* ── LOADING ── */
+.spin{
+  display:inline-block;width:16px;height:16px;
+  border:2px solid rgba(255,165,2,.2);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .page-content{padding:16px;}
+  .topbar{padding:14px 16px;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .token-options{flex-direction:column;align-items:stretch;}
+  .option-group input,.option-group select{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ ADMIN LOGIN ═══ -->
+<div id="page-admin-login">
+  <div class="admin-login-box">
+    <div class="lock-icon">🔐</div>
+    <h1>ADMIN PANEL</h1>
+    <p>Diakoni Pendidikan GBKP Bambu Raya</p>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="adm-user" placeholder="admin" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="adm-pass" placeholder="••••••••">
+    </div>
+    <button class="btn-admin-login" onclick="adminLogin()">
+      <i class="fas fa-sign-in-alt"></i> Masuk
+    </button>
+    <div class="login-err" id="adm-err">Username / password salah.</div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD ═══ -->
+<div id="page-dashboard">
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-text">ADMIN PANEL</div>
+        <div class="logo-sub">Game Matematika</div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" onclick="showSection('overview')" data-sec="overview">
+          <i class="fas fa-chart-pie"></i> Overview
+        </div>
+        <div class="nav-item" onclick="showSection('token')" data-sec="token">
+          <i class="fas fa-key"></i> Buat Token
+        </div>
+        <div class="nav-item" onclick="showSection('hasil')" data-sec="hasil">
+          <i class="fas fa-trophy"></i> Hasil Peserta
+        </div>
+        <div class="nav-item" onclick="showSection('tokens')" data-sec="tokens">
+          <i class="fas fa-list"></i> Daftar Token
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-badge">
+          <div class="admin-avatar">A</div>
+          <div class="admin-info">
+            <div class="name">Admin</div>
+            <div class="role">Administrator</div>
+          </div>
+        </div>
+        <button class="btn-logout-side" onclick="adminLogout()">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-title">GAME MATEMATIKA — ADMIN</div>
+        <div class="topbar-right">
+          <div class="live-dot-wrap">
+            <div class="live-dot"></div> Live Data
+          </div>
+        </div>
+      </div>
+
+      <div class="page-content">
+
+        <!-- ── OVERVIEW ── -->
+        <div class="section active" id="sec-overview">
+          <div class="section-header">
+            <div class="section-title">Overview <span>/ Dashboard</span></div>
+            <button class="btn-refresh" onclick="loadAllData()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+          <div class="stat-grid" id="stat-grid">
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-users"></i></div>
+              <div class="stat-label">Total Token</div>
+              <div class="stat-val" id="stat-total">—</div>
+              <div class="stat-sub">token dibuat</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+              <div class="stat-label">Terpakai</div>
+              <div class="stat-val" id="stat-used">—</div>
+              <div class="stat-sub">peserta aktif</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-clock"></i></div>
+              <div class="stat-label">Belum Dipakai</div>
+              <div class="stat-val" id="stat-unused">—</div>
+              <div class="stat-sub">token tersisa</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><i class="fas fa-star"></i></div>
+              <div class="stat-label">Selesai Semua</div>
+              <div class="stat-val" id="stat-done">—</div>
+              <div class="stat-sub">6 game selesai</div>
+            </div>
+          </div>
+
+          <!-- TOP 5 quick view -->
+          <div class="table-wrap">
+            <div class="table-controls">
+              <span style="font-size:13px;font-weight:700">🏆 Top 5 Peserta</span>
+            </div>
+            <table class="data-table">
+              <thead><tr>
+                <th style="width:50px" class="center">Rank</th>
+                <th>Peserta</th>
+                <th class="center">Total Skor</th>
+                <th>Skor per Game</th>
+              </tr></thead>
+              <tbody id="top5-tbody">
+                <tr><td colspan="4" class="empty-state"><i class="fas fa-spinner fa-spin"></i><br>Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── BUAT TOKEN ── -->
+        <div class="section" id="sec-token">
+          <div class="section-header">
+            <div class="section-title">Buat <span>/ Token Baru</span></div>
+          </div>
+
+          <div class="token-create-box">
+            <h3><i class="fas fa-cog"></i> Pengaturan Pembuatan Token</h3>
+            <div class="token-options">
+              <div class="option-group">
+                <label>Jumlah Token</label>
+                <input type="number" id="tok-jumlah" value="10" min="1" max="100">
+              </div>
+              <div class="option-group">
+                <label>Panjang Token</label>
+                <select id="tok-panjang">
+                  <option value="6">6 Karakter</option>
+                  <option value="8" selected>8 Karakter</option>
+                  <option value="10">10 Karakter</option>
+                  <option value="12">12 Karakter</option>
+                </select>
+              </div>
+              <div class="option-group">
+                <label>Format</label>
+                <select id="tok-format">
+                  <option value="alphanum">Huruf + Angka</option>
+                  <option value="upper">HURUF BESAR</option>
+                  <option value="numeric">Angka Saja</option>
+                </select>
+              </div>
+              <button class="btn-create" id="btn-create" onclick="createTokens()">
+                <i class="fas fa-magic"></i> Generate Token
+              </button>
+            </div>
+          </div>
+
+          <div class="token-result" id="token-result-box" style="display:none">
+            <div class="token-result-header">
+              <h3><i class="fas fa-check-circle"></i> Token Berhasil Dibuat: <span id="tok-count-label">0</span></h3>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-export" onclick="copyAllTokens()">
+                  <i class="fas fa-copy"></i> Copy Semua
+                </button>
+                <button class="btn-export" onclick="exportTokensTxt()">
+                  <i class="fas fa-download"></i> Export .txt
+                </button>
+              </div>
+            </div>
+            <div class="token-grid" id="token-grid"></div>
+          </div>
+        </div>
+
+        <!-- ── HASIL PESERTA ── -->
+        <div class="section" id="sec-hasil">
+          <div class="section-header">
+            <div class="section-title">Hasil <span>/ Semua Peserta</span></div>
+            <button class="btn-refresh" onclick="loadAllData()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-controls">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Cari nama / kelas..." oninput="renderHasil()">
+              </div>
+              <select class="filter-sel" id="filter-status" onchange="renderHasil()">
+                <option value="">Semua Status</option>
+                <option value="done">Selesai Semua</option>
+                <option value="partial">Sebagian</option>
+                <option value="none">Belum Main</option>
+              </select>
+              <button class="btn-export" onclick="exportHasilCsv()" style="margin-left:auto;">
+                <i class="fas fa-file-csv"></i> Export CSV
+              </button>
+            </div>
+            <table class="data-table">
+              <thead><tr>
+                <th class="center" style="width:50px">Rank</th>
+                <th>Peserta</th>
+                <th class="center" style="width:80px">Total</th>
+                <th>Skor per Game</th>
+                <th class="center">Status</th>
+                <th class="center" style="width:80px">Aksi</th>
+              </tr></thead>
+              <tbody id="hasil-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Memuat data...</td></tr>
+              </tbody>
+            </table>
+            <div class="pagination" id="hasil-pagination">
+              <span id="pagination-info"></span>
+              <div class="page-btns" id="page-btns"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DAFTAR TOKEN ── -->
+        <div class="section" id="sec-tokens">
+          <div class="section-header">
+            <div class="section-title">Daftar <span>/ Semua Token</span></div>
+            <button class="btn-refresh" onclick="loadAllData()">
+              <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-controls">
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="tok-search" placeholder="Cari token..." oninput="renderTokenList()">
+              </div>
+              <select class="filter-sel" id="tok-filter" onchange="renderTokenList()">
+                <option value="">Semua</option>
+                <option value="used">Terpakai</option>
+                <option value="unused">Belum Dipakai</option>
+              </select>
+            </div>
+            <table class="data-table">
+              <thead><tr>
+                <th style="width:40px" class="center">#</th>
+                <th>Token</th>
+                <th>Nama Peserta</th>
+                <th class="center">Status</th>
+                <th class="center">Total Skor</th>
+                <th class="center">Aksi</th>
+              </tr></thead>
+              <tbody id="toklis-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Memuat data...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /page-content -->
+    </div><!-- /main-content -->
+  </div><!-- /layout -->
+</div><!-- /page-dashboard -->
+
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="fas fa-user"></i> DETAIL PESERTA</h3>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  KONFIGURASI
+// ═══════════════════════════════════════════════════════
+const API     = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
+const T_NILAI = 'nilai';
+const SECRET  = 'admin';
+const H = () => ({'Content-Type':'application/json','X-Custom-Auth':SECRET});
+
+const GAMES = [
+  {key:'perkalian',  label:'×',  color:'#ff4757'},
+  {key:'pembagian',  label:'÷',  color:'#ffa502'},
+  {key:'penjumlahan',label:'+',  color:'#3742fa'},
+  {key:'pengurangan',label:'−',  color:'#2ed573'},
+  {key:'akar',       label:'√',  color:'#ff6348'},
+  {key:'kuadrat',    label:'x²', color:'#1e90ff'},
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let allData = [];
+let lastCreatedTokens = [];
+let hasilPage = 1;
+const PAGE_SIZE = 15;
+let loggedInAdmin = null;
+
+// ═══════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════
+function parseJSON(str, def){ try{ const r=JSON.parse(str); return r??def; } catch(e){ return def; } }
+function totalSkor(row){ const b=parseJSON(row.x_03,{}); return GAMES.reduce((s,g)=>s+(parseInt(b[g.key])||0),0); }
+function sudahSemua(row){ const b=parseJSON(row.x_03,{}); return GAMES.every(g=>parseInt(b[g.key])>0); }
+function sudahMain(row){ const b=parseJSON(row.x_03,{}); return GAMES.some(g=>parseInt(b[g.key])>0); }
+
+let _toast;
+function showToast(msg, type='info'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show '+type;
+  clearTimeout(_toast);
+  _toast=setTimeout(()=>{ t.className=''; },2800);
+}
+
+// ═══════════════════════════════════════════════════════
+//  ADMIN LOGIN / LOGOUT
+// ═══════════════════════════════════════════════════════
+async function adminLogin(){
+  const u   = document.getElementById('adm-user').value.trim();
+  const p   = document.getElementById('adm-pass').value.trim();
+  const err = document.getElementById('adm-err');
+  const btn = document.querySelector('.btn-admin-login');
+
+  if(!u || !p){ err.textContent='Username dan password wajib diisi.'; err.style.display='block'; return; }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin" style="display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.2);border-top-color:#1a1a1a;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:8px;"></span> Memeriksa...';
+  err.style.display = 'none';
+
+  try{
+    // Cari user di tabel admins berdasarkan x_01 (username)
+    const r = await fetch(`${API}?table=admins&x_01_eq=${encodeURIComponent(u)}`, {headers:H()});
+    const d = await r.json();
+
+    if(!d.success || d.count === 0){
+      err.textContent = 'Username tidak ditemukan.';
+      err.style.display = 'block';
+      return;
+    }
+
+    const admin = d.data[0];
+    // Cek password dari kolom x_02
+    if(admin.x_02 !== p){
+      err.textContent = 'Password salah.';
+      err.style.display = 'block';
+      return;
+    }
+
+    // Login sukses
+    loggedInAdmin = admin;
+    document.getElementById('page-admin-login').style.display = 'none';
+    document.getElementById('page-dashboard').style.display = 'block';
+    // Tampilkan nama admin di sidebar jika ada di x_03 atau pakai username
+    const adminName = admin.x_03 || u;
+    document.querySelector('.admin-info .name').textContent = adminName;
+    document.querySelector('.admin-avatar').textContent = adminName.charAt(0).toUpperCase();
+    loadAllData();
+
+  } catch(e){
+    err.textContent = 'Terjadi kesalahan jaringan. Coba lagi.';
+    err.style.display = 'block';
+    console.error(e);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Masuk';
+  }
+}
+
+document.getElementById('adm-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
+document.getElementById('adm-user').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
+
+function adminLogout(){
+  loggedInAdmin = null;
+  document.getElementById('page-dashboard').style.display='none';
+  document.getElementById('page-admin-login').style.display='flex';
+  document.getElementById('adm-pass').value='';
+  document.getElementById('adm-user').value='';
+}
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGASI SECTION
+// ═══════════════════════════════════════════════════════
+function showSection(name){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  document.querySelector(`.nav-item[data-sec="${name}"]`).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+//  LOAD DATA
+// ═══════════════════════════════════════════════════════
+async function loadAllData(){
+  try{
+    const r = await fetch(`${API}?table=${T_NILAI}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success) return;
+    allData = d.data || [];
+    updateStats();
+    renderTop5();
+    renderHasil();
+    renderTokenList();
+    showToast('Data diperbarui!', 'success');
+  } catch(err){
+    showToast('Gagal mengambil data.', 'error');
+    console.error(err);
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  STATISTIK
+// ═══════════════════════════════════════════════════════
+function updateStats(){
+  const total  = allData.length;
+  const used   = allData.filter(r=>r.x_10==='1').length;
+  const unused = total - used;
+  const done   = allData.filter(r=>r.x_10==='1' && sudahSemua(r)).length;
+  document.getElementById('stat-total').textContent  = total;
+  document.getElementById('stat-used').textContent   = used;
+  document.getElementById('stat-unused').textContent = unused;
+  document.getElementById('stat-done').textContent   = done;
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOP 5
+// ═══════════════════════════════════════════════════════
+function renderTop5(){
+  const valid = allData
+    .filter(r=>r.x_10==='1' && parseJSON(r.x_02,{}).nama)
+    .sort((a,b)=>totalSkor(b)-totalSkor(a))
+    .slice(0,5);
+
+  if(valid.length===0){
+    document.getElementById('top5-tbody').innerHTML = `<tr><td colspan="4" style="text-align:center;padding:30px;color:var(--muted);">Belum ada peserta</td></tr>`;
+    return;
+  }
+
+  document.getElementById('top5-tbody').innerHTML = valid.map((row,i)=>{
+    const bio  = parseJSON(row.x_02,{});
+    const best = parseJSON(row.x_03,{});
+    const tot  = totalSkor(row);
+    const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const chips = GAMES.map(g=>{
+      const v=parseInt(best[g.key])||0;
+      return `<div class="gs-chip ${v>0?'done':''}"><b>${v}</b></div>`;
+    }).join('');
+    return `<tr>
+      <td class="center"><div class="rank-num ${rankClass}">${i+1}</div></td>
+      <td>
+        <div class="nama-cell">${bio.nama||'-'}</div>
+        <div class="kelas-cell">${bio.kelas||''} · ${bio.sekolah||''}</div>
+      </td>
+      <td class="skor-cell">${tot}</td>
+      <td><div class="game-scores">${chips}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  RENDER HASIL
+// ═══════════════════════════════════════════════════════
+function renderHasil(){
+  const q      = (document.getElementById('search-input').value||'').toLowerCase();
+  const status = document.getElementById('filter-status').value;
+
+  let rows = allData
+    .filter(r=>r.x_10==='1') // hanya yang sudah pakai token
+    .filter(r=>{
+      const bio=parseJSON(r.x_02,{});
+      if(!bio.nama) return false;
+      if(q && !(bio.nama.toLowerCase().includes(q)||bio.kelas?.toLowerCase().includes(q)||bio.sekolah?.toLowerCase().includes(q))) return false;
+      if(status==='done' && !sudahSemua(r)) return false;
+      if(status==='partial' && (sudahSemua(r)||!sudahMain(r))) return false;
+      if(status==='none' && sudahMain(r)) return false;
+      return true;
+    })
+    .sort((a,b)=>totalSkor(b)-totalSkor(a));
+
+  const total = rows.length;
+  const pages = Math.ceil(total/PAGE_SIZE)||1;
+  if(hasilPage>pages) hasilPage=1;
+
+  const slice = rows.slice((hasilPage-1)*PAGE_SIZE, hasilPage*PAGE_SIZE);
+
+  if(slice.length===0){
+    document.getElementById('hasil-tbody').innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);"><i class="fas fa-inbox" style="font-size:30px;display:block;margin-bottom:10px;opacity:.3;"></i>Tidak ada data</td></tr>`;
+  } else {
+    document.getElementById('hasil-tbody').innerHTML = slice.map((row,i)=>{
+      const rank = (hasilPage-1)*PAGE_SIZE+i+1;
+      const bio  = parseJSON(row.x_02,{});
+      const best = parseJSON(row.x_03,{});
+      const tot  = totalSkor(row);
+      const done = sudahSemua(row);
+      const rankClass = rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+      const chips = GAMES.map(g=>{
+        const v=parseInt(best[g.key])||0;
+        return `<div class="gs-chip ${v>0?'done':''}">${g.label}<b>${v}</b></div>`;
+      }).join('');
+      const st = done
+        ? `<span class="status-badge status-used">✓ Selesai</span>`
+        : sudahMain(row)
+          ? `<span class="status-badge" style="background:rgba(255,165,2,.12);color:var(--accent);border:1px solid rgba(255,165,2,.2);">Sebagian</span>`
+          : `<span class="status-badge status-unused">Belum</span>`;
+      return `<tr>
+        <td class="center"><div class="rank-num ${rankClass}">${rank}</div></td>
+        <td>
+          <div class="nama-cell">${bio.nama||'-'}</div>
+          <div class="kelas-cell">${bio.kelas||''} · ${bio.sekolah||''}</div>
+        </td>
+        <td class="skor-cell">${tot}</td>
+        <td><div class="game-scores">${chips}</div></td>
+        <td class="center">${st}</td>
+        <td class="center">
+          <button class="btn-detail" onclick="showDetail('${row.id_x}')">Detail</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Pagination
+  document.getElementById('pagination-info').textContent = `${total} peserta · Halaman ${hasilPage}/${pages}`;
+  let pbHtml='';
+  pbHtml+=`<button class="page-btn" onclick="changePage(-1)" ${hasilPage<=1?'disabled':''}>‹</button>`;
+  for(let p=1;p<=pages;p++){
+    if(pages<=7||p===1||p===pages||Math.abs(p-hasilPage)<=1){
+      pbHtml+=`<button class="page-btn ${p===hasilPage?'active':''}" onclick="goPage(${p})">${p}</button>`;
+    } else if(Math.abs(p-hasilPage)===2){
+      pbHtml+=`<span style="color:var(--muted);padding:0 4px">…</span>`;
+    }
+  }
+  pbHtml+=`<button class="page-btn" onclick="changePage(1)" ${hasilPage>=pages?'disabled':''}>›</button>`;
+  document.getElementById('page-btns').innerHTML=pbHtml;
+}
+
+function changePage(d){ hasilPage+=d; renderHasil(); }
+function goPage(p){ hasilPage=p; renderHasil(); }
+
+// ═══════════════════════════════════════════════════════
+//  RENDER DAFTAR TOKEN
+// ═══════════════════════════════════════════════════════
+function renderTokenList(){
+  const q  = (document.getElementById('tok-search').value||'').toLowerCase();
+  const f  = document.getElementById('tok-filter').value;
+
+  let rows = allData.filter(r=>{
+    if(q && !(r.x_01||'').toLowerCase().includes(q)) return false;
+    if(f==='used' && r.x_10!=='1') return false;
+    if(f==='unused' && r.x_10==='1') return false;
+    return true;
+  });
+
+  if(rows.length===0){
+    document.getElementById('toklis-tbody').innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--muted);">Tidak ada token</td></tr>`;
+    return;
+  }
+
+  document.getElementById('toklis-tbody').innerHTML = rows.map((row,i)=>{
+    const bio  = parseJSON(row.x_02,{});
+    const tot  = row.x_10==='1' ? totalSkor(row) : '—';
+    const used = row.x_10==='1';
+    return `<tr>
+      <td class="center" style="color:var(--muted);font-size:12px;">${i+1}</td>
+      <td><span class="tok-badge">${row.x_01||'-'}</span></td>
+      <td>
+        ${used && bio.nama
+          ? `<div class="nama-cell" style="font-size:13px;">${bio.nama}</div>
+             <div class="kelas-cell">${bio.kelas||''}</div>`
+          : `<span style="color:var(--muted2);font-size:12px;font-style:italic;">Belum dipakai</span>`
+        }
+      </td>
+      <td class="center">
+        ${used
+          ? `<span class="status-badge status-used">Terpakai</span>`
+          : `<span class="status-badge status-unused">Kosong</span>`
+        }
+      </td>
+      <td class="center" style="font-family:'Space Mono',monospace;font-size:14px;color:var(--accent);">${tot}</td>
+      <td class="center" style="display:flex;gap:6px;justify-content:center;align-items:center;padding:12px 10px;">
+        <button class="btn-detail" onclick="copyOneToken('${row.x_01}')"><i class="fas fa-copy"></i></button>
+        ${used ? `<button class="btn-detail" onclick="showDetail('${row.id_x}')">Detail</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════
+//  DETAIL MODAL
+// ═══════════════════════════════════════════════════════
+function showDetail(idX){
+  const row = allData.find(r=>r.id_x==idX);
+  if(!row) return;
+  const bio  = parseJSON(row.x_02,{});
+  const best = parseJSON(row.x_03,{});
+  const awal = parseJSON(row.x_04,{});
+  const meta = parseJSON(row.x_05,{waktu:{},kunjungan:{}});
+  const tot  = totalSkor(row);
+  const maxSkor = 50;
+
+  const gameHtml = GAMES.map(g=>{
+    const b = parseInt(best[g.key])||0;
+    const a = parseInt(awal[g.key])||0;
+    const pct = Math.min(100, Math.round((b/maxSkor)*100));
+    return `<div class="game-detail-item">
+      <div class="gdi-label">${g.label} ${g.key}</div>
+      <div class="gdi-val" style="color:${g.color}">${b}</div>
+      <div class="gdi-awal">Skor awal: ${a||'—'}</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${pct}%;background:${g.color}"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('modal-content').innerHTML = `
+    <div class="detail-row">
+      <div class="key">Nama</div>
+      <div class="val">${bio.nama||'-'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="key">Kelas</div>
+      <div class="val">${bio.kelas||'-'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="key">Sekolah</div>
+      <div class="val">${bio.sekolah||'-'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="key">Alamat</div>
+      <div class="val">${bio.alamat||'-'}</div>
+    </div>
+    <div class="detail-row">
+      <div class="key">Token</div>
+      <div class="val"><span class="tok-badge">${row.x_01||'-'}</span></div>
+    </div>
+    <div class="detail-row">
+      <div class="key">Total Skor</div>
+      <div class="val" style="font-family:'Space Mono',monospace;font-size:22px;color:var(--accent);">${tot}</div>
+    </div>
+    <div class="detail-row" style="flex-direction:column;">
+      <div class="key" style="margin-bottom:12px;">Skor per Game</div>
+      <div class="game-detail-grid">${gameHtml}</div>
+    </div>
+  `;
+  document.getElementById('modal-detail').classList.add('show');
+}
+
+function closeModal(){
+  document.getElementById('modal-detail').classList.remove('show');
+}
+document.getElementById('modal-detail').addEventListener('click',e=>{
+  if(e.target===e.currentTarget) closeModal();
+});
+
+// ═══════════════════════════════════════════════════════
+//  CREATE TOKEN
+// ═══════════════════════════════════════════════════════
+function generateToken(len, format){
+  const alphanum = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  const upper    = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const numeric  = '0123456789';
+  const chars = format==='upper'?upper : format==='numeric'?numeric : alphanum;
+  let tok='';
+  const arr = new Uint8Array(len*2);
+  crypto.getRandomValues(arr);
+  for(let i=0;i<arr.length&&tok.length<len;i++){
+    tok += chars[arr[i]%chars.length];
+  }
+  return tok;
+}
+
+// Ambil semua token yang sudah ada (dari allData + yg baru dibuat di sesi ini)
+function getExistingTokens(){
+  const s = new Set(allData.map(r=>(r.x_01||'').toLowerCase()));
+  lastCreatedTokens.forEach(t=>s.add(t.toLowerCase()));
+  return s;
+}
+
+async function createTokens(){
+  const jumlah = parseInt(document.getElementById('tok-jumlah').value)||10;
+  const panjang = parseInt(document.getElementById('tok-panjang').value)||8;
+  const format  = document.getElementById('tok-format').value;
+
+  if(jumlah<1||jumlah>100){ showToast('Jumlah 1–100 saja.','error'); return; }
+
+  const btn = document.getElementById('btn-create');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spin"></span> Membuat...';
+
+  try{
+    const existing = getExistingTokens();
+    const newTokens = [];
+    let attempts=0;
+    while(newTokens.length<jumlah && attempts<jumlah*20){
+      attempts++;
+      const t = generateToken(panjang, format);
+      if(!existing.has(t.toLowerCase())){
+        existing.add(t.toLowerCase());
+        newTokens.push(t);
+      }
+    }
+
+    if(newTokens.length<jumlah){
+      showToast('Tidak cukup kombinasi unik. Coba panjang lebih besar.','error');
+      return;
+    }
+
+    // POST ke API
+    let success=0;
+    for(const tok of newTokens){
+      try{
+        await fetch(`${API}?table=${T_NILAI}`,{
+          method:'POST', headers:H(),
+          body:JSON.stringify({x_01:tok})
+        });
+        success++;
+        lastCreatedTokens.push(tok);
+      } catch(e){ console.error('Gagal simpan token:',tok,e); }
+    }
+
+    await loadAllData();
+
+    // Tampilkan hasil
+    document.getElementById('tok-count-label').textContent = success;
+    document.getElementById('token-result-box').style.display='block';
+    document.getElementById('token-grid').innerHTML = newTokens.map(t=>`
+      <div class="token-chip">
+        <span class="tok-val">${t}</span>
+        <button class="tok-copy" onclick="copyOneToken('${t}')" title="Copy">
+          <i class="fas fa-copy"></i>
+        </button>
+      </div>
+    `).join('');
+
+    showToast(`✅ ${success} token berhasil dibuat!`,'success');
+  } finally {
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-magic"></i> Generate Token';
+  }
+}
+
+function copyOneToken(tok){
+  navigator.clipboard?.writeText(tok)
+    .then(()=>showToast('Token dicopy: '+tok,'info'))
+    .catch(()=>{ showToast('Salin manual: '+tok,'info'); });
+}
+
+function copyAllTokens(){
+  const chips = document.querySelectorAll('#token-grid .tok-val');
+  const toks  = Array.from(chips).map(c=>c.textContent).join('\n');
+  navigator.clipboard?.writeText(toks)
+    .then(()=>showToast('✅ Semua token dicopy!','success'))
+    .catch(()=>showToast('Gagal copy.','error'));
+}
+
+function exportTokensTxt(){
+  const chips = document.querySelectorAll('#token-grid .tok-val');
+  const toks  = Array.from(chips).map(c=>c.textContent);
+  const isi = `TOKEN GAME MATEMATIKA — GBKP BAMBU RAYA
+Generated: ${new Date().toLocaleString('id-ID')}
+Jumlah: ${toks.length} token
+========================================\n\n`+toks.join('\n');
+  const blob = new Blob([isi],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`tokens_${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ File token.txt diunduh!','success');
+}
+
+function exportHasilCsv(){
+  const valid = allData
+    .filter(r=>r.x_10==='1' && parseJSON(r.x_02,{}).nama)
+    .sort((a,b)=>totalSkor(b)-totalSkor(a));
+
+  const header = ['Rank','Nama','Kelas','Sekolah','Token','Total','Perkalian','Pembagian','Penjumlahan','Pengurangan','Akar','Kuadrat'].join(',');
+  const rows = valid.map((row,i)=>{
+    const bio=parseJSON(row.x_02,{});
+    const best=parseJSON(row.x_03,{});
+    return [
+      i+1, `"${bio.nama||''}"`, `"${bio.kelas||''}"`, `"${bio.sekolah||''}"`,
+      row.x_01||'', totalSkor(row),
+      ...GAMES.map(g=>parseInt(best[g.key])||0)
+    ].join(',');
+  });
+
+  const csv = [header,...rows].join('\n');
+  const blob = new Blob([csv],{type:'text/csv'});
+  const a = document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`hasil_peserta_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('✅ CSV diunduh!','success');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard — Game Matematika</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@400;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0a0a0a;color:#f0f0f0;
+  font-family:'Roboto',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+  padding:20px;text-align:center;
+  border-bottom:2px solid #ffa502;
+  position:sticky;top:0;z-index:100;
+}
+.header h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(18px,4vw,36px);
+  color:#ffa502;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(255,165,2,.5);
+}
+.header .subtitle{
+  font-size:14px;color:#aaa;margin-top:5px;
+}
+.live-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#dc3545;color:#fff;
+  padding:4px 12px;border-radius:20px;
+  font-size:12px;font-weight:bold;margin-top:8px;
+}
+.live-dot{
+  width:8px;height:8px;background:#fff;
+  border-radius:50%;animation:blink 1s infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ── REFRESH INFO ── */
+.refresh-bar{
+  background:#111;padding:8px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:#666;border-bottom:1px solid #222;
+}
+.refresh-bar .countdown{color:#ffa502;font-weight:bold;}
+
+/* ── LAYOUT ── */
+.main{padding:20px;max-width:1200px;margin:0 auto;}
+
+/* ── PODIUM ── */
+.podium-section{
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:15px;margin-bottom:40px;padding:20px 0;
+}
+.podium-card{
+  text-align:center;border-radius:12px;padding:15px 10px;
+  transition:transform .3s;cursor:default;
+  position:relative;
+}
+.podium-card:hover{transform:translateY(-5px);}
+
+.podium-1{
+  background:linear-gradient(135deg,#b8860b,#ffd700,#b8860b);
+  color:#1a1a1a;order:2;
+  min-width:180px;padding-bottom:40px;
+  box-shadow:0 0 30px rgba(255,215,0,.4);
+}
+.podium-2{
+  background:linear-gradient(135deg,#555,#c0c0c0,#555);
+  color:#1a1a1a;order:1;
+  min-width:150px;padding-bottom:20px;
+  box-shadow:0 0 20px rgba(192,192,192,.3);
+}
+.podium-3{
+  background:linear-gradient(135deg,#6b3a2a,#cd7f32,#6b3a2a);
+  color:#fff;order:3;
+  min-width:150px;padding-bottom:10px;
+  box-shadow:0 0 20px rgba(205,127,50,.3);
+}
+
+.podium-rank{
+  font-family:'Orbitron',sans-serif;
+  font-size:36px;font-weight:900;
+  display:block;margin-bottom:8px;
+}
+.podium-1 .podium-rank::before{content:'🥇 ';}
+.podium-2 .podium-rank::before{content:'🥈 ';}
+.podium-3 .podium-rank::before{content:'🥉 ';}
+
+.podium-nama{
+  font-size:clamp(13px,2vw,16px);font-weight:bold;
+  display:block;margin-bottom:4px;line-height:1.3;
+}
+.podium-kelas{font-size:12px;opacity:.8;display:block;margin-bottom:8px;}
+.podium-skor{
+  font-family:'Orbitron',sans-serif;
+  font-size:28px;font-weight:900;
+  display:block;
+}
+.podium-skor-label{font-size:11px;opacity:.7;}
+.podium-detail{
+  margin-top:8px;font-size:11px;opacity:.8;
+  display:flex;flex-wrap:wrap;justify-content:center;gap:3px;
+}
+.podium-detail span{
+  background:rgba(0,0,0,.2);border-radius:4px;padding:2px 5px;
+}
+
+/* ── TABLE 4-10 ── */
+.table-section{margin-top:10px;}
+.table-section h2{
+  font-family:'Orbitron',sans-serif;
+  color:#ffa502;font-size:16px;
+  margin-bottom:15px;letter-spacing:2px;
+}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table thead tr{
+  background:linear-gradient(90deg,#1a1a2e,#0f3460);
+}
+.lb-table th{
+  padding:12px 10px;text-align:left;
+  font-size:13px;color:#ffa502;
+  border-bottom:2px solid #ffa502;
+}
+.lb-table th.center{text-align:center;}
+.lb-table tbody tr{
+  border-bottom:1px solid #1a1a1a;
+  transition:background .2s;
+}
+.lb-table tbody tr:hover{background:#1a1a2e;}
+.lb-table td{
+  padding:12px 10px;font-size:14px;
+  background:transparent;border:none;
+}
+.lb-table td.center{text-align:center;}
+.rank-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:32px;height:32px;border-radius:50%;
+  font-weight:bold;font-size:14px;
+  background:#2b2b2b;color:#ffa502;
+}
+.total-skor{
+  font-family:'Orbitron',sans-serif;
+  font-size:18px;font-weight:900;color:#ffa502;
+}
+.skor-mini{
+  display:inline-block;background:#1a1a2e;
+  border-radius:4px;padding:2px 6px;
+  font-size:11px;margin:1px;color:#ccc;
+}
+.skor-mini b{color:#fff;}
+.nama-cell{font-weight:bold;font-size:15px;}
+.kelas-cell{font-size:12px;color:#888;margin-top:2px;}
+.belum-badge{
+  color:#555;font-size:12px;font-style:italic;
+}
+
+/* ── GAME BREAKDOWN ── */
+.breakdown-section{
+  margin-top:40px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;
+}
+.breakdown-card{
+  background:#111;border-radius:12px;padding:15px;
+  border-top:3px solid var(--color);
+}
+.breakdown-card h3{
+  font-size:14px;color:var(--color);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.mini-rank{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.mini-rank .no{
+  font-weight:bold;color:#555;width:20px;text-align:center;font-size:13px;
+}
+.mini-rank .no.gold{color:#ffd700;}
+.mini-rank .no.silver{color:#c0c0c0;}
+.mini-rank .no.bronze{color:#cd7f32;}
+.mini-rank .info{flex:1;}
+.mini-rank .info .nm{font-size:13px;font-weight:bold;}
+.mini-rank .info .kl{font-size:11px;color:#666;}
+.mini-rank .sc{
+  font-family:'Orbitron',sans-serif;
+  font-size:16px;font-weight:bold;color:var(--color);
+}
+
+/* ── FOOTER ── */
+.footer{
+  text-align:center;padding:20px;
+  color:#444;font-size:12px;margin-top:40px;
+  border-top:1px solid #1a1a1a;
+}
+
+/* ── LOADING ── */
+.loading{
+  text-align:center;padding:60px;color:#ffa502;font-size:18px;
+}
+.loading .spin{
+  display:inline-block;width:40px;height:40px;
+  border:4px solid #222;border-top-color:#ffa502;
+  border-radius:50%;animation:spin .8s linear infinite;margin-bottom:15px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── ANIMASI MASUK ── */
+@keyframes fadeInUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.animate{animation:fadeInUp .4s ease both;}
+
+.empty{text-align:center;padding:40px;color:#444;font-size:16px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏆 LEADERBOARD MATEMATIKA</h1>
+  <div class="subtitle">Diakoni Pendidikan GBKP Bambu Raya</div>
+  <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+</div>
+
+<div class="refresh-bar">
+  <span>Auto-refresh setiap <b>15 detik</b></span>
+  <span>Update berikutnya: <span class="countdown" id="countdown">15</span> detik</span>
+</div>
+
+<div class="main" id="main">
+  <div class="loading">
+    <div class="spin"></div><br>Memuat data...
+  </div>
+</div>
+
+<div class="footer">
+  Data diperbarui secara otomatis · Ranking berdasarkan total skor terbaik 6 game
+</div>
+
+<script>
+const API     = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
+const T_NILAI = 'nilai';
+const SECRET  = 'admin';
+const H = () => ({'Content-Type':'application/json','X-Custom-Auth':SECRET});
+
+const GAMES = [
+  {key:'perkalian',  label:'Kali',   icon:'✖', color:'#ff4757'},
+  {key:'pembagian',  label:'Bagi',   icon:'➗', color:'#ffa502'},
+  {key:'penjumlahan',label:'Tambah', icon:'➕', color:'#3742fa'},
+  {key:'pengurangan',label:'Kurang', icon:'➖', color:'#2ed573'},
+  {key:'akar',       label:'Akar',   icon:'√',  color:'#ff6348'},
+  {key:'kuadrat',    label:'Pangkat',icon:'x²', color:'#1e90ff'},
+];
+
+// ── HITUNG TOTAL SKOR ──
+function totalSkor(row){
+  const b = parseJSON(row.x_03, {});
+  return GAMES.reduce((sum,g)=> sum + (parseInt(b[g.key])||0), 0);
+}
+
+// ── CEK SUDAH KERJAKAN SEMUA GAME ──
+function sudahSemua(row){
+  const b = parseJSON(row.x_03, {});
+  return GAMES.every(g=> parseInt(b[g.key])>0);
+}
+
+// ── AMBIL DATA & RENDER ──
+async function fetchAndRender(){
+  try{
+    const r = await fetch(`${API}?table=${T_NILAI}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success) return;
+
+    // Filter: harus sudah isi biodata
+    const valid = d.data.filter(row=>{
+      const bio=parseJSON(row.x_02,{});
+      return bio.nama;
+    });
+
+    // Sort berdasarkan total skor DESC, lalu waktu terlama ASC (tiebreaker)
+    const ranked = [...valid].sort((a,b)=>{
+      const diff = totalSkor(b)-totalSkor(a);
+      if(diff!==0) return diff;
+      // tiebreaker: selesai lebih awal = lebih baik
+      const ma=parseJSON(a.x_05,{waktu:{}}), mb=parseJSON(b.x_05,{waktu:{}});
+      const lastA=Object.values(ma.waktu||{}).sort().pop()||'';
+      const lastB=Object.values(mb.waktu||{}).sort().pop()||'';
+      return lastA.localeCompare(lastB);
+    });
+
+    render(ranked.slice(0,10), valid);
+  } catch(err){
+    console.error(err);
+  }
+}
+
+function render(top10, allValid){
+  const main = document.getElementById('main');
+
+  if(top10.length===0){
+    main.innerHTML='<div class="empty">Belum ada data peserta. Menunggu peserta mengerjakan soal...</div>';
+    return;
+  }
+
+  let html = '';
+
+  // ── PODIUM TOP 3 ──
+  const podium = top10.slice(0,3);
+  if(podium.length>0){
+    html += `<div class="podium-section">`;
+    const order = podium.length===1?[0]:podium.length===2?[1,0]:[1,0,2];
+    order.forEach(i=>{
+      if(!podium[i]) return;
+      const row=podium[i];
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const cls=['podium-1','podium-2','podium-3'][i];
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span>${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<div class="podium-card ${cls} animate" style="animation-delay:${i*0.1}s">
+        <span class="podium-rank">${i+1}</span>
+        <span class="podium-nama">${bio.nama||'-'}</span>
+        <span class="podium-kelas">${bio.kelas||''} · ${bio.sekolah||''}</span>
+        <span class="podium-skor">${tot}</span>
+        <span class="podium-skor-label">${semua?'Total Skor':'⚠ belum semua game'}</span>
+        <div class="podium-detail">${detail}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── TABEL RANK 4-10 ──
+  const rest = top10.slice(3);
+  if(rest.length>0){
+    html += `<div class="table-section">
+      <h2>RANKING 4 – ${Math.min(10,top10.length)}</h2>
+      <table class="lb-table">
+        <thead><tr>
+          <th style="width:50px" class="center">Rank</th>
+          <th>Peserta</th>
+          <th class="center">Total</th>
+          <th>Skor per Game</th>
+        </tr></thead>
+        <tbody>`;
+    rest.forEach((row,i)=>{
+      const rank=i+4;
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span class="skor-mini">${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<tr class="animate" style="animation-delay:${i*0.05}s">
+        <td class="center"><div class="rank-badge">${rank}</div></td>
+        <td>
+          <div class="nama-cell">${bio.nama||'-'}</div>
+          <div class="kelas-cell">${bio.kelas||''} · ${bio.sekolah||''}</div>
+        </td>
+        <td class="center">
+          <div class="total-skor">${tot}</div>
+          ${!semua?'<div class="belum-badge">belum semua</div>':''}
+        </td>
+        <td>${detail}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+
+  // ── BREAKDOWN PER GAME ──
+  html += `<div class="breakdown-section">`;
+  GAMES.forEach(g=>{
+    const sorted=[...allValid]
+      .filter(r=>{ const b=parseJSON(r.x_03,{}); return parseInt(b[g.key])>0; })
+      .sort((a,b)=>{
+        const ba=parseJSON(a.x_03,{}), bb=parseJSON(b.x_03,{});
+        return (parseInt(bb[g.key])||0)-(parseInt(ba[g.key])||0);
+      }).slice(0,3);
+
+    html+=`<div class="breakdown-card" style="--color:${g.color}">
+      <h3>${g.icon} ${g.label}</h3>`;
+    if(sorted.length===0){
+      html+=`<div style="color:#444;font-size:13px">Belum ada data</div>`;
+    } else {
+      const medals=['gold','silver','bronze'];
+      sorted.forEach((row,i)=>{
+        const bio=parseJSON(row.x_02,{});
+        const best=parseJSON(row.x_03,{});
+        html+=`<div class="mini-rank">
+          <div class="no ${medals[i]}">${i+1}</div>
+          <div class="info">
+            <div class="nm">${bio.nama||'-'}</div>
+            <div class="kl">${bio.kelas||''}</div>
+          </div>
+          <div class="sc">${parseInt(best[g.key])||0}</div>
+        </div>`;
+      });
+    }
+    html+=`</div>`;
+  });
+  html += `</div>`;
+
+  main.innerHTML = html;
+}
+
+// ── AUTO REFRESH ──
+let countdownVal = 15;
+function tick(){
+  countdownVal--;
+  document.getElementById('countdown').textContent = countdownVal;
+  if(countdownVal<=0){
+    countdownVal=15;
+    fetchAndRender();
+  }
+}
+
+function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
+
+// Start
+fetchAndRender();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
