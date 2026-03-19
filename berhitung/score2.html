@@ -15,7 +15,7 @@
 <meta property="og:url" content="https://pendidikan.gbkp.my.id/leaderboard/">
 <meta property="og:title" content="🏆 Leaderboard Live — Game Matematika GBKP">
 <meta property="og:description" content="Pantau peringkat peserta Game Matematika Diakonia Pendidikan GBKP Runggun Bambu Raya secara langsung. Data diperbarui otomatis setiap 15 detik.">
-<meta property="og:image" content="https://placehold.co/1200x630/0a0a0a/ffa502?text=Leaderboard+Game+Matematika+GBKP">
+<meta property="og:image" content="https://gbkp.my.id/gambar/leaderboard.jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="id_ID">
@@ -48,9 +48,8 @@ body{
 #page-splash{
   position:fixed;inset:0;z-index:9999;
   background:linear-gradient(160deg,#0a1628 0%,#0f2419 55%,#1a1a2e 100%);
-  display:flex;align-items:flex-start;justify-content:center;
-  overflow-y:auto;
-  padding:32px 20px 100px; /* bottom padding beri ruang untuk tombol fixed */
+  display:flex;align-items:center;justify-content:center;
+  padding:32px 20px;
   transition:opacity .6s ease;
 }
 #page-splash.fade-out{opacity:0;pointer-events:none;}
@@ -134,35 +133,25 @@ body{
   margin-bottom:32px;padding:0 8px;
 }
 
-/* Tombol fixed di bawah layar — selalu terlihat */
-#splash-btn-wrap{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  z-index:10000;
-  background:linear-gradient(to top,rgba(10,22,40,1) 60%,rgba(10,22,40,0));
-  padding:18px 20px 28px;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-}
 #splash-btn{
   display:inline-flex;align-items:center;gap:12px;
   padding:16px 44px;
   background:linear-gradient(135deg,#ffa502,#ff6348);
   color:#1a1a1a;border:none;border-radius:50px;
   font-size:16px;font-weight:800;cursor:pointer;
-  letter-spacing:.5px;width:100%;max-width:400px;
-  justify-content:center;
-  box-shadow:0 6px 30px rgba(255,165,2,.55);
+  letter-spacing:.5px;
+  box-shadow:0 6px 30px rgba(255,165,2,.45);
   transition:all .3s;font-family:'Roboto',sans-serif;
 }
 #splash-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 40px rgba(255,165,2,.65);
+  transform:translateY(-3px);
+  box-shadow:0 10px 40px rgba(255,165,2,.6);
 }
 #splash-btn .btn-icon{font-size:18px;}
+
 #splash-note{
-  font-size:11px;
-  color:rgba(255,255,255,.3);letter-spacing:.5px;
-  text-align:center;
+  margin-top:20px;font-size:11px;
+  color:rgba(255,255,255,.25);letter-spacing:.5px;
 }
 
 /* ══════════════════════════════════════
@@ -386,14 +375,11 @@ body{
       dari kerja keras, ketekunan, dan keberanian anak-anak kita.
     </div>
 
-  </div><!-- /splash-inner -->
-
-  <!-- Tombol fixed di bawah — selalu terlihat -->
-  <div id="splash-btn-wrap">
     <button id="splash-btn" onclick="enterLeaderboard()">
       <span class="btn-icon">🏅</span>
       Lihat Papan Peringkat
     </button>
+
     <div id="splash-note">Data diperbarui otomatis setiap 15 detik</div>
   </div>
 </div>
@@ -464,36 +450,36 @@ const QUOTES = [
   { text:'Tuhan adalah gembalaku, takkan kekurangan aku.', ref:'— Mazmur 23:1' },
   { text:'Tuhan adalah terangku dan keselamatanku, kepada siapakah aku harus takut?', ref:'— Mazmur 27:1' },
   { text:'Jadilah kuat dan teguh hatimu, janganlah takut dan jangan gemetar karena mereka, sebab Tuhan, Allahmu, Dialah yang berjalan menyertai engkau.', ref:'— Ulangan 31:6' },
-  { text:'Satu langkah kecil hari ini adalah satu lompatan besar untuk masa depanmu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Otakmu seperti otot — semakin sering dilatih, semakin kuat ia bekerja untukmu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Jangan bandingkan perjalananmu dengan orang lain. Bandingkan dirimu hari ini dengan dirimu kemarin.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Kegagalan bukan akhir — ia adalah guru terbaik yang tidak memungut bayaran.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Setiap juara pernah menjadi pemula. Setiap ahli pernah tidak tahu apa-apa. Mulailah.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Yang membedakan orang yang berhasil bukan bakat — melainkan ketekunan untuk terus mencoba.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Matematika mengajarkan kita bahwa setiap masalah selalu memiliki penyelesaian — demikian pula hidup.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Berlatih hari ini berarti kamu sedang menyiapkan dirimu untuk bersinar esok hari.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Pikiran yang terlatih adalah hadiah terbaik yang bisa kamu berikan untuk masa depanmu sendiri.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Setiap menit yang kamu habiskan untuk belajar tidak akan pernah bisa dicuri dari hidupmu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Disiplin hari ini adalah kebebasan esok hari.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Kamu tidak sedang bersaing dengan siapa pun. Kamu sedang membangun versi terbaik dirimu sendiri.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Kecerdasan bukan takdir — ia adalah hasil dari kebiasaan berpikir dan keberanian berlatih.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Gereja bangga bukan hanya melihat nilaimu, tapi melihat usaha dan kegigihanmu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Ilmu tanpa iman adalah kosong. Iman tanpa ilmu adalah lemah. Raihlah keduanya.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Semakin sering kamu berlatih, semakin natural kemampuanmu. Ulang terus hingga menjadi kebiasaan.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Seseorang yang belajar setiap hari akan mengalahkan seseorang yang berbakat tapi malas — selalu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Raihlah ilmu setinggi-tingginya sebagai bentuk syukurmu atas akal yang Tuhan titipkan kepadamu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Mulailah pekerjaan dengan doa, jalani dengan usaha, dan serahkan hasilnya kepada Tuhan.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Apa pun yang kamu kerjakan hari ini, kerjakan dengan hati — karena Tuhan melihat bukan hasilnya saja, tapi niat dan usahamu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Jadilah terang di mana pun kamu berada — di kelas, di sekolah, di dalam keluarga.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Tuhan tidak memanggil orang yang sempurna — Ia menyempurnakan orang yang Ia panggil.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Tiap pagi Tuhan memberikan kamu hari yang baru — gunakanlah dengan penuh syukur dan semangat.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Tidak ada yang sia-sia dari setiap usaha yang kamu lakukan dengan sungguh-sungguh.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Keberanian bukan berarti tidak takut — keberanian berarti tetap melangkah meski takut.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Setiap soal yang kamu jawab dengan benar adalah batu bata yang kamu susun untuk rumah masa depanmu.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Kamu lebih mampu dari yang kamu kira, dan lebih kuat dari yang kamu bayangkan.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Jangan tunggu sempurna untuk memulai. Mulailah, dan kesempurnaan akan datang dalam prosesnya.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Sesungguhnya sesudah kesulitan itu ada kemudahan — tetaplah teguh dan bersandar pada-Nya.', ref:'— Diakonia Pendidikan GBKP' },
-  { text:'Generasi yang kuat lahir dari anak-anak yang berani belajar, berani gagal, dan berani mencoba lagi.', ref:'— Diakonia Pendidikan GBKP' },
+  { text:'Satu langkah kecil hari ini adalah satu lompatan besar untuk masa depanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Otakmu seperti otot — semakin sering dilatih, semakin kuat ia bekerja untukmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jangan bandingkan perjalananmu dengan orang lain. Bandingkan dirimu hari ini dengan dirimu kemarin.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kegagalan bukan akhir — ia adalah guru terbaik yang tidak memungut bayaran.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap juara pernah menjadi pemula. Setiap ahli pernah tidak tahu apa-apa. Mulailah.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Yang membedakan orang yang berhasil bukan bakat — melainkan ketekunan untuk terus mencoba.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Matematika mengajarkan kita bahwa setiap masalah selalu memiliki penyelesaian — demikian pula hidup.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Berlatih hari ini berarti kamu sedang menyiapkan dirimu untuk bersinar esok hari.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Pikiran yang terlatih adalah hadiah terbaik yang bisa kamu berikan untuk masa depanmu sendiri.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap menit yang kamu habiskan untuk belajar tidak akan pernah bisa dicuri dari hidupmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Disiplin hari ini adalah kebebasan esok hari.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kamu tidak sedang bersaing dengan siapa pun. Kamu sedang membangun versi terbaik dirimu sendiri.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kecerdasan bukan takdir — ia adalah hasil dari kebiasaan berpikir dan keberanian berlatih.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Gereja bangga bukan hanya melihat nilaimu, tapi melihat usaha dan kegigihanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Ilmu tanpa iman adalah kosong. Iman tanpa ilmu adalah lemah. Raihlah keduanya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Semakin sering kamu berlatih, semakin natural kemampuanmu. Ulang terus hingga menjadi kebiasaan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Seseorang yang belajar setiap hari akan mengalahkan seseorang yang berbakat tapi malas — selalu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Raihlah ilmu setinggi-tingginya sebagai bentuk syukurmu atas akal yang Tuhan titipkan kepadamu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Mulailah pekerjaan dengan doa, jalani dengan usaha, dan serahkan hasilnya kepada Tuhan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Apa pun yang kamu kerjakan hari ini, kerjakan dengan hati — karena Tuhan melihat bukan hasilnya saja, tapi niat dan usahamu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jadilah terang di mana pun kamu berada — di kelas, di sekolah, di dalam keluarga.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tuhan tidak memanggil orang yang sempurna — Ia menyempurnakan orang yang Ia panggil.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tiap pagi Tuhan memberikan kamu hari yang baru — gunakanlah dengan penuh syukur dan semangat.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tidak ada yang sia-sia dari setiap usaha yang kamu lakukan dengan sungguh-sungguh.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Keberanian bukan berarti tidak takut — keberanian berarti tetap melangkah meski takut.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap soal yang kamu jawab dengan benar adalah batu bata yang kamu susun untuk rumah masa depanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kamu lebih mampu dari yang kamu kira, dan lebih kuat dari yang kamu bayangkan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jangan tunggu sempurna untuk memulai. Mulailah, dan kesempurnaan akan datang dalam prosesnya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Sesungguhnya sesudah kesulitan itu ada kemudahan — tetaplah teguh dan bersandar pada-Nya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Generasi yang kuat lahir dari anak-anak yang berani belajar, berani gagal, dan berani mencoba lagi.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
 ];
 
 // ── SPLASH LOGIC ──────────────────────────────────────
