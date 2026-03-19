@@ -3,7 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Leaderboard — Game Matematika</title>
+<title>Leaderboard Live — Game Matematika GBKP Runggun Bambu Raya</title>
+<meta name="description" content="Pantau peringkat dan skor terbaik peserta Game Matematika Diakonia Pendidikan GBKP Runggun Bambu Raya secara langsung dan real-time. Siapa juaranya?">
+<meta name="keywords" content="leaderboard matematika, GBKP, Diakonia Pendidikan, skor matematika, klasemen GBKP, game matematika GBKP Runggun Bambu Raya">
+<meta name="author" content="Diakonia Pendidikan GBKP Runggun Bambu Raya">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pendidikan.gbkp.my.id/leaderboard/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pendidikan.gbkp.my.id/leaderboard/">
+<meta property="og:title" content="🏆 Leaderboard Live — Game Matematika GBKP">
+<meta property="og:description" content="Pantau peringkat peserta Game Matematika Diakonia Pendidikan GBKP Runggun Bambu Raya secara langsung. Data diperbarui otomatis setiap 15 detik.">
+<meta property="og:image" content="https://gbkp.my.id/gambar/leaderboard.jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="id_ID">
+<meta property="og:site_name" content="Diakonia Pendidikan GBKP Runggun Bambu Raya">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🏆 Leaderboard Live — Game Matematika GBKP">
+<meta name="twitter:description" content="Pantau peringkat peserta Game Matematika Diakonia Pendidikan GBKP secara langsung dan real-time.">
+<meta name="twitter:image" content="https://placehold.co/1200x630/0a0a0a/ffa502?text=Leaderboard+Game+Matematika+GBKP">
+
+<!-- Schema.org -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Leaderboard Game Matematika GBKP","url":"https://pendidikan.gbkp.my.id/leaderboard/","description":"Papan peringkat live peserta Game Matematika Diakonia Pendidikan GBKP Runggun Bambu Raya","isPartOf":{"@type":"WebSite","name":"Diakonia Pendidikan GBKP Runggun Bambu Raya","url":"https://pendidikan.gbkp.my.id"}}</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@400;700&display=swap');
 
@@ -13,6 +41,124 @@ body{
   font-family:'Roboto',sans-serif;
   min-height:100vh;overflow-x:hidden;
 }
+
+/* ══════════════════════════════════════
+   SPLASH INTRO
+══════════════════════════════════════ */
+#page-splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#0a1628 0%,#0f2419 55%,#1a1a2e 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:32px 20px;
+  transition:opacity .6s ease;
+}
+#page-splash.fade-out{opacity:0;pointer-events:none;}
+#page-splash.hidden{display:none;}
+
+#splash-inner{
+  max-width:540px;width:100%;text-align:center;
+  animation:splashIn 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes splashIn{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+#splash-cross{
+  font-size:36px;color:rgba(255,165,2,.55);
+  letter-spacing:8px;margin-bottom:10px;
+  text-shadow:0 0 40px rgba(255,165,2,.25);
+}
+#splash-org{
+  font-size:11px;color:rgba(255,255,255,.3);
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;
+}
+
+/* trophy glow */
+#splash-trophy{
+  font-size:72px;margin-bottom:20px;
+  filter:drop-shadow(0 0 24px rgba(255,165,2,.6));
+  animation:trophyPulse 2.5s ease-in-out infinite;
+}
+@keyframes trophyPulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+}
+
+#splash-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(18px,4vw,28px);
+  color:#ffa502;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(255,165,2,.4);
+  margin-bottom:8px;
+}
+#splash-subtitle{
+  font-size:13px;color:rgba(255,255,255,.4);
+  margin-bottom:36px;letter-spacing:.5px;
+}
+
+/* quote box */
+#splash-quote-box{
+  background:rgba(255,165,2,.06);
+  border:1px solid rgba(255,165,2,.2);
+  border-radius:16px;
+  padding:24px 28px;
+  margin-bottom:28px;
+  position:relative;
+}
+#splash-quote-open{
+  font-family:Georgia,serif;font-size:56px;
+  color:rgba(255,165,2,.2);line-height:.4;
+  display:block;text-align:left;margin-bottom:10px;
+}
+#splash-quote-text{
+  font-family:Georgia,serif;
+  font-size:clamp(15px,2.5vw,18px);
+  color:#f0f0f0;line-height:1.8;font-style:italic;
+}
+#splash-quote-close{
+  font-family:Georgia,serif;font-size:56px;
+  color:rgba(255,165,2,.2);line-height:.4;
+  display:block;text-align:right;margin-top:10px;
+}
+#splash-quote-ref{
+  color:#ffa502;font-size:12px;font-weight:700;
+  letter-spacing:1px;margin-top:14px;
+  display:block;
+}
+
+#splash-tagline{
+  color:rgba(255,255,255,.4);font-size:13px;
+  line-height:1.7;font-style:italic;
+  margin-bottom:32px;padding:0 8px;
+}
+
+#splash-btn{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:16px 44px;
+  background:linear-gradient(135deg,#ffa502,#ff6348);
+  color:#1a1a1a;border:none;border-radius:50px;
+  font-size:16px;font-weight:800;cursor:pointer;
+  letter-spacing:.5px;
+  box-shadow:0 6px 30px rgba(255,165,2,.45);
+  transition:all .3s;font-family:'Roboto',sans-serif;
+}
+#splash-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 40px rgba(255,165,2,.6);
+}
+#splash-btn .btn-icon{font-size:18px;}
+
+#splash-note{
+  margin-top:20px;font-size:11px;
+  color:rgba(255,255,255,.25);letter-spacing:.5px;
+}
+
+/* ══════════════════════════════════════
+   LEADERBOARD CONTENT (hidden until splash done)
+══════════════════════════════════════ */
+#lb-wrap{display:none;}
+#lb-wrap.visible{display:block;}
 
 /* ── HEADER ── */
 .header{
@@ -27,9 +173,7 @@ body{
   color:#ffa502;letter-spacing:3px;
   text-shadow:0 0 20px rgba(255,165,2,.5);
 }
-.header .subtitle{
-  font-size:14px;color:#aaa;margin-top:5px;
-}
+.header .subtitle{font-size:14px;color:#aaa;margin-top:5px;}
 .live-badge{
   display:inline-flex;align-items:center;gap:6px;
   background:#dc3545;color:#fff;
@@ -42,7 +186,7 @@ body{
 }
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 
-/* ── REFRESH INFO ── */
+/* ── REFRESH BAR ── */
 .refresh-bar{
   background:#111;padding:8px 20px;
   display:flex;justify-content:space-between;align-items:center;
@@ -57,6 +201,7 @@ body{
 .podium-section{
   display:flex;justify-content:center;align-items:flex-end;
   gap:15px;margin-bottom:40px;padding:20px 0;
+  flex-wrap:wrap;
 }
 .podium-card{
   text-align:center;border-radius:12px;padding:15px 10px;
@@ -64,7 +209,6 @@ body{
   position:relative;
 }
 .podium-card:hover{transform:translateY(-5px);}
-
 .podium-1{
   background:linear-gradient(135deg,#b8860b,#ffd700,#b8860b);
   color:#1a1a1a;order:2;
@@ -83,7 +227,6 @@ body{
   min-width:150px;padding-bottom:10px;
   box-shadow:0 0 20px rgba(205,127,50,.3);
 }
-
 .podium-rank{
   font-family:'Orbitron',sans-serif;
   font-size:36px;font-weight:900;
@@ -92,7 +235,6 @@ body{
 .podium-1 .podium-rank::before{content:'🥇 ';}
 .podium-2 .podium-rank::before{content:'🥈 ';}
 .podium-3 .podium-rank::before{content:'🥉 ';}
-
 .podium-nama{
   font-size:clamp(13px,2vw,16px);font-weight:bold;
   display:block;margin-bottom:4px;line-height:1.3;
@@ -100,8 +242,7 @@ body{
 .podium-kelas{font-size:12px;opacity:.8;display:block;margin-bottom:8px;}
 .podium-skor{
   font-family:'Orbitron',sans-serif;
-  font-size:28px;font-weight:900;
-  display:block;
+  font-size:28px;font-weight:900;display:block;
 }
 .podium-skor-label{font-size:11px;opacity:.7;}
 .podium-detail{
@@ -120,24 +261,16 @@ body{
   margin-bottom:15px;letter-spacing:2px;
 }
 .lb-table{width:100%;border-collapse:collapse;}
-.lb-table thead tr{
-  background:linear-gradient(90deg,#1a1a2e,#0f3460);
-}
+.lb-table thead tr{background:linear-gradient(90deg,#1a1a2e,#0f3460);}
 .lb-table th{
   padding:12px 10px;text-align:left;
   font-size:13px;color:#ffa502;
   border-bottom:2px solid #ffa502;
 }
 .lb-table th.center{text-align:center;}
-.lb-table tbody tr{
-  border-bottom:1px solid #1a1a1a;
-  transition:background .2s;
-}
+.lb-table tbody tr{border-bottom:1px solid #1a1a1a;transition:background .2s;}
 .lb-table tbody tr:hover{background:#1a1a2e;}
-.lb-table td{
-  padding:12px 10px;font-size:14px;
-  background:transparent;border:none;
-}
+.lb-table td{padding:12px 10px;font-size:14px;background:transparent;border:none;}
 .lb-table td.center{text-align:center;}
 .rank-badge{
   display:inline-flex;align-items:center;justify-content:center;
@@ -157,16 +290,18 @@ body{
 .skor-mini b{color:#fff;}
 .nama-cell{font-weight:bold;font-size:15px;}
 .kelas-cell{font-size:12px;color:#888;margin-top:2px;}
-.belum-badge{
-  color:#555;font-size:12px;font-style:italic;
-}
+.belum-badge{color:#555;font-size:12px;font-style:italic;}
 
 /* ── GAME BREAKDOWN ── */
 .breakdown-section{
   margin-top:40px;
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
   gap:20px;
 }
+@media(max-width:900px){.breakdown-section{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.breakdown-section{grid-template-columns:1fr;}}
+
 .breakdown-card{
   background:#111;border-radius:12px;padding:15px;
   border-top:3px solid var(--color);
@@ -177,7 +312,8 @@ body{
 }
 .mini-rank{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
 .mini-rank .no{
-  font-weight:bold;color:#555;width:20px;text-align:center;font-size:13px;
+  font-weight:bold;color:#555;width:20px;
+  text-align:center;font-size:13px;
 }
 .mini-rank .no.gold{color:#ffd700;}
 .mini-rank .no.silver{color:#c0c0c0;}
@@ -197,49 +333,85 @@ body{
   border-top:1px solid #1a1a1a;
 }
 
-/* ── LOADING ── */
-.loading{
-  text-align:center;padding:60px;color:#ffa502;font-size:18px;
-}
+/* ── LOADING / EMPTY ── */
+.loading{text-align:center;padding:60px;color:#ffa502;font-size:18px;}
 .loading .spin{
   display:inline-block;width:40px;height:40px;
   border:4px solid #222;border-top-color:#ffa502;
   border-radius:50%;animation:spin .8s linear infinite;margin-bottom:15px;
 }
 @keyframes spin{to{transform:rotate(360deg);}}
-
-/* ── ANIMASI MASUK ── */
 @keyframes fadeInUp{
   from{opacity:0;transform:translateY(20px);}
   to{opacity:1;transform:translateY(0);}
 }
 .animate{animation:fadeInUp .4s ease both;}
-
 .empty{text-align:center;padding:40px;color:#444;font-size:16px;}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🏆 LEADERBOARD MATEMATIKA</h1>
-  <div class="subtitle">Diakoni Pendidikan GBKP Bambu Raya</div>
-  <div class="live-badge"><div class="live-dot"></div> LIVE</div>
-</div>
+<!-- ══════════════════════════════════════
+     SPLASH INTRO
+══════════════════════════════════════ -->
+<div id="page-splash">
+  <div id="splash-inner">
+    <div id="splash-cross">✟</div>
+    <div id="splash-org">Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
 
-<div class="refresh-bar">
-  <span>Auto-refresh setiap <b>15 detik</b></span>
-  <span>Update berikutnya: <span class="countdown" id="countdown">15</span> detik</span>
-</div>
+    <div id="splash-trophy">🏆</div>
+    <div id="splash-title">LEADERBOARD LIVE</div>
+    <div id="splash-subtitle">Game Matematika — Papan Peringkat Peserta</div>
 
-<div class="main" id="main">
-  <div class="loading">
-    <div class="spin"></div><br>Memuat data...
+    <div id="splash-quote-box">
+      <span id="splash-quote-open">&ldquo;</span>
+      <div id="splash-quote-text"></div>
+      <span id="splash-quote-close">&rdquo;</span>
+      <span id="splash-quote-ref"></span>
+    </div>
+
+    <div id="splash-tagline">
+      Setiap angka yang tertera di sini adalah bukti nyata<br>
+      dari kerja keras, ketekunan, dan keberanian anak-anak kita.
+    </div>
+
+    <button id="splash-btn" onclick="enterLeaderboard()">
+      <span class="btn-icon">🏅</span>
+      Lihat Papan Peringkat
+    </button>
+
+    <div id="splash-note">Data diperbarui otomatis setiap 15 detik</div>
   </div>
 </div>
 
-<div class="footer">
-  Data diperbarui secara otomatis · Ranking berdasarkan total skor terbaik 6 game
-</div>
+<!-- ══════════════════════════════════════
+     LEADERBOARD CONTENT
+══════════════════════════════════════ -->
+<div id="lb-wrap">
+
+  <div class="header">
+    <h1>🏆 LEADERBOARD MATEMATIKA</h1>
+    <div class="subtitle">Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
+    <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+  </div>
+
+  <div class="refresh-bar">
+    <span>Auto-refresh setiap <b>15 detik</b></span>
+    <span>Update berikutnya: <span class="countdown" id="countdown">15</span> detik</span>
+  </div>
+
+  <div class="main" id="main">
+    <div class="loading">
+      <div class="spin"></div><br>Memuat data...
+    </div>
+  </div>
+
+  <div class="footer">
+    Data diperbarui secara otomatis &middot; Ranking berdasarkan total skor terbaik 6 game<br>
+    &copy; 2025 Diakonia Pendidikan GBKP Runggun Bambu Raya
+  </div>
+
+</div><!-- /lb-wrap -->
 
 <script>
 const API     = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
@@ -248,44 +420,113 @@ const SECRET  = 'admin';
 const H = () => ({'Content-Type':'application/json','X-Custom-Auth':SECRET});
 
 const GAMES = [
-  {key:'perkalian',  label:'Kali',   icon:'✖', color:'#ff4757'},
-  {key:'pembagian',  label:'Bagi',   icon:'➗', color:'#ffa502'},
-  {key:'penjumlahan',label:'Tambah', icon:'➕', color:'#3742fa'},
-  {key:'pengurangan',label:'Kurang', icon:'➖', color:'#2ed573'},
-  {key:'akar',       label:'Akar',   icon:'√',  color:'#ff6348'},
-  {key:'kuadrat',    label:'Pangkat',icon:'x²', color:'#1e90ff'},
+  {key:'perkalian',  label:'Kali',    icon:'✖', color:'#ff4757'},
+  {key:'pembagian',  label:'Bagi',    icon:'➗', color:'#ffa502'},
+  {key:'penjumlahan',label:'Tambah',  icon:'➕', color:'#3742fa'},
+  {key:'pengurangan',label:'Kurang',  icon:'➖', color:'#2ed573'},
+  {key:'akar',       label:'Akar',    icon:'√',  color:'#ff6348'},
+  {key:'kuadrat',    label:'Pangkat', icon:'x²', color:'#1e90ff'},
 ];
 
-// ── HITUNG TOTAL SKOR ──
+// ── 50 QUOTES ──────────────────────────────────────────
+const QUOTES = [
+  { text:'Karena bagi Allah tidak ada yang mustahil.', ref:'— Lukas 1:37' },
+  { text:'Aku tahu rancangan-rancangan apa yang ada pada-Ku mengenai kamu, rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.', ref:'— Yeremia 29:11' },
+  { text:'Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.', ref:'— Filipi 4:13' },
+  { text:'Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu; Aku akan meneguhkan, bahkan akan menolong engkau.', ref:'— Yesaya 41:10' },
+  { text:'Orang-orang yang menanti-nantikan Tuhan mendapat kekuatan baru: mereka seumpama rajawali yang naik terbang dengan kekuatan sayapnya.', ref:'— Yesaya 40:31' },
+  { text:'Permulaan hikmat adalah takut akan Tuhan, dan mengenal Yang Mahakudus adalah pengertian.', ref:'— Amsal 9:10' },
+  { text:'Berbahagialah orang yang mendapat hikmat, orang yang memperoleh kepandaian.', ref:'— Amsal 3:13' },
+  { text:'Sebab hikmat akan masuk ke dalam hatimu dan pengetahuan akan menyenangkan jiwamu.', ref:'— Amsal 2:10' },
+  { text:'Apapun juga yang kamu perbuat, perbuatlah dengan segenap hatimu seperti untuk Tuhan dan bukan untuk manusia.', ref:'— Kolose 3:23' },
+  { text:'Sebab Allah memberikan kepada kita bukan roh ketakutan, melainkan roh yang membangkitkan kekuatan, kasih dan ketertiban.', ref:'— 2 Timotius 1:7' },
+  { text:'Jangan biarkan seorang pun menganggap engkau rendah karena engkau muda. Jadilah teladan bagi orang-orang percaya.', ref:'— 1 Timotius 4:12' },
+  { text:'Percayalah kepada Tuhan dengan segenap hatimu dan janganlah bersandar kepada pengertianmu sendiri.', ref:'— Amsal 3:5' },
+  { text:'Karena itu, saudara-saudaraku yang kekasih, berdirilah teguh, jangan goyah, dan giatlah selalu dalam pekerjaan Tuhan!', ref:'— 1 Korintus 15:58' },
+  { text:'Dan inilah yang kunasihatkan kepadamu: hendaklah penuh semangat, jangan malas, layanilah Tuhan.', ref:'— Roma 12:11' },
+  { text:'Didiklah orang muda menurut jalan yang patut baginya, maka pada masa tuanya pun ia tidak akan menyimpang dari pada jalan itu.', ref:'— Amsal 22:6' },
+  { text:'Mintalah, maka akan diberikan kepadamu; carilah, maka kamu akan mendapat; ketoklah, maka pintu akan dibukakan bagimu.', ref:'— Matius 7:7' },
+  { text:'Serahkanlah segala kekuatiranmu kepada-Nya, sebab Ia yang memelihara kamu.', ref:'— 1 Petrus 5:7' },
+  { text:'Tuhan adalah gembalaku, takkan kekurangan aku.', ref:'— Mazmur 23:1' },
+  { text:'Tuhan adalah terangku dan keselamatanku, kepada siapakah aku harus takut?', ref:'— Mazmur 27:1' },
+  { text:'Jadilah kuat dan teguh hatimu, janganlah takut dan jangan gemetar karena mereka, sebab Tuhan, Allahmu, Dialah yang berjalan menyertai engkau.', ref:'— Ulangan 31:6' },
+  { text:'Satu langkah kecil hari ini adalah satu lompatan besar untuk masa depanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Otakmu seperti otot — semakin sering dilatih, semakin kuat ia bekerja untukmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jangan bandingkan perjalananmu dengan orang lain. Bandingkan dirimu hari ini dengan dirimu kemarin.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kegagalan bukan akhir — ia adalah guru terbaik yang tidak memungut bayaran.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap juara pernah menjadi pemula. Setiap ahli pernah tidak tahu apa-apa. Mulailah.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Yang membedakan orang yang berhasil bukan bakat — melainkan ketekunan untuk terus mencoba.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Matematika mengajarkan kita bahwa setiap masalah selalu memiliki penyelesaian — demikian pula hidup.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Berlatih hari ini berarti kamu sedang menyiapkan dirimu untuk bersinar esok hari.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Pikiran yang terlatih adalah hadiah terbaik yang bisa kamu berikan untuk masa depanmu sendiri.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap menit yang kamu habiskan untuk belajar tidak akan pernah bisa dicuri dari hidupmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Disiplin hari ini adalah kebebasan esok hari.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kamu tidak sedang bersaing dengan siapa pun. Kamu sedang membangun versi terbaik dirimu sendiri.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kecerdasan bukan takdir — ia adalah hasil dari kebiasaan berpikir dan keberanian berlatih.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Gereja bangga bukan hanya melihat nilaimu, tapi melihat usaha dan kegigihanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Ilmu tanpa iman adalah kosong. Iman tanpa ilmu adalah lemah. Raihlah keduanya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Semakin sering kamu berlatih, semakin natural kemampuanmu. Ulang terus hingga menjadi kebiasaan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Seseorang yang belajar setiap hari akan mengalahkan seseorang yang berbakat tapi malas — selalu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Raihlah ilmu setinggi-tingginya sebagai bentuk syukurmu atas akal yang Tuhan titipkan kepadamu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Mulailah pekerjaan dengan doa, jalani dengan usaha, dan serahkan hasilnya kepada Tuhan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Apa pun yang kamu kerjakan hari ini, kerjakan dengan hati — karena Tuhan melihat bukan hasilnya saja, tapi niat dan usahamu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jadilah terang di mana pun kamu berada — di kelas, di sekolah, di dalam keluarga.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tuhan tidak memanggil orang yang sempurna — Ia menyempurnakan orang yang Ia panggil.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tiap pagi Tuhan memberikan kamu hari yang baru — gunakanlah dengan penuh syukur dan semangat.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Tidak ada yang sia-sia dari setiap usaha yang kamu lakukan dengan sungguh-sungguh.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Keberanian bukan berarti tidak takut — keberanian berarti tetap melangkah meski takut.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Setiap soal yang kamu jawab dengan benar adalah batu bata yang kamu susun untuk rumah masa depanmu.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Kamu lebih mampu dari yang kamu kira, dan lebih kuat dari yang kamu bayangkan.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Jangan tunggu sempurna untuk memulai. Mulailah, dan kesempurnaan akan datang dalam prosesnya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Sesungguhnya sesudah kesulitan itu ada kemudahan — tetaplah teguh dan bersandar pada-Nya.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+  { text:'Generasi yang kuat lahir dari anak-anak yang berani belajar, berani gagal, dan berani mencoba lagi.', ref:'— Diakonia Pendidikan GBKP Bambu Raya' },
+];
+
+// ── SPLASH LOGIC ──────────────────────────────────────
+function initSplash(){
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('splash-quote-text').textContent = q.text;
+  document.getElementById('splash-quote-ref').textContent  = q.ref;
+}
+
+function enterLeaderboard(){
+  const splash = document.getElementById('page-splash');
+  splash.classList.add('fade-out');
+  setTimeout(()=>{
+    splash.classList.add('hidden');
+    document.getElementById('lb-wrap').classList.add('visible');
+    fetchAndRender();
+    startCountdown();
+  }, 600);
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
+
 function totalSkor(row){
   const b = parseJSON(row.x_03, {});
   return GAMES.reduce((sum,g)=> sum + (parseInt(b[g.key])||0), 0);
 }
-
-// ── CEK SUDAH KERJAKAN SEMUA GAME ──
 function sudahSemua(row){
   const b = parseJSON(row.x_03, {});
   return GAMES.every(g=> parseInt(b[g.key])>0);
 }
 
-// ── AMBIL DATA & RENDER ──
+// ── FETCH & RENDER ─────────────────────────────────────
 async function fetchAndRender(){
   try{
     const r = await fetch(`${API}?table=${T_NILAI}`,{headers:H()});
     const d = await r.json();
     if(!d.success) return;
 
-    // Filter: harus sudah isi biodata
     const valid = d.data.filter(row=>{
       const bio=parseJSON(row.x_02,{});
       return bio.nama;
     });
 
-    // Sort berdasarkan total skor DESC, lalu waktu terlama ASC (tiebreaker)
     const ranked = [...valid].sort((a,b)=>{
       const diff = totalSkor(b)-totalSkor(a);
       if(diff!==0) return diff;
-      // tiebreaker: selesai lebih awal = lebih baik
       const ma=parseJSON(a.x_05,{waktu:{}}), mb=parseJSON(b.x_05,{waktu:{}});
       const lastA=Object.values(ma.waktu||{}).sort().pop()||'';
       const lastB=Object.values(mb.waktu||{}).sort().pop()||'';
@@ -293,9 +534,7 @@ async function fetchAndRender(){
     });
 
     render(ranked.slice(0,10), valid);
-  } catch(err){
-    console.error(err);
-  }
+  } catch(err){ console.error(err); }
 }
 
 function render(top10, allValid){
@@ -334,7 +573,7 @@ function render(top10, allValid){
     html += `</div>`;
   }
 
-  // ── TABEL RANK 4-10 ──
+  // ── TABEL RANK 4–10 ──
   const rest = top10.slice(3);
   if(rest.length>0){
     html += `<div class="table-section">
@@ -345,8 +584,7 @@ function render(top10, allValid){
           <th>Peserta</th>
           <th class="center">Total</th>
           <th>Skor per Game</th>
-        </tr></thead>
-        <tbody>`;
+        </tr></thead><tbody>`;
     rest.forEach((row,i)=>{
       const rank=i+4;
       const bio=parseJSON(row.x_02,{});
@@ -370,7 +608,7 @@ function render(top10, allValid){
     html += `</tbody></table></div>`;
   }
 
-  // ── BREAKDOWN PER GAME ──
+  // ── BREAKDOWN PER GAME (3 kolom) ──
   html += `<div class="breakdown-section">`;
   GAMES.forEach(g=>{
     const sorted=[...allValid]
@@ -406,22 +644,24 @@ function render(top10, allValid){
   main.innerHTML = html;
 }
 
-// ── AUTO REFRESH ──
+// ── AUTO REFRESH COUNTDOWN ─────────────────────────────
 let countdownVal = 15;
-function tick(){
-  countdownVal--;
-  document.getElementById('countdown').textContent = countdownVal;
-  if(countdownVal<=0){
-    countdownVal=15;
-    fetchAndRender();
-  }
+let _countdownInterval = null;
+
+function startCountdown(){
+  _countdownInterval = setInterval(()=>{
+    countdownVal--;
+    const el = document.getElementById('countdown');
+    if(el) el.textContent = countdownVal;
+    if(countdownVal <= 0){
+      countdownVal = 15;
+      fetchAndRender();
+    }
+  }, 1000);
 }
 
-function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
-
-// Start
-fetchAndRender();
-setInterval(tick, 1000);
+// ── INIT ───────────────────────────────────────────────
+initSplash();
 </script>
 </body>
 </html>

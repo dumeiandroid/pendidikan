@@ -3,130 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Matematika — Diakonia Pendidikan GBKP Runggun Bambu Raya</title>
-<meta name="description" content="Game matematika interaktif untuk anak-anak jemaat GBKP. Latih kecepatan berhitung — perkalian, pembagian, penjumlahan, pengurangan, akar, dan kuadrat. Program Diakonia Pendidikan GBKP Runggun Bambu Raya.">
-<meta name="keywords" content="game matematika, GBKP, Diakonia Pendidikan, berhitung anak, matematika interaktif, GBKP Runggun Bambu Raya, latihan berhitung, kuis matematika">
-<meta name="author" content="Diakonia Pendidikan GBKP Runggun Bambu Raya">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://pendidikan.gbkp.my.id/matematika/">
-
-<!-- Open Graph / Facebook -->
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://pendidikan.gbkp.my.id/matematika/">
-<meta property="og:title" content="Game Matematika — Diakonia Pendidikan GBKP Runggun Bambu Raya">
-<meta property="og:description" content="Latih kecepatan berhitung dengan cara yang menyenangkan! 6 operasi matematika, leaderboard real-time, dan laporan perkembangan pribadi.">
-<meta property="og:image" content="https://gbkp.my.id/gambar/game-matematika.jpeg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="id_ID">
-<meta property="og:site_name" content="Diakonia Pendidikan GBKP Runggun Bambu Raya">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Game Matematika — Diakonia Pendidikan GBKP">
-<meta name="twitter:description" content="Latih kecepatan berhitung dengan cara yang menyenangkan! Program Diakonia Pendidikan GBKP Runggun Bambu Raya.">
-<meta name="twitter:image" content="https://placehold.co/1200x630/1a1a2e/ffa502?text=Game+Matematika+GBKP">
-
-<!-- Schema.org -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Game Matematika GBKP","url":"https://pendidikan.gbkp.my.id/matematika/","description":"Game matematika interaktif untuk anak-anak jemaat GBKP Runggun Bambu Raya","applicationCategory":"EducationalApplication","operatingSystem":"Web","inLanguage":"id","author":{"@type":"Organization","name":"Diakonia Pendidikan GBKP Runggun Bambu Raya","url":"https://pendidikan.gbkp.my.id"}}</script>
+<title>Game Matematika</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',Arial,sans-serif;}
-
-/* ── INTRO ── */
-#page-intro{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
-#intro-wrap{width:100%;max-width:520px;}
-#intro-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,165,2,.3);border-radius:20px;padding:36px 32px;box-shadow:0 8px 40px rgba(0,0,0,.5);backdrop-filter:blur(10px);}
-#intro-logo{font-size:52px;text-align:center;margin-bottom:10px;}
-#intro-title{color:#ffa502;text-align:center;font-size:26px;font-weight:800;margin-bottom:4px;letter-spacing:.5px;}
-#intro-sub{color:rgba(255,255,255,.45);text-align:center;font-size:13px;margin-bottom:28px;}
-.intro-section{margin-bottom:22px;padding:18px 20px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.07);}
-.intro-section-title{color:#ffa502;font-size:14px;font-weight:700;margin-bottom:10px;letter-spacing:.3px;}
-.intro-section-body{color:rgba(255,255,255,.65);font-size:13px;line-height:1.7;}
-#intro-games{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
-.intro-game-chip{background:rgba(255,165,2,.15);border:1px solid rgba(255,165,2,.3);color:#ffa502;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;}
-.intro-report-list{display:flex;flex-direction:column;gap:12px;}
-.intro-report-item{display:flex;gap:12px;align-items:flex-start;}
-.intro-report-icon{font-size:22px;flex-shrink:0;margin-top:2px;}
-.intro-report-label{color:#fff;font-size:13px;font-weight:700;margin-bottom:2px;}
-.intro-report-desc{color:rgba(255,255,255,.55);font-size:12px;line-height:1.5;}
-#intro-user-greeting{text-align:center;color:rgba(255,255,255,.65);font-size:14px;margin-bottom:18px;padding:12px 16px;background:rgba(255,165,2,.08);border-radius:10px;border:1px solid rgba(255,165,2,.2);}
-#intro-user-greeting b{color:#ffa502;}
-#intro-start-btn{width:100%;padding:15px;background:linear-gradient(135deg,#ffa502,#ff6348);color:#1a1a1a;border:none;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.5px;transition:all .3s;box-shadow:0 4px 20px rgba(255,165,2,.4);}
-#intro-start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,165,2,.5);}
-.intro-section-warm{background:rgba(255,165,2,.07);border:1px solid rgba(255,165,2,.2)!important;}
-.intro-warm-text{color:rgba(255,255,255,.82);font-size:14px;line-height:1.85;}
-.intro-semangat{text-align:center;margin:4px 0 20px;padding:20px 20px;border-radius:14px;background:linear-gradient(135deg,rgba(255,165,2,.12),rgba(255,99,72,.08));border:1px solid rgba(255,165,2,.25);}
-.intro-semangat-quote{color:#ffa502;font-size:15px;font-weight:700;font-style:italic;line-height:1.7;margin-bottom:10px;}
-.intro-semangat-sub{color:rgba(255,255,255,.4);font-size:12px;}
-
-/* ── SPLASH ── */
-#page-splash{
-  position:fixed;inset:0;z-index:9999;
-  background:linear-gradient(160deg,#0a1628 0%,#0f2419 60%,#1a1a2e 100%);
-  display:flex;align-items:center;justify-content:center;
-  padding:32px 20px;
-}
-#page-splash.hidden{display:none!important;}
-#splash-inner{
-  max-width:500px;width:100%;text-align:center;
-  animation:splashIn .9s cubic-bezier(.22,1,.36,1) both;
-}
-@keyframes splashIn{
-  from{opacity:0;transform:translateY(28px);}
-  to{opacity:1;transform:translateY(0);}
-}
-#splash-logo{
-  font-size:38px;color:rgba(255,165,2,.6);
-  letter-spacing:6px;margin-bottom:10px;
-  text-shadow:0 0 40px rgba(255,165,2,.25);
-}
-#splash-org{
-  font-size:12px;color:rgba(255,255,255,.3);
-  letter-spacing:1.5px;text-transform:uppercase;
-  margin-bottom:40px;
-}
-#splash-quote-wrap{position:relative;margin-bottom:18px;padding:0 12px;}
-#splash-quote-open,#splash-quote-close{
-  font-family:Georgia,serif;font-size:64px;
-  color:rgba(255,165,2,.2);line-height:.5;display:block;
-}
-#splash-quote-open{text-align:left;margin-bottom:8px;}
-#splash-quote-close{text-align:right;margin-top:8px;}
-#splash-quote-text{
-  font-family:Georgia,serif;
-  font-size:clamp(16px,3.5vw,21px);
-  color:#f5f5f5;line-height:1.8;font-style:italic;
-  text-shadow:0 2px 16px rgba(0,0,0,.5);
-  padding:0 8px;
-}
-#splash-quote-ref{
-  color:#ffa502;font-size:13px;font-weight:700;
-  letter-spacing:1px;margin-bottom:32px;
-}
-#splash-divider{
-  width:60px;height:2px;
-  background:linear-gradient(90deg,transparent,rgba(255,165,2,.5),transparent);
-  margin:0 auto 24px;
-}
-#splash-tagline{
-  color:rgba(255,255,255,.45);font-size:13px;
-  line-height:1.7;letter-spacing:.3px;margin-bottom:36px;
-  font-style:italic;
-}
-#splash-btn{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:15px 36px;
-  background:linear-gradient(135deg,#ffa502,#ff6348);
-  color:#1a1a1a;border:none;border-radius:50px;
-  font-size:16px;font-weight:800;cursor:pointer;
-  letter-spacing:.4px;
-  box-shadow:0 6px 28px rgba(255,165,2,.4);
-  transition:all .3s;
-}
-#splash-btn:hover{transform:translateY(-3px);box-shadow:0 10px 36px rgba(255,165,2,.55);}
-#splash-btn span{font-size:13px;}
 
 /* ── LOGIN ── */
 #page-login{
@@ -287,15 +168,6 @@ tr:hover td{background:rgba(255,165,2,.05);}
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:12px;padding:4px 0 16px;
-}
-.rank-grid-3col{
-  grid-template-columns:repeat(3,1fr);
-}
-@media(max-width:900px){
-  .rank-grid-3col{grid-template-columns:repeat(2,1fr);}
-}
-@media(max-width:580px){
-  .rank-grid-3col{grid-template-columns:1fr;}
 }
 .rank-card{
   background:linear-gradient(145deg,#161616,#1c1c1c);
@@ -569,144 +441,42 @@ tr:hover td{background:rgba(255,165,2,.05);}
 </head>
 <body>
 
-<!-- ═══ SPLASH QUOTE ═══ -->
-<div id="page-splash" class="hidden">
-  <div id="splash-inner">
-    <div id="splash-logo">✟</div>
-    <div id="splash-org">Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
-    <div id="splash-quote-wrap">
-      <div id="splash-quote-open">&ldquo;</div>
-      <div id="splash-quote-text"></div>
-      <div id="splash-quote-close">&rdquo;</div>
+<!-- ═══ LOGIN ═══ -->
+<div id="page-login">
+  <div class="login-box">
+    <h1>Token</h1>
+    <p class="error-msg hidden" id="login-error"></p>
+    <div class="form-group">
+      <label for="token-input">Kode Token:</label>
+      <input type="text" id="token-input" autofocus placeholder="Masukkan token...">
     </div>
-    <div id="splash-quote-ref"></div>
-    <div id="splash-divider"></div>
-    <div id="splash-tagline">Bersiaplah. Latih pikiranmu. Muliakan Tuhan dengan kemampuanmu.</div>
-    <button id="splash-btn" onclick="proceedFromSplash()">
-      <span>&#9654;</span> Saya Siap — Mulai Sekarang
-    </button>
+    <button class="btn-primary" id="login-btn" onclick="doLogin()">Login</button>
   </div>
 </div>
 
-<!-- ═══ REGISTRASI (menggantikan LOGIN) ═══ -->
-<div id="page-login">
-  <div class="login-box">
-    <h1>Selamat Datang!</h1>
-    <p style="color:rgba(255,255,255,.55);text-align:center;font-size:14px;margin-bottom:20px;">Lengkapi data diri sebelum mulai bermain</p>
-    <p class="error-msg hidden" id="login-error"></p>
+<!-- ═══ BIODATA ═══ -->
+<div id="page-biodata" class="hidden">
+  <div class="biodata-box">
+    <h2>Selamat Datang!</h2>
+    <p class="subtitle">Lengkapi data diri sebelum mulai bermain</p>
+    <p class="error-msg hidden" id="bio-error"></p>
     <div class="form-group">
-      <label>Nama Lengkap <span style="color:#ffa502">*</span></label>
-      <input type="text" id="reg-nama" placeholder="Nama lengkap Anda" autofocus>
+      <label>Nama Lengkap <span style="color:red">*</span></label>
+      <input type="text" id="bio-nama" placeholder="Nama lengkap Anda">
     </div>
     <div class="form-group">
-      <label>Kelas <span style="color:#ffa502">*</span></label>
-      <input type="text" id="reg-kelas" placeholder="Contoh: X IPA 1">
+      <label>Kelas <span style="color:red">*</span></label>
+      <input type="text" id="bio-kelas" placeholder="Contoh: X IPA 1">
     </div>
     <div class="form-group">
-      <label>Sekolah <span style="color:#ffa502">*</span></label>
-      <input type="text" id="reg-sekolah" placeholder="Nama sekolah Anda">
-    </div>
-    <div class="form-group">
-      <label>PJJ Sektor <span style="color:#ffa502">*</span></label>
-      <input type="text" id="reg-sektor" placeholder="Nama PJJ Sektor Anda">
+      <label>Sekolah <span style="color:red">*</span></label>
+      <input type="text" id="bio-sekolah" placeholder="Nama sekolah Anda">
     </div>
     <div class="form-group">
       <label>Alamat</label>
-      <input type="text" id="reg-alamat" placeholder="Kota / Daerah Anda">
+      <input type="text" id="bio-alamat" placeholder="Kota / Daerah Anda">
     </div>
-    <button class="btn-primary" id="reg-btn" onclick="doRegister()">Simpan &amp; Mulai</button>
-  </div>
-</div>
-
-<!-- ═══ BIODATA — tidak dipakai, digabung ke halaman awal ═══ -->
-<div id="page-biodata" class="hidden"></div>
-
-<!-- ═══ INTRO / SAMBUTAN ═══ -->
-<div id="page-intro" class="hidden">
-  <div id="intro-wrap">
-    <div id="intro-card">
-      <div id="intro-logo">🙏</div>
-      <h1 id="intro-title">Nak, Selamat Datang!</h1>
-      <p id="intro-sub">Diakonia Pendidikan GBKP Runggun Bambu Raya</p>
-
-      <div class="intro-section intro-section-warm">
-        <p class="intro-warm-text">
-          Anak-anak kami yang kami kasihi, kami bersukacita melihat kalian hadir di sini hari ini.
-          Matematika bukan sekadar deretan angka — ia adalah bahasa logika yang Tuhan titipkan
-          untuk melatih kita berpikir tertib, sabar, dan teliti. Setiap soal yang kalian jawab,
-          setiap detik yang kalian lewati dengan sungguh-sungguh, adalah latihan kecil yang
-          perlahan-lahan membentuk kalian menjadi pribadi yang lebih tajam dan lebih tangguh.
-        </p>
-        <p class="intro-warm-text" style="margin-top:12px;">
-          Jangan takut salah. Jangan malu dengan skor pertama kalian — karena skor pertama
-          adalah titik awal, bukan penentu akhir. <b style="color:#ffa502">Semakin sering kalian berlatih,
-          semakin cepat pikiran kalian bekerja, semakin kuat daya ingat kalian, dan semakin
-          percaya diri kalian menghadapi tantangan — bukan hanya dalam matematika, tapi dalam
-          seluruh perjalanan hidup kalian.</b>
-        </p>
-        <p class="intro-warm-text" style="margin-top:12px;">
-          Kembalilah bermain sesering mungkin. Setiap ulangan adalah investasi kecil
-          yang hasilnya akan kalian rasakan sendiri — dalam nilai rapor, dalam ujian,
-          dalam keseharian. <b style="color:#ffa502">Itulah anak-anak yang membuat hati orang tua
-          dan gereja kami bangga dan bersyukur.</b>
-        </p>
-      </div>
-
-      <div class="intro-section">
-        <div class="intro-section-title">📚 Yang Akan Kamu Kerjakan</div>
-        <div id="intro-games">
-          <div class="intro-game-chip">✕ Perkalian</div>
-          <div class="intro-game-chip">÷ Pembagian</div>
-          <div class="intro-game-chip">+ Penjumlahan</div>
-          <div class="intro-game-chip">− Pengurangan</div>
-          <div class="intro-game-chip">√ Akar</div>
-          <div class="intro-game-chip">x² Kuadrat</div>
-        </div>
-        <p class="intro-section-body" style="margin-top:12px;">
-          Ada <b style="color:#ffa502">6 jenis soal</b> yang kamu kerjakan satu per satu,
-          masing-masing selama <b style="color:#ffa502">10 detik</b>. Jawab sebanyak mungkin
-          dengan tenang — kecepatan penting, tapi ketenangan jauh lebih penting.
-        </p>
-      </div>
-
-      <div class="intro-section">
-        <div class="intro-section-title">📊 Laporan yang Bisa Kamu Lihat</div>
-        <div class="intro-report-list">
-          <div class="intro-report-item">
-            <div class="intro-report-icon">📋</div>
-            <div>
-              <div class="intro-report-label">Per Operasi</div>
-              <div class="intro-report-desc">Lihat tiga besar di setiap jenis soal, dan posisimu di antara teman-teman satu angkatan.</div>
-            </div>
-          </div>
-          <div class="intro-report-item">
-            <div class="intro-report-icon">🏆</div>
-            <div>
-              <div class="intro-report-label">Klasemen Total</div>
-              <div class="intro-report-desc">Peringkat gabungan semua 6 operasi — gambaran kemampuan matematikamu secara menyeluruh.</div>
-            </div>
-          </div>
-          <div class="intro-report-item">
-            <div class="intro-report-icon">👤</div>
-            <div>
-              <div class="intro-report-label">Perkembangan Pribadi</div>
-              <div class="intro-report-desc">Skor awal, skor terbaik, dan progres pertumbuhanmu setiap kali kamu bermain kembali.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="intro-semangat">
-        <div class="intro-semangat-quote">"Kamu lebih mampu dari yang kamu kira,<br>dan lebih kuat dari yang kamu bayangkan."</div>
-        <div class="intro-semangat-sub">— Dengan kasih, Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
-      </div>
-
-      <div id="intro-user-greeting"></div>
-
-      <button id="intro-start-btn" onclick="startFromIntro()">
-        ✨ Ayo Mulai — Tunjukkan Kemampuanmu!
-      </button>
-    </div>
+    <button class="btn-primary" id="bio-btn" onclick="saveBiodata()">Simpan &amp; Mulai</button>
   </div>
 </div>
 
@@ -742,9 +512,9 @@ tr:hover td{background:rgba(255,165,2,.05);}
   </div>
 
   <div class="nav-menu">
-    <button onclick="showTab(1,this)" class="active">📊 Per Operasi</button>
-    <button onclick="showTab(2,this)">🏆 Klasemen</button>
-    <button onclick="showTab(3,this)">👤 Personal</button>
+    <button onclick="showTab(1,this)" class="active">👤 Personal</button>
+    <button onclick="showTab(2,this)">📊 Per Operasi</button>
+    <button onclick="showTab(3,this)">🏆 Klasemen</button>
   </div>
   <div id="content-1" class="content active"></div>
   <div id="content-2" class="content"></div>
@@ -854,7 +624,7 @@ const getMeta = () => parseJSON(currentUser.x_05, {waktu:{},kunjungan:{},tanggal
 //  NAVIGASI
 // ═══════════════════════════════════════════════════════
 function showPage(name){
-  ['splash','login','biodata','intro','index','game','countdown'].forEach(p=>{
+  ['login','biodata','index','game','countdown'].forEach(p=>{
     document.getElementById('page-'+p).classList.toggle('hidden', p!==name);
   });
 }
@@ -914,87 +684,59 @@ async function init(){
   if(saved){
     try{
       currentUser = JSON.parse(saved);
-      // Sudah punya akun → splash dulu, lalu langsung ke index
-      showSplash(async ()=>{ await loadIndex(); });
+      await loadIndex(); // loadIndex() sudah urus showPage sendiri
     } catch(e){
       localStorage.removeItem('app_user');
-      showSplash(()=>{ showPage('login'); });
+      showPage('login');
     }
   } else {
-    // Belum daftar → splash dulu, lalu ke form registrasi
-    showSplash(()=>{ showPage('login'); });
+    showPage('login');
   }
 }
 
 // ═══════════════════════════════════════════════════════
-//  REGISTRASI — form langsung, token dibuat otomatis
+//  LOGIN
 // ═══════════════════════════════════════════════════════
-function genToken(){
-  return 'gbkp-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10);
+async function doLogin(){
+  const token = document.getElementById('token-input').value.trim();
+  if(!token) return;
+  const btn = document.getElementById('login-btn');
+  btn.disabled=true; btn.textContent='Memeriksa...';
+  setLoginError('');
+  try{
+    const r = await fetch(`${API}?table=${T_NILAI}&x_01_eq=${encodeURIComponent(token)}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success||d.count===0){ setLoginError('Kode Token salah atau tidak ditemukan.'); return; }
+    const row = d.data[0];
+    if(row.x_10==='1'){ setLoginError('Token sudah pernah dipergunakan.'); return; }
+
+    // Tandai token terpakai
+    await fetch(`${API}?table=${T_NILAI}&id_x=${row.id_x}`,{
+      method:'PUT', headers:H(), body:JSON.stringify({x_10:'1'})
+    });
+    currentUser = {...row, x_10:'1'};
+    localStorage.setItem('app_user', JSON.stringify(currentUser));
+
+    // Cek biodata
+    const bio = getBio();
+    if(!bio.nama){
+      showPage('biodata');
+    } else {
+      await loadIndex();
+    }
+  } catch(err){
+    setLoginError('Terjadi kesalahan jaringan. Coba lagi.');
+    console.error(err);
+  } finally {
+    btn.disabled=false; btn.textContent='Login';
+  }
 }
 
 function setLoginError(msg){
   const el=document.getElementById('login-error');
   el.textContent=msg; el.classList.toggle('hidden',!msg);
 }
-
-async function doRegister(){
-  const nama    = document.getElementById('reg-nama').value.trim();
-  const kelas   = document.getElementById('reg-kelas').value.trim();
-  const sekolah = document.getElementById('reg-sekolah').value.trim();
-  const sektor  = document.getElementById('reg-sektor').value.trim();
-  const alamat  = document.getElementById('reg-alamat').value.trim();
-
-  setLoginError('');
-  if(!nama){    setLoginError('Nama lengkap wajib diisi.'); document.getElementById('reg-nama').focus(); return; }
-  if(!kelas){   setLoginError('Kelas wajib diisi. Contoh: X IPA 1'); document.getElementById('reg-kelas').focus(); return; }
-  if(!sekolah){ setLoginError('Nama sekolah wajib diisi.'); document.getElementById('reg-sekolah').focus(); return; }
-  if(!sektor){  setLoginError('PJJ Sektor wajib diisi.'); document.getElementById('reg-sektor').focus(); return; }
-
-  const btn = document.getElementById('reg-btn');
-  btn.disabled=true; btn.textContent='Menyimpan...';
-
-  try{
-    const token   = genToken();
-    const biodata = {nama, kelas, sekolah, sektor: sektor||'-', alamat: alamat||'-'};
-
-    // Buat record baru di API
-    const r = await fetch(`${API}?table=${T_NILAI}`, {
-      method:'POST', headers:H(),
-      body: JSON.stringify({
-        x_01: token,
-        x_02: JSON.stringify(biodata),
-        x_10: '1'
-      })
-    });
-    const d = await r.json();
-
-    if(!d.success){ setLoginError('Gagal mendaftar. Coba lagi.'); return; }
-
-    // Ambil data lengkap yang baru dibuat
-    const r2 = await fetch(`${API}?table=${T_NILAI}&x_01_eq=${encodeURIComponent(token)}`,{headers:H()});
-    const d2 = await r2.json();
-    if(!d2.success||d2.count===0){ setLoginError('Gagal memuat data. Coba lagi.'); return; }
-
-    currentUser = d2.data[0];
-    localStorage.setItem('app_user', JSON.stringify(currentUser));
-    showIntro();
-
-  } catch(err){
-    setLoginError('Terjadi kesalahan jaringan. Coba lagi.');
-    console.error(err);
-  } finally {
-    btn.disabled=false; btn.textContent='Simpan & Mulai';
-  }
-}
-
-// Enter key support
-setTimeout(()=>{
-  ['reg-nama','reg-kelas','reg-sekolah','reg-sektor','reg-alamat'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.addEventListener('keydown',e=>{ if(e.key==='Enter') doRegister(); });
-  });
-},0);
+document.getElementById('token-input').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
 
 // ═══════════════════════════════════════════════════════
 //  TOAST NOTIFIKASI
@@ -1039,14 +781,12 @@ function saveTokenTxt(){
   const nama=bio.nama||'siswa';
   const kelas=bio.kelas||'';
   const sekolah=bio.sekolah||'';
-  const sektor=bio.sektor||'';
   const isi=`TOKEN LOGIN GAME MATEMATIKA
 ============================
 Token   : ${tok}
 Nama    : ${nama}
 Kelas   : ${kelas}
 Sekolah : ${sekolah}
-Sektor  : ${sektor}
 ============================
 Simpan file ini! Token digunakan untuk login kembali.`;
   const blob=new Blob([isi],{type:'text/plain'});
@@ -1074,14 +814,45 @@ function doLogout(){
   localStorage.removeItem('app_user');
   currentUser=null; allNilai=[]; activeGame=null;
   showPage('login');
-  ['reg-nama','reg-kelas','reg-sekolah','reg-sektor','reg-alamat'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
+  document.getElementById('token-input').value='';
   showToast('Anda telah logout.');
 }
 
-// saveBiodata() sudah digabung ke doRegister() — fungsi ini sebagai stub
-function saveBiodata(){ doRegister(); }
+// ═══════════════════════════════════════════════════════
+//  BIODATA — isi sekali saat pertama login
+// ═══════════════════════════════════════════════════════
+async function saveBiodata(){
+  const nama    = document.getElementById('bio-nama').value.trim();
+  const kelas   = document.getElementById('bio-kelas').value.trim();
+  const sekolah = document.getElementById('bio-sekolah').value.trim();
+  const alamat  = document.getElementById('bio-alamat').value.trim();
+  const errEl   = document.getElementById('bio-error');
+
+  if(!nama||!kelas||!sekolah){
+    errEl.textContent='Nama, Kelas, dan Sekolah wajib diisi.';
+    errEl.classList.remove('hidden'); return;
+  }
+  errEl.classList.add('hidden');
+
+  const btn=document.getElementById('bio-btn');
+  btn.disabled=true; btn.textContent='Menyimpan...';
+
+  try{
+    const biodata={nama,kelas,sekolah,alamat};
+    await fetch(`${API}?table=${T_NILAI}&id_x=${currentUser.id_x}`,{
+      method:'PUT', headers:H(), body:JSON.stringify({x_02:JSON.stringify(biodata)})
+    });
+    currentUser.x_02=JSON.stringify(biodata);
+    localStorage.setItem('app_user',JSON.stringify(currentUser));
+    await loadIndex();
+  } catch(err){
+    errEl.textContent='Gagal menyimpan. Coba lagi.';
+    errEl.classList.remove('hidden');
+    console.error(err);
+  } finally {
+    btn.disabled=false; btn.textContent='Simpan & Mulai';
+  }
+}
 
 // ═══════════════════════════════════════════════════════
 //  LOAD INDEX — selalu fresh dari API
@@ -1303,24 +1074,8 @@ function renderAllTabs(){
   const best=getBest(), awal=getAwal(), meta=getMeta();
   const bio=getBio();
 
-  // ── TAB 1: PER OPERASI ──
-  let t1=`<div class="rank-section-title">Ranking per Operasi</div>
-    <div class="rank-cards-grid rank-grid-3col">`;
-  GAME_CONFIG.forEach(g=>{
-    t1+=renderRankCard(ucfirst(g.game), g.icon, COLOR_MAP[g.game], g.game);
-  });
-  t1+=`</div>`;
-  document.getElementById('content-1').innerHTML=t1;
-
-  // ── TAB 2: KLASEMEN TOTAL ──
-  let t2=`<div class="rank-section-title">Klasemen Total — Semua Operasi</div>
-    <div class="rank-cards-grid">`;
-  t2+=renderRankCard('Klasemen Total','trophy','#ffa502','__total__');
-  t2+=`</div>`;
-  document.getElementById('content-2').innerHTML=t2;
-
-  // ── TAB 3: PERSONAL ──
-  let t3=`<div class="rank-section-title">Perkembangan Kamu — ${bio.nama||''}</div>
+  // ── TAB 1: PERSONAL ──
+  let t1=`<div class="rank-section-title">Perkembangan Kamu — ${bio.nama||''}</div>
     <div class="rank-cards-grid">`;
   GAME_CONFIG.forEach(g=>{
     const cs=parseInt(best[g.game])||0;
@@ -1329,7 +1084,7 @@ function renderAllTabs(){
     let pct='–'; let pctColor='#666';
     if(ss>0&&cs>0){const v=Math.round((cs-ss)/ss*100);pct=(v>0?'+':'')+v+'%';pctColor=v>0?'#2ed573':v<0?'#ff4757':'#aaa';}
     else if(ss===0&&cs>0){pct='+∞%';pctColor='#2ed573';}
-    t3+=`<div class="rank-card" style="--rc:${COLOR_MAP[g.game]}">
+    t1+=`<div class="rank-card" style="--rc:${COLOR_MAP[g.game]}">
       <div class="rank-card-header">
         <div class="rank-card-icon"><i class="fas fa-${g.icon}"></i></div>
         <div>
@@ -1345,6 +1100,22 @@ function renderAllTabs(){
       </div>
     </div>`;
   });
+  t1+=`</div>`;
+  document.getElementById('content-1').innerHTML=t1;
+
+  // ── TAB 2: PER OPERASI ──
+  let t2=`<div class="rank-section-title">Ranking per Operasi</div>
+    <div class="rank-cards-grid">`;
+  GAME_CONFIG.forEach(g=>{
+    t2+=renderRankCard(ucfirst(g.game), g.icon, COLOR_MAP[g.game], g.game);
+  });
+  t2+=`</div>`;
+  document.getElementById('content-2').innerHTML=t2;
+
+  // ── TAB 3: KLASEMEN TOTAL ──
+  let t3=`<div class="rank-section-title">Klasemen Total — Semua Operasi</div>
+    <div class="rank-cards-grid">`;
+  t3+=renderRankCard('Klasemen Total','trophy','#ffa502','__total__');
   t3+=`</div>`;
   document.getElementById('content-3').innerHTML=t3;
 }
@@ -1480,18 +1251,13 @@ async function endGame(){
   // Cek apakah ada game berikutnya dalam urutan
   const idxAktif=GAME_CONFIG.findIndex(g=>g.game===activeGame);
   const adaBerikutnya=modeUrutan && GAME_CONFIG[idxAktif+1];
-  const isGameTerakhir = activeGame === GAME_CONFIG[GAME_CONFIG.length-1].game;
   if(adaBerikutnya){
     // Game di tengah urutan → sembunyikan timer & soal, langsung proses
     document.getElementById('timer').style.display='none';
     document.getElementById('question').style.display='none';
-  } else if(isGameTerakhir){
-    // Game terakhir (Kuadrat) → tampilkan pesan penutup
-    document.getElementById('question').innerHTML='⏱ Waktu Habis! Terima Kasih Sudah Bermain!';
   } else {
-    // Game individual (bukan urutan) → langsung tutup tanpa pesan
-    document.getElementById('timer').style.display='none';
-    document.getElementById('question').style.display='none';
+    // Game terakhir / tidak dalam mode urutan → tampilkan pesan waktu habis
+    document.getElementById('question').innerHTML='⏱ Waktu Habis! Terima Kasih Sudah Bermain!';
   }
 
   const best=getBest(), awal=getAwal();
@@ -1576,97 +1342,6 @@ async function updateVisit(gameName){
 function rnd(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
 function ucfirst(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
-
-// ═══════════════════════════════════════════════════════
-//  INTRO — halaman sambutan setelah registrasi
-// ═══════════════════════════════════════════════════════
-function showIntro(){
-  const bio = getBio();
-  const greet = document.getElementById('intro-user-greeting');
-  if(greet && bio.nama){
-    greet.innerHTML = `Semangat, <b>${bio.nama}</b>! ✨ Lakukan yang terbaik — gereja mendoakanmu. 🌟`;
-  }
-  showPage('intro');
-}
-
-async function startFromIntro(){
-  const btn = document.getElementById('intro-start-btn');
-  btn.disabled = true;
-  btn.textContent = 'Memuat...';
-  // Setelah intro → tampilkan splash quote dulu, baru masuk game
-  showSplash(async ()=>{ await loadIndex(); });
-}
-
-// ═══════════════════════════════════════════════════════
-//  50 QUOTES PENYEMANGAT (termasuk Firman Tuhan)
-// ═══════════════════════════════════════════════════════
-const QUOTES = [
-  { text: "Karena bagi Allah tidak ada yang mustahil.", ref: "— Lukas 1:37" },
-  { text: "Aku tahu rancangan-rancangan apa yang ada pada-Ku mengenai kamu, rancangan damai sejahtera dan bukan rancangan kecelakaan, untuk memberikan kepadamu hari depan yang penuh harapan.", ref: "— Yeremia 29:11" },
-  { text: "Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.", ref: "— Filipi 4:13" },
-  { text: "Janganlah takut, sebab Aku menyertai engkau, janganlah bimbang, sebab Aku ini Allahmu; Aku akan meneguhkan, bahkan akan menolong engkau.", ref: "— Yesaya 41:10" },
-  { text: "Mintalah, maka akan diberikan kepadamu; carilah, maka kamu akan mendapat; ketoklah, maka pintu akan dibukakan bagimu.", ref: "— Matius 7:7" },
-  { text: "Tuhan adalah gembalaku, takkan kekurangan aku.", ref: "— Mazmur 23:1" },
-  { text: "Karena Tuhan, Dia sendiri akan berjalan di depanmu, Dia sendiri akan menyertai engkau, Dia tidak akan membiarkan engkau dan tidak akan meninggalkan engkau; janganlah takut dan janganlah patah hati.", ref: "— Ulangan 31:8" },
-  { text: "Percayalah kepada Tuhan dengan segenap hatimu dan janganlah bersandar kepada pengertianmu sendiri.", ref: "— Amsal 3:5" },
-  { text: "Orang-orang yang menanti-nantikan Tuhan mendapat kekuatan baru: mereka seumpama rajawali yang naik terbang dengan kekuatan sayapnya.", ref: "— Yesaya 40:31" },
-  { text: "Sebab Allah memberikan kepada kita bukan roh ketakutan, melainkan roh yang membangkitkan kekuatan, kasih dan ketertiban.", ref: "— 2 Timotius 1:7" },
-  { text: "Dengan kerendahan hati yang dalam anggaplah orang lain lebih utama dari dirimu sendiri.", ref: "— Filipi 2:3" },
-  { text: "Jadilah kuat dan teguh hatimu, janganlah takut dan jangan gemetar karena mereka.", ref: "— Ulangan 31:6" },
-  { text: "Tuhan adalah terangku dan keselamatanku, kepada siapakah aku harus takut?", ref: "— Mazmur 27:1" },
-  { text: "Karena itu, saudara-saudaraku yang kekasih, berdirilah teguh, jangan goyah, dan giatlah selalu dalam pekerjaan Tuhan!", ref: "— 1 Korintus 15:58" },
-  { text: "Serahkanlah segala kekuatiranmu kepada-Nya, sebab Ia yang memelihara kamu.", ref: "— 1 Petrus 5:7" },
-  { text: "Kasih karunia dan damai sejahtera dari Allah, Bapa kita, dan dari Tuhan Yesus Kristus menyertai kamu.", ref: "— Roma 1:7" },
-  { text: "Berbahagialah orang yang mendapat hikmat, orang yang memperoleh kepandaian.", ref: "— Amsal 3:13" },
-  { text: "Permulaan hikmat adalah takut akan Tuhan, dan mengenal Yang Mahakudus adalah pengertian.", ref: "— Amsal 9:10" },
-  { text: "Apapun juga yang kamu perbuat, perbuatlah dengan segenap hatimu seperti untuk Tuhan dan bukan untuk manusia.", ref: "— Kolose 3:23" },
-  { text: "Didiklah orang muda menurut jalan yang patut baginya, maka pada masa tuanya pun ia tidak akan menyimpang dari pada jalan itu.", ref: "— Amsal 22:6" },
-  { text: "Satu langkah kecil hari ini adalah satu lompatan besar untuk masa depanmu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Tidak ada yang sia-sia dari setiap usaha yang kamu lakukan dengan sungguh-sungguh.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Otakmu seperti otot — semakin sering dilatih, semakin kuat ia bekerja untukmu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Jangan bandingkan perjalananmu dengan orang lain. Bandingkan dirimu hari ini dengan dirimu kemarin.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Kegagalan bukan akhir — ia adalah guru terbaik yang tidak memungut bayaran.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Setiap juara pernah menjadi pemula. Setiap ahli pernah tidak tahu apa-apa. Mulailah.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Yang membedakan orang yang berhasil bukan bakat — melainkan ketekunan untuk terus mencoba.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Matematika mengajarkan kita bahwa setiap masalah selalu memiliki penyelesaian — demikian pula hidup.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Berlatih hari ini berarti kamu sedang menyiapkan dirimu untuk bersinar esok hari.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Pikiran yang terlatih adalah hadiah terbaik yang bisa kamu berikan untuk masa depanmu sendiri.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Jangan tunggu sempurna untuk memulai. Mulailah, dan kesempurnaan akan datang dalam prosesnya.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Setiap menit yang kamu habiskan untuk belajar tidak akan pernah bisa dicuri dari hidupmu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Keberanian bukan berarti tidak takut — keberanian berarti tetap melangkah meski takut.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Kamu tidak sedang bersaing dengan siapa pun. Kamu sedang membangun versi terbaik dirimu sendiri.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Kecerdasan bukan takdir — ia adalah hasil dari kebiasaan berpikir dan keberanian berlatih.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Setiap soal yang kamu jawab dengan benar adalah batu bata yang kamu susun untuk rumah masa depanmu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Disiplin hari ini adalah kebebasan esok hari.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Gereja bangga bukan hanya melihat nilaimu, tapi melihat usaha dan kegigihanmu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Jadilah terang di mana pun kamu berada — di kelas, di sekolah, di dalam keluarga.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Tuhan tidak memanggil orang yang sempurna — Ia menyempurnakan orang yang Ia panggil.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Ilmu tanpa iman adalah kosong. Iman tanpa ilmu adalah lemah. Raihlah keduanya.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Apa pun yang kamu kerjakan hari ini, kerjakan dengan hati — karena Tuhan melihat bukan hasilnya saja, tapi niat dan usahamu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Semakin sering kamu berlatih, semakin natural kemampuanmu. Ulang terus hingga menjadi kebiasaan.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Seseorang yang belajar setiap hari akan mengalahkan seseorang yang berbakat tapi malas — selalu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Raihlah ilmu setinggi-tingginya sebagai bentuk syukurmu atas akal yang Tuhan titipkan kepadamu.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Dan inilah yang kunasihatkan kepadamu: hendaklah penuh semangat, jangan malas, layanilah Tuhan.", ref: "— Roma 12:11" },
-  { text: "Sebab hikmat akan masuk ke dalam hatimu dan pengetahuan akan menyenangkan jiwamu.", ref: "— Amsal 2:10" },
-  { text: "Jangan biarkan seorang pun menganggap engkau rendah karena engkau muda. Jadilah teladan bagi orang-orang percaya.", ref: "— 1 Timotius 4:12" },
-  { text: "Mulailah pekerjaan dengan doa, jalani dengan usaha, dan serahkan hasilnya kepada Tuhan.", ref: "— Diakonia Pendidikan GBKP" },
-  { text: "Tiap pagi Tuhan memberikan kamu hari yang baru — gunakanlah dengan penuh syukur dan semangat.", ref: "— Diakonia Pendidikan GBKP" },
-];
-
-// ── Splash logic ──────────────────────────────────────
-let _splashNext = null; // fungsi yang akan dijalankan setelah splash
-
-function showSplash(onDone){
-  _splashNext = onDone;
-  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-  document.getElementById('splash-quote-text').textContent = q.text;
-  document.getElementById('splash-quote-ref').textContent  = q.ref;
-  showPage('splash');
-}
-
-function proceedFromSplash(){
-  if(_splashNext) _splashNext();
-}
 
 init();
 </script>
