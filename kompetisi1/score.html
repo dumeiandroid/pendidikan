@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leaderboard Kompetisi — Game Matematika GBKP Runggun Bambu Raya</title>
+<meta name="description" content="Papan peringkat kompetisi matematika Diakonia Pendidikan GBKP — dibagi per kategori kelas.">
+<meta name="author" content="Diakonia Pendidikan GBKP Runggun Bambu Raya">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@400;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#0a0a0a;color:#f0f0f0;
+  font-family:'Roboto',sans-serif;
+  min-height:100vh;overflow-x:hidden;
+}
+
+/* ══════════════════════════════════════
+   SPLASH
+══════════════════════════════════════ */
+#page-splash{
+  position:fixed;inset:0;z-index:9999;
+  background:linear-gradient(160deg,#0a1628 0%,#0f2419 55%,#1a1a2e 100%);
+  display:flex;align-items:flex-start;justify-content:center;
+  overflow-y:auto;
+  padding:32px 20px 100px;
+  transition:opacity .6s ease;
+}
+#page-splash.fade-out{opacity:0;pointer-events:none;}
+#page-splash.hidden{display:none;}
+#splash-inner{
+  max-width:540px;width:100%;text-align:center;
+  animation:splashIn 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes splashIn{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+#splash-cross{font-size:36px;color:rgba(255,165,2,.55);letter-spacing:8px;margin-bottom:10px;text-shadow:0 0 40px rgba(255,165,2,.25);}
+#splash-org{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:36px;}
+#splash-trophy{font-size:72px;margin-bottom:20px;filter:drop-shadow(0 0 24px rgba(255,165,2,.6));animation:trophyPulse 2.5s ease-in-out infinite;}
+@keyframes trophyPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+#splash-title{font-family:'Orbitron',sans-serif;font-size:clamp(18px,4vw,28px);color:#ffa502;letter-spacing:3px;text-shadow:0 0 20px rgba(255,165,2,.4);margin-bottom:8px;}
+#splash-subtitle{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:36px;letter-spacing:.5px;}
+#splash-quote-box{background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);border-radius:16px;padding:24px 28px;margin-bottom:28px;position:relative;}
+#splash-quote-open{font-family:Georgia,serif;font-size:56px;color:rgba(255,165,2,.2);line-height:.4;display:block;text-align:left;margin-bottom:10px;}
+#splash-quote-text{font-family:Georgia,serif;font-size:clamp(15px,2.5vw,18px);color:#f0f0f0;line-height:1.8;font-style:italic;}
+#splash-quote-close{font-family:Georgia,serif;font-size:56px;color:rgba(255,165,2,.2);line-height:.4;display:block;text-align:right;margin-top:10px;}
+#splash-quote-ref{color:#ffa502;font-size:12px;font-weight:700;letter-spacing:1px;margin-top:14px;display:block;}
+#splash-tagline{color:rgba(255,255,255,.4);font-size:13px;line-height:1.7;font-style:italic;margin-bottom:32px;padding:0 8px;}
+#splash-btn-wrap{position:fixed;bottom:0;left:0;right:0;z-index:10000;background:linear-gradient(to top,rgba(10,22,40,1) 60%,rgba(10,22,40,0));padding:18px 20px 28px;display:flex;flex-direction:column;align-items:center;gap:6px;}
+#splash-btn{display:inline-flex;align-items:center;gap:12px;padding:16px 44px;background:linear-gradient(135deg,#ffa502,#ff6348);color:#1a1a1a;border:none;border-radius:50px;font-size:16px;font-weight:800;cursor:pointer;letter-spacing:.5px;width:100%;max-width:400px;justify-content:center;box-shadow:0 6px 30px rgba(255,165,2,.55);transition:all .3s;font-family:'Roboto',sans-serif;}
+#splash-btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(255,165,2,.65);}
+#splash-btn .btn-icon{font-size:18px;}
+#splash-note{font-size:11px;color:rgba(255,255,255,.3);letter-spacing:.5px;text-align:center;}
+
+/* ══════════════════════════════════════
+   LEADERBOARD CONTENT
+══════════════════════════════════════ */
+#lb-wrap{display:none;}
+#lb-wrap.visible{display:block;}
+
+.header{
+  background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+  padding:20px;text-align:center;
+  border-bottom:2px solid #ffa502;
+  position:sticky;top:0;z-index:100;
+}
+.header h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(16px,4vw,30px);
+  color:#ffa502;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(255,165,2,.5);
+}
+.header .subtitle{font-size:13px;color:#aaa;margin-top:5px;}
+.live-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:#dc3545;color:#fff;
+  padding:4px 12px;border-radius:20px;
+  font-size:12px;font-weight:bold;margin-top:8px;
+}
+.live-dot{width:8px;height:8px;background:#fff;border-radius:50%;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+.refresh-bar{
+  background:#111;padding:8px 20px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:#666;border-bottom:1px solid #222;
+}
+.refresh-bar .countdown{color:#ffa502;font-weight:bold;}
+
+.main{padding:20px;max-width:1400px;margin:0 auto;}
+
+/* ══════════════════════════════════════
+   KATEGORI SPLIT — KIRI & KANAN
+══════════════════════════════════════ */
+.kategori-header{
+  text-align:center;padding:16px 0 8px;
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(12px,2.5vw,18px);
+  letter-spacing:2px;
+  border-radius:10px;
+  margin-bottom:16px;
+  padding:12px 20px;
+}
+.kategori-header.bawah{
+  background:rgba(46,213,115,.1);
+  color:#2ed573;
+  border:1px solid rgba(46,213,115,.25);
+}
+.kategori-header.atas{
+  background:rgba(55,66,250,.1);
+  color:#3742fa;
+  border:1px solid rgba(55,66,250,.25);
+}
+.kategori-header span{
+  font-size:11px;color:rgba(255,255,255,.4);
+  letter-spacing:1px;display:block;margin-top:4px;
+  font-family:'Roboto',sans-serif;font-weight:400;
+}
+
+/* Split layout: dua kolom kiri-kanan */
+.split-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:40px;
+}
+@media(max-width:860px){
+  .split-layout{grid-template-columns:1fr;gap:32px;}
+}
+
+.kategori-panel{
+  background:#111;border-radius:16px;
+  border:1px solid rgba(255,255,255,.07);
+  overflow:hidden;
+}
+
+/* PODIUM dalam panel */
+.podium-section{
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:10px;padding:16px 10px;
+  flex-wrap:wrap;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.podium-card{
+  text-align:center;border-radius:12px;padding:12px 8px;
+  transition:transform .3s;cursor:default;position:relative;
+}
+.podium-card:hover{transform:translateY(-4px);}
+.podium-1{
+  background:linear-gradient(135deg,#b8860b,#ffd700,#b8860b);
+  color:#1a1a1a;order:2;
+  min-width:140px;padding-bottom:32px;
+  box-shadow:0 0 24px rgba(255,215,0,.35);
+}
+.podium-2{
+  background:linear-gradient(135deg,#555,#c0c0c0,#555);
+  color:#1a1a1a;order:1;
+  min-width:120px;padding-bottom:16px;
+  box-shadow:0 0 16px rgba(192,192,192,.25);
+}
+.podium-3{
+  background:linear-gradient(135deg,#6b3a2a,#cd7f32,#6b3a2a);
+  color:#fff;order:3;
+  min-width:120px;padding-bottom:8px;
+  box-shadow:0 0 16px rgba(205,127,50,.25);
+}
+.podium-rank{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;display:block;margin-bottom:6px;}
+.podium-1 .podium-rank::before{content:'🥇 ';}
+.podium-2 .podium-rank::before{content:'🥈 ';}
+.podium-3 .podium-rank::before{content:'🥉 ';}
+.podium-nama{font-size:clamp(11px,1.5vw,14px);font-weight:bold;display:block;margin-bottom:3px;line-height:1.3;}
+.podium-kelas{font-size:10px;opacity:.8;display:block;margin-bottom:6px;}
+.podium-skor{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;display:block;}
+.podium-skor-label{font-size:10px;opacity:.7;}
+.podium-detail{margin-top:6px;font-size:10px;opacity:.8;display:flex;flex-wrap:wrap;justify-content:center;gap:2px;}
+.podium-detail span{background:rgba(0,0,0,.2);border-radius:3px;padding:1px 4px;}
+
+/* Tabel 4–10 dalam panel */
+.panel-table-section{padding:12px 16px;}
+.panel-table-section h2{
+  font-family:'Orbitron',sans-serif;
+  color:#ffa502;font-size:13px;
+  margin-bottom:10px;letter-spacing:1.5px;
+}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table thead tr{background:linear-gradient(90deg,#1a1a2e,#0f3460);}
+.lb-table th{padding:9px 8px;text-align:left;font-size:11px;color:#ffa502;border-bottom:2px solid #ffa502;}
+.lb-table th.center{text-align:center;}
+.lb-table tbody tr{border-bottom:1px solid #1a1a1a;transition:background .2s;}
+.lb-table tbody tr:hover{background:#1a1a2e;}
+.lb-table td{padding:9px 8px;font-size:12px;background:transparent;border:none;}
+.lb-table td.center{text-align:center;}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-weight:bold;font-size:12px;background:#2b2b2b;color:#ffa502;}
+.total-skor{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:#ffa502;}
+.skor-mini{display:inline-block;background:#1a1a2e;border-radius:3px;padding:1px 4px;font-size:10px;margin:1px;color:#ccc;}
+.skor-mini b{color:#fff;}
+.nama-cell{font-weight:bold;font-size:13px;}
+.kelas-cell{font-size:11px;color:#888;margin-top:1px;}
+.belum-badge{color:#555;font-size:11px;font-style:italic;}
+.empty-panel{text-align:center;padding:32px;color:#444;font-size:14px;}
+
+/* BREAKDOWN PER GAME — full width di bawah */
+.breakdown-title{
+  font-family:'Orbitron',sans-serif;
+  color:#ffa502;font-size:15px;letter-spacing:2px;
+  margin:32px 0 16px;text-align:center;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(255,165,2,.2);
+}
+.breakdown-split{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-bottom:40px;
+}
+@media(max-width:860px){.breakdown-split{grid-template-columns:1fr;}}
+
+.breakdown-kategori-label{
+  font-size:13px;font-weight:700;margin-bottom:12px;
+  padding:8px 12px;border-radius:8px;
+}
+.breakdown-kategori-label.bawah{background:rgba(46,213,115,.1);color:#2ed573;}
+.breakdown-kategori-label.atas{background:rgba(55,66,250,.1);color:#3742fa;}
+
+.breakdown-section{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+@media(max-width:700px){.breakdown-section{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:440px){.breakdown-section{grid-template-columns:1fr;}}
+
+.breakdown-card{
+  background:#111;border-radius:12px;padding:12px;
+  border-top:3px solid var(--color);
+}
+.breakdown-card h3{font-size:12px;color:var(--color);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.mini-rank{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.mini-rank .no{font-weight:bold;color:#555;width:18px;text-align:center;font-size:12px;}
+.mini-rank .no.gold{color:#ffd700;}
+.mini-rank .no.silver{color:#c0c0c0;}
+.mini-rank .no.bronze{color:#cd7f32;}
+.mini-rank .info{flex:1;}
+.mini-rank .info .nm{font-size:12px;font-weight:bold;}
+.mini-rank .info .kl{font-size:10px;color:#666;}
+.mini-rank .sc{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:bold;color:var(--color);}
+
+.footer{text-align:center;padding:20px;color:#444;font-size:12px;margin-top:40px;border-top:1px solid #1a1a1a;}
+
+.loading{text-align:center;padding:60px;color:#ffa502;font-size:18px;}
+.loading .spin{display:inline-block;width:40px;height:40px;border:4px solid #222;border-top-color:#ffa502;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:15px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.animate{animation:fadeInUp .4s ease both;}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="page-splash">
+  <div id="splash-inner">
+    <div id="splash-cross">✟</div>
+    <div id="splash-org">Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
+    <div id="splash-trophy">🏆</div>
+    <div id="splash-title">LEADERBOARD KOMPETISI</div>
+    <div id="splash-subtitle">Game Matematika — Kelas 4 ke Bawah &amp; Kelas 5 ke Atas</div>
+    <div id="splash-quote-box">
+      <span id="splash-quote-open">&ldquo;</span>
+      <div id="splash-quote-text"></div>
+      <span id="splash-quote-close">&rdquo;</span>
+      <span id="splash-quote-ref"></span>
+    </div>
+    <div id="splash-tagline">
+      Setiap angka yang tertera di sini adalah bukti nyata<br>
+      dari kerja keras, ketekunan, dan keberanian anak-anak kita.
+    </div>
+  </div>
+
+  <div id="splash-btn-wrap">
+    <button id="splash-btn" onclick="enterLeaderboard()">
+      <span class="btn-icon">🏅</span>
+      Lihat Papan Peringkat
+    </button>
+    <div id="splash-note">Data diperbarui otomatis setiap 15 detik</div>
+  </div>
+</div>
+
+<!-- LEADERBOARD CONTENT -->
+<div id="lb-wrap">
+
+  <div class="header">
+    <h1>🏆 LEADERBOARD KOMPETISI MATEMATIKA</h1>
+    <div class="subtitle">Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
+    <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+  </div>
+
+  <div class="refresh-bar">
+    <span>Auto-refresh setiap <b>15 detik</b></span>
+    <span>Update berikutnya: <span class="countdown" id="countdown">15</span> detik</span>
+  </div>
+
+  <div class="main" id="main">
+    <div class="loading">
+      <div class="spin"></div><br>Memuat data...
+    </div>
+  </div>
+
+  <div class="footer">
+    Data diperbarui secara otomatis &middot; Ranking berdasarkan total skor terbaik 6 game<br>
+    &copy; 2025 Diakonia Pendidikan GBKP Runggun Bambu Raya
+  </div>
+
+</div>
+
+<script>
+const API     = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
+const T_NILAI = 'nilai_kompetisi';   // ← TABEL KOMPETISI
+const SECRET  = 'admin';
+const H = () => ({'Content-Type':'application/json','X-Custom-Auth':SECRET});
+
+const GAMES = [
+  {key:'perkalian',  label:'Kali',    icon:'✖', color:'#ff4757'},
+  {key:'pembagian',  label:'Bagi',    icon:'➗', color:'#ffa502'},
+  {key:'penjumlahan',label:'Tambah',  icon:'➕', color:'#3742fa'},
+  {key:'pengurangan',label:'Kurang',  icon:'➖', color:'#2ed573'},
+  {key:'akar',       label:'Akar',    icon:'√',  color:'#ff6348'},
+  {key:'kuadrat',    label:'Pangkat', icon:'x²', color:'#1e90ff'},
+];
+
+const QUOTES = [
+  { text:'Karena bagi Allah tidak ada yang mustahil.', ref:'— Lukas 1:37' },
+  { text:'Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.', ref:'— Filipi 4:13' },
+  { text:'Berbahagialah orang yang mendapat hikmat, orang yang memperoleh kepandaian.', ref:'— Amsal 3:13' },
+  { text:'Permulaan hikmat adalah takut akan Tuhan.', ref:'— Amsal 9:10' },
+  { text:'Apapun juga yang kamu perbuat, perbuatlah dengan segenap hatimu seperti untuk Tuhan.', ref:'— Kolose 3:23' },
+  { text:'Satu langkah kecil hari ini adalah satu lompatan besar untuk masa depanmu.', ref:'— Diakonia Pendidikan GBKP' },
+  { text:'Otakmu seperti otot — semakin sering dilatih, semakin kuat ia bekerja untukmu.', ref:'— Diakonia Pendidikan GBKP' },
+  { text:'Disiplin hari ini adalah kebebasan esok hari.', ref:'— Diakonia Pendidikan GBKP' },
+  { text:'Gereja bangga bukan hanya melihat nilaimu, tapi melihat usaha dan kegigihanmu.', ref:'— Diakonia Pendidikan GBKP' },
+  { text:'Kamu lebih mampu dari yang kamu kira, dan lebih kuat dari yang kamu bayangkan.', ref:'— Diakonia Pendidikan GBKP' },
+];
+
+// ── HELPERS ───────────────────────────────────────────
+function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
+
+function getKelasNum(row){
+  const bio=parseJSON(row.x_02,{});
+  return parseInt(bio.kelas)||0;
+}
+function getKategori(kelasNum){
+  return kelasNum <= 4 ? 'bawah' : 'atas';
+}
+
+function totalSkor(row){
+  const b = parseJSON(row.x_03, {});
+  return GAMES.reduce((sum,g)=> sum + (parseInt(b[g.key])||0), 0);
+}
+function sudahSemua(row){
+  const b = parseJSON(row.x_03, {});
+  return GAMES.every(g=> parseInt(b[g.key])>0);
+}
+
+// ── SPLASH ─────────────────────────────────────────────
+function initSplash(){
+  const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  document.getElementById('splash-quote-text').textContent = q.text;
+  document.getElementById('splash-quote-ref').textContent  = q.ref;
+}
+
+function enterLeaderboard(){
+  const splash = document.getElementById('page-splash');
+  splash.classList.add('fade-out');
+  setTimeout(()=>{
+    splash.classList.add('hidden');
+    document.getElementById('lb-wrap').classList.add('visible');
+    fetchAndRender();
+    startCountdown();
+  }, 600);
+}
+
+// ── FETCH & RENDER ─────────────────────────────────────
+async function fetchAndRender(){
+  try{
+    const r = await fetch(`${API}?table=${T_NILAI}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success) return;
+
+    const valid = d.data.filter(row=>{
+      const bio=parseJSON(row.x_02,{});
+      return bio.nama && bio.kelas;
+    });
+
+    // Pisah berdasarkan kategori
+    const bawah = valid.filter(row=> getKategori(getKelasNum(row)) === 'bawah');
+    const atas  = valid.filter(row=> getKategori(getKelasNum(row)) === 'atas');
+
+    // Sort masing-masing
+    const sortRows = (arr) => [...arr].sort((a,b)=>{
+      const diff = totalSkor(b)-totalSkor(a);
+      if(diff!==0) return diff;
+      const ma=parseJSON(a.x_05,{waktu:{}}), mb=parseJSON(b.x_05,{waktu:{}});
+      const lastA=Object.values(ma.waktu||{}).sort().pop()||'';
+      const lastB=Object.values(mb.waktu||{}).sort().pop()||'';
+      return lastA.localeCompare(lastB);
+    });
+
+    render(sortRows(bawah), sortRows(atas), valid);
+  } catch(err){ console.error(err); }
+}
+
+function render(bawahSorted, atasSorted, allValid){
+  const main = document.getElementById('main');
+  let html = '';
+
+  // ── SPLIT PANEL KIRI (Bawah) & KANAN (Atas) ──
+  html += `<div class="split-layout">`;
+
+  // Panel Kelas 4 ke Bawah
+  html += `<div class="kategori-panel">
+    <div style="padding:12px 16px 0">
+      <div class="kategori-header bawah">
+        🌱 KELAS 4 KE BAWAH
+        <span>Kelas 1, 2, 3, 4</span>
+      </div>
+    </div>`;
+  html += renderPanel(bawahSorted.slice(0,10), 'bawah');
+  html += `</div>`;
+
+  // Panel Kelas 5 ke Atas
+  html += `<div class="kategori-panel">
+    <div style="padding:12px 16px 0">
+      <div class="kategori-header atas">
+        🚀 KELAS 5 KE ATAS
+        <span>Kelas 5, 6, 7, 8, 9, 10, 11, 12</span>
+      </div>
+    </div>`;
+  html += renderPanel(atasSorted.slice(0,10), 'atas');
+  html += `</div>`;
+
+  html += `</div>`; // /split-layout
+
+  // ── BREAKDOWN PER GAME — dibagi per kategori ──
+  html += `<div class="breakdown-title">JUARA PER OPERASI</div>`;
+  html += `<div class="breakdown-split">`;
+
+  // Breakdown Bawah
+  html += `<div>
+    <div class="breakdown-kategori-label bawah">🌱 Kelas 4 ke Bawah</div>
+    <div class="breakdown-section">`;
+  html += renderBreakdown(allValid.filter(r=>getKategori(getKelasNum(r))==='bawah'));
+  html += `</div></div>`;
+
+  // Breakdown Atas
+  html += `<div>
+    <div class="breakdown-kategori-label atas">🚀 Kelas 5 ke Atas</div>
+    <div class="breakdown-section">`;
+  html += renderBreakdown(allValid.filter(r=>getKategori(getKelasNum(r))==='atas'));
+  html += `</div></div>`;
+
+  html += `</div>`; // /breakdown-split
+
+  main.innerHTML = html;
+}
+
+function renderPanel(top10, kategori){
+  if(top10.length===0){
+    return `<div class="empty-panel">Belum ada peserta di kategori ini...</div>`;
+  }
+
+  let html = '';
+
+  // PODIUM TOP 3
+  const podium = top10.slice(0,3);
+  if(podium.length>0){
+    html += `<div class="podium-section">`;
+    const order = podium.length===1?[0]:podium.length===2?[1,0]:[1,0,2];
+    order.forEach(i=>{
+      if(!podium[i]) return;
+      const row=podium[i];
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const cls=['podium-1','podium-2','podium-3'][i];
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span>${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<div class="podium-card ${cls} animate" style="animation-delay:${i*0.1}s">
+        <span class="podium-rank">${i+1}</span>
+        <span class="podium-nama">${bio.nama||'-'}</span>
+        <span class="podium-kelas">Kelas ${bio.kelas||''} · ${bio.sekolah||''}</span>
+        <span class="podium-skor">${tot}</span>
+        <span class="podium-skor-label">${semua?'Total Skor':'⚠ belum semua'}</span>
+        <div class="podium-detail">${detail}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // TABEL 4–10
+  const rest = top10.slice(3);
+  if(rest.length>0){
+    html += `<div class="panel-table-section">
+      <h2>RANKING 4 – ${Math.min(10,top10.length)}</h2>
+      <table class="lb-table">
+        <thead><tr>
+          <th style="width:40px" class="center">Rank</th>
+          <th>Peserta</th>
+          <th class="center">Total</th>
+          <th>Per Game</th>
+        </tr></thead><tbody>`;
+    rest.forEach((row,i)=>{
+      const rank=i+4;
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span class="skor-mini">${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<tr class="animate" style="animation-delay:${i*0.05}s">
+        <td class="center"><div class="rank-badge">${rank}</div></td>
+        <td>
+          <div class="nama-cell">${bio.nama||'-'}</div>
+          <div class="kelas-cell">Kelas ${bio.kelas||''} · ${bio.sekolah||''}</div>
+        </td>
+        <td class="center">
+          <div class="total-skor">${tot}</div>
+          ${!semua?'<div class="belum-badge">belum semua</div>':''}
+        </td>
+        <td>${detail}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+
+  return html;
+}
+
+function renderBreakdown(data){
+  let html = '';
+  GAMES.forEach(g=>{
+    const sorted=[...data]
+      .filter(r=>{ const b=parseJSON(r.x_03,{}); return parseInt(b[g.key])>0; })
+      .sort((a,b)=>{
+        const ba=parseJSON(a.x_03,{}), bb=parseJSON(b.x_03,{});
+        return (parseInt(bb[g.key])||0)-(parseInt(ba[g.key])||0);
+      }).slice(0,3);
+
+    html+=`<div class="breakdown-card" style="--color:${g.color}">
+      <h3>${g.icon} ${g.label}</h3>`;
+    if(sorted.length===0){
+      html+=`<div style="color:#444;font-size:12px">Belum ada data</div>`;
+    } else {
+      const medals=['gold','silver','bronze'];
+      sorted.forEach((row,i)=>{
+        const bio=parseJSON(row.x_02,{});
+        const best=parseJSON(row.x_03,{});
+        html+=`<div class="mini-rank">
+          <div class="no ${medals[i]}">${i+1}</div>
+          <div class="info">
+            <div class="nm">${bio.nama||'-'}</div>
+            <div class="kl">Kelas ${bio.kelas||''}</div>
+          </div>
+          <div class="sc">${parseInt(best[g.key])||0}</div>
+        </div>`;
+      });
+    }
+    html+=`</div>`;
+  });
+  return html;
+}
+
+// ── AUTO REFRESH ────────────────────────────────────────
+let countdownVal = 15;
+let _countdownInterval = null;
+
+function startCountdown(){
+  _countdownInterval = setInterval(()=>{
+    countdownVal--;
+    const el = document.getElementById('countdown');
+    if(el) el.textContent = countdownVal;
+    if(countdownVal <= 0){
+      countdownVal = 15;
+      fetchAndRender();
+    }
+  }, 1000);
+}
+
+initSplash();
+</script>
+</body>
+</html>

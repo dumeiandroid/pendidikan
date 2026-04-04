@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papan Skor Kompetisi — Matematika GBKP</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Roboto:wght@400;700&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0a0a;color:#f0f0f0;font-family:'Roboto',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:20px;text-align:center;border-bottom:2px solid #ffa502;position:sticky;top:0;z-index:100;}
+.header h1{font-family:'Orbitron',sans-serif;font-size:clamp(16px,4vw,32px);color:#ffa502;letter-spacing:3px;text-shadow:0 0 20px rgba(255,165,2,.5);}
+.header .subtitle{font-size:13px;color:#aaa;margin-top:5px;}
+.live-badge{display:inline-flex;align-items:center;gap:6px;background:#dc3545;color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px;}
+.live-dot{width:8px;height:8px;background:#fff;border-radius:50%;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ── REFRESH BAR ── */
+.refresh-bar{background:#111;padding:8px 20px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#666;border-bottom:1px solid #222;flex-wrap:wrap;gap:4px;}
+.refresh-bar .countdown{color:#ffa502;font-weight:bold;}
+
+/* ── STATUS BAR ADMIN ── */
+.status-bar{background:#111;padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;border-bottom:1px solid #222;}
+.status-off-badge{background:rgba(255,71,87,.12);border:1px solid rgba(255,71,87,.3);color:#ff4757;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+.status-on-badge{background:rgba(46,213,115,.12);border:1px solid rgba(46,213,115,.3);color:#2ed573;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+
+/* ── MAIN ── */
+.main{padding:20px;max-width:1200px;margin:0 auto;}
+
+/* ── WAITING STATE (admin off) ── */
+.waiting-section{padding:30px 20px;max-width:800px;margin:0 auto;}
+.waiting-header{text-align:center;margin-bottom:32px;}
+.waiting-header h2{font-family:'Orbitron',sans-serif;color:#ffa502;font-size:clamp(16px,3vw,24px);letter-spacing:2px;margin-bottom:8px;}
+.waiting-header p{color:#666;font-size:13px;}
+.group-count-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:32px;}
+.group-count-card{background:#111;border-radius:16px;padding:28px 24px;text-align:center;border-top:4px solid var(--gc);}
+.group-count-card .gc-icon{font-size:40px;margin-bottom:12px;}
+.group-count-card .gc-label{font-size:13px;color:#888;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;}
+.group-count-card .gc-range{font-size:12px;color:#555;margin-bottom:16px;}
+.group-count-card .gc-num{font-family:'Orbitron',sans-serif;font-size:48px;font-weight:900;color:var(--gc);}
+.group-count-card .gc-sub{font-size:12px;color:#555;margin-top:6px;}
+.waiting-note{background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);border-radius:12px;padding:16px 20px;text-align:center;color:rgba(255,255,255,.55);font-size:13px;line-height:1.7;}
+.waiting-note b{color:#ffa502;}
+.pulse-dots{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;}
+.pulse-dot{width:8px;height:8px;border-radius:50%;background:#ffa502;animation:dotB 1.4s infinite ease-in-out;}
+.pulse-dot:nth-child(2){animation-delay:.2s;}
+.pulse-dot:nth-child(3){animation-delay:.4s;}
+@keyframes dotB{0%,80%,100%{opacity:.2;transform:scale(.8);}40%{opacity:1;transform:scale(1.2);}}
+
+/* ── GROUP TABS ── */
+.group-tabs{display:flex;border-bottom:2px solid #1a1a1a;margin-bottom:24px;}
+.group-tab{flex:1;padding:14px;text-align:center;cursor:pointer;font-family:'Orbitron',sans-serif;font-size:13px;letter-spacing:1px;color:#555;transition:all .3s;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.group-tab:hover{color:#aaa;}
+.group-tab.active{color:#ffa502;border-bottom-color:#ffa502;}
+.group-tab .tab-label{display:block;margin-bottom:4px;}
+.group-tab .tab-range{font-size:10px;opacity:.7;font-family:'Roboto',sans-serif;letter-spacing:.5px;}
+.group-content{display:none;}
+.group-content.active{display:block;}
+
+/* ── PODIUM ── */
+.podium-section{display:flex;justify-content:center;align-items:flex-end;gap:15px;margin-bottom:40px;padding:20px 0;flex-wrap:wrap;}
+.podium-card{text-align:center;border-radius:12px;padding:15px 10px;transition:transform .3s;cursor:default;position:relative;}
+.podium-card:hover{transform:translateY(-5px);}
+.podium-1{background:linear-gradient(135deg,#b8860b,#ffd700,#b8860b);color:#1a1a1a;order:2;min-width:180px;padding-bottom:40px;box-shadow:0 0 30px rgba(255,215,0,.4);}
+.podium-2{background:linear-gradient(135deg,#555,#c0c0c0,#555);color:#1a1a1a;order:1;min-width:150px;padding-bottom:20px;box-shadow:0 0 20px rgba(192,192,192,.3);}
+.podium-3{background:linear-gradient(135deg,#6b3a2a,#cd7f32,#6b3a2a);color:#fff;order:3;min-width:150px;padding-bottom:10px;box-shadow:0 0 20px rgba(205,127,50,.3);}
+.podium-rank{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:900;display:block;margin-bottom:8px;}
+.podium-1 .podium-rank::before{content:'🥇 ';}
+.podium-2 .podium-rank::before{content:'🥈 ';}
+.podium-3 .podium-rank::before{content:'🥉 ';}
+.podium-nama{font-size:clamp(12px,2vw,15px);font-weight:bold;display:block;margin-bottom:4px;line-height:1.3;}
+.podium-kelas{font-size:11px;opacity:.8;display:block;margin-bottom:8px;}
+.podium-skor{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:900;display:block;}
+.podium-skor-label{font-size:11px;opacity:.7;}
+.podium-detail{margin-top:8px;font-size:11px;opacity:.8;display:flex;flex-wrap:wrap;justify-content:center;gap:3px;}
+.podium-detail span{background:rgba(0,0,0,.2);border-radius:4px;padding:2px 5px;}
+
+/* ── TABLE 4-10 ── */
+.table-section{margin-top:10px;}
+.table-section h2{font-family:'Orbitron',sans-serif;color:#ffa502;font-size:15px;margin-bottom:15px;letter-spacing:2px;}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table thead tr{background:linear-gradient(90deg,#1a1a2e,#0f3460);}
+.lb-table th{padding:12px 10px;text-align:left;font-size:13px;color:#ffa502;border-bottom:2px solid #ffa502;}
+.lb-table th.center{text-align:center;}
+.lb-table tbody tr{border-bottom:1px solid #1a1a1a;transition:background .2s;}
+.lb-table tbody tr:hover{background:#1a1a2e;}
+.lb-table td{padding:12px 10px;font-size:14px;background:transparent;border:none;}
+.lb-table td.center{text-align:center;}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;font-weight:bold;font-size:14px;background:#2b2b2b;color:#ffa502;}
+.total-skor{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;color:#ffa502;}
+.skor-mini{display:inline-block;background:#1a1a2e;border-radius:4px;padding:2px 6px;font-size:11px;margin:1px;color:#ccc;}
+.skor-mini b{color:#fff;}
+.nama-cell{font-weight:bold;font-size:15px;}
+.kelas-cell{font-size:12px;color:#888;margin-top:2px;}
+.belum-badge{color:#555;font-size:12px;font-style:italic;}
+
+/* ── BREAKDOWN PER GAME ── */
+.breakdown-section{margin-top:40px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+@media(max-width:900px){.breakdown-section{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.breakdown-section{grid-template-columns:1fr;}}
+.breakdown-card{background:#111;border-radius:12px;padding:15px;border-top:3px solid var(--color);}
+.breakdown-card h3{font-size:14px;color:var(--color);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.mini-rank{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.mini-rank .no{font-weight:bold;color:#555;width:20px;text-align:center;font-size:13px;}
+.mini-rank .no.gold{color:#ffd700;}
+.mini-rank .no.silver{color:#c0c0c0;}
+.mini-rank .no.bronze{color:#cd7f32;}
+.mini-rank .info{flex:1;}
+.mini-rank .info .nm{font-size:13px;font-weight:bold;}
+.mini-rank .info .kl{font-size:11px;color:#666;}
+.mini-rank .sc{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:bold;color:var(--color);}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:20px;color:#444;font-size:12px;margin-top:40px;border-top:1px solid #1a1a1a;}
+
+/* ── LOADING ── */
+.loading{text-align:center;padding:60px;color:#ffa502;font-size:18px;}
+.loading .spin{display:inline-block;width:40px;height:40px;border:4px solid #222;border-top-color:#ffa502;border-radius:50%;animation:spin .8s linear infinite;margin-bottom:15px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.animate{animation:fadeInUp .4s ease both;}
+.empty{text-align:center;padding:40px;color:#444;font-size:16px;}
+
+@media(max-width:600px){
+  .group-count-grid{grid-template-columns:1fr;}
+  .group-count-card .gc-num{font-size:36px;}
+  .podium-section{gap:8px;}
+  .podium-1,.podium-2,.podium-3{min-width:100px;padding:12px 6px;}
+  .podium-rank{font-size:22px;}
+  .podium-skor{font-size:18px;}
+  .lb-table th,.lb-table td{padding:8px 6px;font-size:12px;}
+  .main{padding:12px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🏆 PAPAN SKOR KOMPETISI</h1>
+  <div class="subtitle">Kompetisi Matematika — Diakonia Pendidikan GBKP Runggun Bambu Raya</div>
+  <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+</div>
+
+<div class="refresh-bar">
+  <span>Auto-refresh setiap <b>5 detik</b></span>
+  <span>Update berikutnya: <span class="countdown" id="countdown">5</span> detik</span>
+</div>
+
+<div class="status-bar" id="status-bar">
+  <span id="status-text" style="color:#666;font-size:13px;">Memuat status...</span>
+</div>
+
+<div class="main" id="main">
+  <div class="loading">
+    <div class="spin"></div><br>Memuat data...
+  </div>
+</div>
+
+<div class="footer">
+  Data diperbarui otomatis setiap 5 detik &middot; Kompetisi Matematika GBKP<br>
+  &copy; 2025 Diakonia Pendidikan GBKP Runggun Bambu Raya
+</div>
+
+<script>
+const API       = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
+const T_NILAI   = 'nilai_kompetisi';
+const T_KONTROL = 'kontrol_admin';
+const SECRET    = 'admin';
+const H = () => ({'Content-Type':'application/json','X-Custom-Auth':SECRET});
+
+const GAMES = [
+  {key:'perkalian',  label:'Kali',    icon:'✖', color:'#ff4757'},
+  {key:'pembagian',  label:'Bagi',    icon:'➗', color:'#ffa502'},
+  {key:'penjumlahan',label:'Tambah',  icon:'➕', color:'#3742fa'},
+  {key:'pengurangan',label:'Kurang',  icon:'➖', color:'#2ed573'},
+  {key:'akar',       label:'Akar',    icon:'√',  color:'#ff6348'},
+  {key:'kuadrat',    label:'Pangkat', icon:'x²', color:'#1e90ff'},
+];
+
+// Kelas 4-8 = Grup A, Kelas 9-12 + Mahasiswa = Grup B
+const GRUP_A_KELAS = ['Kelas 4','Kelas 5','Kelas 6','Kelas 7','Kelas 8'];
+const GRUP_B_KELAS = ['Kelas 9','Kelas 10','Kelas 11','Kelas 12','Mahasiswa'];
+
+let kompetisiOn = false;
+let activeGroupTab = 'a';
+
+function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
+function totalSkor(row){const b=parseJSON(row.x_03,{});return GAMES.reduce((s,g)=>s+(parseInt(b[g.key])||0),0);}
+function sudahSemua(row){const b=parseJSON(row.x_03,{});return GAMES.every(g=>parseInt(b[g.key])>0);}
+function getKelas(row){const b=parseJSON(row.x_02,{});return b.kelas||'';}
+function isGrupA(row){return GRUP_A_KELAS.includes(getKelas(row));}
+function isGrupB(row){return GRUP_B_KELAS.includes(getKelas(row));}
+
+// ── FETCH & RENDER ──────────────────────────────────────
+async function fetchAll(){
+  try{
+    // Fetch kontrol admin
+    const rc = await fetch(`${API}?table=${T_KONTROL}`, {headers:H()});
+    const dc = await rc.json();
+    if(dc.success && dc.data){
+      const row = dc.data.find(x=> x.id_x == 2);
+      if(row && row.x_01){
+        const ctrl = parseJSON(row.x_01, {kompetisi:false});
+        kompetisiOn = ctrl.kompetisi === true;
+      }
+    }
+
+    // Fetch nilai
+    const r = await fetch(`${API}?table=${T_NILAI}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success) return;
+
+    const valid = d.data.filter(row=>{
+      const bio=parseJSON(row.x_02,{});
+      return bio.nama;
+    });
+
+    updateStatusBar();
+    if(kompetisiOn){
+      renderLeaderboard(valid);
+    } else {
+      renderWaiting(valid);
+    }
+  } catch(err){ console.error(err); }
+}
+
+function updateStatusBar(){
+  const bar = document.getElementById('status-bar');
+  const txt = document.getElementById('status-text');
+  if(kompetisiOn){
+    txt.innerHTML = `<span class="status-on-badge">✅ Kompetisi AKTIF</span>&nbsp;<span style="color:#888;font-size:12px;">Leaderboard ditampilkan</span>`;
+  } else {
+    txt.innerHTML = `<span class="status-off-badge">⏳ Kompetisi Belum Dimulai</span>&nbsp;<span style="color:#888;font-size:12px;">Menunggu aktivasi panitia</span>`;
+  }
+}
+
+// ── WAITING VIEW (admin off) ─────────────────────────────
+function renderWaiting(allValid){
+  const grupA = allValid.filter(r=>isGrupA(r));
+  const grupB = allValid.filter(r=>isGrupB(r));
+
+  const html = `
+    <div class="waiting-section">
+      <div class="waiting-header">
+        <h2>PENDAFTARAN PESERTA</h2>
+        <p>Kompetisi akan segera dimulai. Data peserta yang sudah mendaftar:</p>
+      </div>
+      <div class="group-count-grid">
+        <div class="group-count-card" style="--gc:#ffa502">
+          <div class="gc-icon">📚</div>
+          <div class="gc-label">Grup A</div>
+          <div class="gc-range">Kelas 4 – 8</div>
+          <div class="gc-num animate">${grupA.length}</div>
+          <div class="gc-sub">peserta terdaftar</div>
+        </div>
+        <div class="group-count-card" style="--gc:#3742fa">
+          <div class="gc-icon">🎓</div>
+          <div class="gc-label">Grup B</div>
+          <div class="gc-range">Kelas 9 – 12 &amp; Mahasiswa</div>
+          <div class="gc-num animate">${grupB.length}</div>
+          <div class="gc-sub">peserta terdaftar</div>
+        </div>
+      </div>
+      <div class="waiting-note">
+        <b>Total Peserta: ${allValid.length} orang</b><br>
+        Leaderboard lengkap akan muncul otomatis setelah panitia mengaktifkan kompetisi.<br>
+        Halaman ini memperbarui data setiap 5 detik.
+        <div class="pulse-dots">
+          <div class="pulse-dot"></div>
+          <div class="pulse-dot"></div>
+          <div class="pulse-dot"></div>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ── LEADERBOARD VIEW (admin on) ─────────────────────────
+function renderLeaderboard(allValid){
+  const grupA = allValid.filter(r=>isGrupA(r));
+  const grupB = allValid.filter(r=>isGrupB(r));
+
+  const sortFn = (a,b)=>{
+    const diff=totalSkor(b)-totalSkor(a);
+    if(diff!==0) return diff;
+    const ma=parseJSON(a.x_05,{waktu:{}}),mb=parseJSON(b.x_05,{waktu:{}});
+    const la=Object.values(ma.waktu||{}).sort().pop()||'';
+    const lb=Object.values(mb.waktu||{}).sort().pop()||'';
+    return la.localeCompare(lb);
+  };
+
+  const rankedA = [...grupA].sort(sortFn);
+  const rankedB = [...grupB].sort(sortFn);
+
+  const html = `
+    <div class="group-tabs">
+      <div class="group-tab ${activeGroupTab==='a'?'active':''}" onclick="switchTab('a')">
+        <span class="tab-label">📚 GRUP A</span>
+        <span class="tab-range">Kelas 4 – 8 (${grupA.length} peserta)</span>
+      </div>
+      <div class="group-tab ${activeGroupTab==='b'?'active':''}" onclick="switchTab('b')">
+        <span class="tab-label">🎓 GRUP B</span>
+        <span class="tab-range">Kelas 9 – 12 &amp; Mahasiswa (${grupB.length} peserta)</span>
+      </div>
+    </div>
+    <div class="group-content ${activeGroupTab==='a'?'active':''}" id="group-a">
+      ${renderGroupContent(rankedA, allValid.filter(r=>isGrupA(r)))}
+    </div>
+    <div class="group-content ${activeGroupTab==='b'?'active':''}" id="group-b">
+      ${renderGroupContent(rankedB, allValid.filter(r=>isGrupB(r)))}
+    </div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+function switchTab(g){
+  activeGroupTab = g;
+  document.querySelectorAll('.group-tab').forEach((t,i)=>{
+    t.classList.toggle('active', (i===0&&g==='a')||(i===1&&g==='b'));
+  });
+  document.querySelectorAll('.group-content').forEach((c,i)=>{
+    c.classList.toggle('active', (i===0&&g==='a')||(i===1&&g==='b'));
+  });
+}
+
+function renderGroupContent(ranked, allGroupValid){
+  if(ranked.length===0){
+    return '<div class="empty">Belum ada peserta di grup ini yang mengerjakan soal.</div>';
+  }
+
+  let html = '';
+  const top10 = ranked.slice(0,10);
+
+  // ── PODIUM TOP 3 ──
+  const podium = top10.slice(0,3);
+  if(podium.length>0){
+    html += `<div class="podium-section">`;
+    const order = podium.length===1?[0]:podium.length===2?[1,0]:[1,0,2];
+    order.forEach(i=>{
+      if(!podium[i]) return;
+      const row=podium[i];
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const cls=['podium-1','podium-2','podium-3'][i];
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span>${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<div class="podium-card ${cls} animate" style="animation-delay:${i*0.1}s">
+        <span class="podium-rank">${i+1}</span>
+        <span class="podium-nama">${bio.nama||'-'}</span>
+        <span class="podium-kelas">${bio.kelas||''} · ${bio.sekolah||''}</span>
+        <span class="podium-skor">${tot}</span>
+        <span class="podium-skor-label">${semua?'Total Skor':'⚠ belum semua game'}</span>
+        <div class="podium-detail">${detail}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── TABEL RANK 4–10 ──
+  const rest = top10.slice(3);
+  if(rest.length>0){
+    html += `<div class="table-section">
+      <h2>RANKING 4 – ${Math.min(10,top10.length)}</h2>
+      <table class="lb-table">
+        <thead><tr>
+          <th style="width:50px" class="center">Rank</th>
+          <th>Peserta</th>
+          <th class="center">Total</th>
+          <th>Skor per Game</th>
+        </tr></thead><tbody>`;
+    rest.forEach((row,i)=>{
+      const rank=i+4;
+      const bio=parseJSON(row.x_02,{});
+      const best=parseJSON(row.x_03,{});
+      const tot=totalSkor(row);
+      const semua=sudahSemua(row);
+      const detail=GAMES.map(g=>`<span class="skor-mini">${g.icon}<b>${parseInt(best[g.key])||0}</b></span>`).join('');
+      html+=`<tr class="animate" style="animation-delay:${i*0.05}s">
+        <td class="center"><div class="rank-badge">${rank}</div></td>
+        <td>
+          <div class="nama-cell">${bio.nama||'-'}</div>
+          <div class="kelas-cell">${bio.kelas||''} · ${bio.sekolah||''}</div>
+        </td>
+        <td class="center">
+          <div class="total-skor">${tot}</div>
+          ${!semua?'<div class="belum-badge">belum semua</div>':''}
+        </td>
+        <td>${detail}</td>
+      </tr>`;
+    });
+    html += `</tbody></table></div>`;
+  }
+
+  // ── BREAKDOWN PER GAME ──
+  html += `<div class="breakdown-section">`;
+  GAMES.forEach(g=>{
+    const sorted=[...allGroupValid]
+      .filter(r=>{ const b=parseJSON(r.x_03,{}); return parseInt(b[g.key])>0; })
+      .sort((a,b)=>{
+        const ba=parseJSON(a.x_03,{}),bb=parseJSON(b.x_03,{});
+        return (parseInt(bb[g.key])||0)-(parseInt(ba[g.key])||0);
+      }).slice(0,3);
+    html+=`<div class="breakdown-card" style="--color:${g.color}">
+      <h3>${g.icon} ${g.label}</h3>`;
+    if(sorted.length===0){
+      html+=`<div style="color:#444;font-size:13px">Belum ada data</div>`;
+    } else {
+      const medals=['gold','silver','bronze'];
+      sorted.forEach((row,i)=>{
+        const bio=parseJSON(row.x_02,{});
+        const best=parseJSON(row.x_03,{});
+        html+=`<div class="mini-rank">
+          <div class="no ${medals[i]}">${i+1}</div>
+          <div class="info">
+            <div class="nm">${bio.nama||'-'}</div>
+            <div class="kl">${bio.kelas||''}</div>
+          </div>
+          <div class="sc">${parseInt(best[g.key])||0}</div>
+        </div>`;
+      });
+    }
+    html+=`</div>`;
+  });
+  html += `</div>`;
+
+  return html;
+}
+
+// ── COUNTDOWN AUTO REFRESH ──────────────────────────────
+let countdownVal = 5;
+let _iv = null;
+
+function startCountdown(){
+  _iv = setInterval(()=>{
+    countdownVal--;
+    const el = document.getElementById('countdown');
+    if(el) el.textContent = countdownVal;
+    if(countdownVal <= 0){
+      countdownVal = 5;
+      fetchAll();
+    }
+  }, 1000);
+}
+
+// ── INIT ──────────────────────────────────────────────
+fetchAll();
+startCountdown();
+</script>
+</body>
+</html>
