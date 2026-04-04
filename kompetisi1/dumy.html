@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seeder Data Peserta — Kompetisi Matematika GBKP</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#0a0a0a;color:#f0f0f0;font-family:'Roboto',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px;}
+  h1{font-family:'Orbitron',sans-serif;color:#ffa502;font-size:22px;letter-spacing:2px;margin-bottom:8px;text-align:center;}
+  .sub{color:#666;font-size:13px;margin-bottom:32px;text-align:center;}
+  .card{background:#111;border-radius:16px;padding:28px 32px;width:100%;max-width:680px;border:1px solid #1e1e1e;}
+  .info-row{display:flex;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+  .info-box{background:#0a0a0a;border-radius:10px;padding:14px 20px;flex:1;min-width:140px;text-align:center;}
+  .info-box .val{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:700;color:#ffa502;}
+  .info-box .lbl{font-size:11px;color:#555;margin-top:4px;letter-spacing:.5px;}
+  .btn{width:100%;padding:16px;background:linear-gradient(135deg,#ffa502,#ff6348);border:none;border-radius:10px;color:#fff;font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;transition:opacity .2s;margin-bottom:20px;}
+  .btn:hover{opacity:.88;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn-danger{background:linear-gradient(135deg,#ff4757,#c0392b);margin-top:8px;}
+  .log{background:#0a0a0a;border-radius:10px;padding:16px;font-size:12px;font-family:monospace;line-height:1.8;max-height:320px;overflow-y:auto;border:1px solid #1a1a1a;}
+  .log .ok{color:#2ed573;}
+  .log .err{color:#ff4757;}
+  .log .inf{color:#ffa502;}
+  .log .dim{color:#444;}
+  .progress-wrap{margin-bottom:16px;}
+  .progress-bar-bg{background:#1a1a1a;border-radius:20px;height:10px;overflow:hidden;}
+  .progress-bar{height:10px;background:linear-gradient(90deg,#ffa502,#ff6348);border-radius:20px;width:0%;transition:width .3s;}
+  .progress-label{font-size:12px;color:#666;margin-top:6px;text-align:right;}
+  .warning{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.25);border-radius:8px;padding:12px 16px;font-size:12px;color:#ff6b6b;margin-bottom:16px;line-height:1.6;}
+  .warning b{color:#ff4757;}
+</style>
+</head>
+<body>
+
+<h1>🌱 SEEDER DATA PESERTA</h1>
+<p class="sub">Kompetisi Matematika — Diakonia Pendidikan GBKP Runggun Bambu Raya</p>
+
+<div class="card">
+  <div class="info-row">
+    <div class="info-box"><div class="val">40</div><div class="lbl">Total Peserta</div></div>
+    <div class="info-box"><div class="val">20</div><div class="lbl">Grup A (Kls 4–8)</div></div>
+    <div class="info-box"><div class="val">20</div><div class="lbl">Grup B (Kls 9–Mhs)</div></div>
+  </div>
+
+  <div class="warning">
+    ⚠️ <b>Perhatian:</b> Tombol <b>Kirim Data</b> akan menambahkan 40 peserta baru ke tabel <code>nilai_kompetisi</code>. Jika ingin mengulang, gunakan tombol <b>Hapus Semua Data</b> terlebih dahulu agar tidak duplikat.
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar-bg"><div class="progress-bar" id="bar"></div></div>
+    <div class="progress-label" id="prog-label">Siap</div>
+  </div>
+
+  <button class="btn" id="btn-kirim" onclick="kirimData()">🚀 KIRIM 40 DATA KE API</button>
+  <button class="btn btn-danger" id="btn-hapus" onclick="hapusData()">🗑️ HAPUS SEMUA DATA (Clear Table)</button>
+
+  <div class="log" id="log"><span class="dim">// Log akan muncul di sini...</span></div>
+</div>
+
+<script>
+const API     = 'https://lidan-co-id.pages.dev/api/contacts_filter_dinamis6';
+const TABLE   = 'nilai_kompetisi';
+const SECRET  = 'admin';
+const HEADERS = { 'Content-Type': 'application/json', 'X-Custom-Auth': SECRET };
+
+// ══════════════════════════════════════════════════════════
+//  40 DATA PESERTA
+//  x_02 = { nama, kelas, sekolah }
+//  x_03 = { perkalian, pembagian, penjumlahan, pengurangan, akar, kuadrat }
+//  x_05 = { waktu: { perkalian, pembagian, ... } }
+// ══════════════════════════════════════════════════════════
+const PESERTA = [
+  // ── GRUP A — Kelas 4 ──
+  { x_02: JSON.stringify({nama:'Rani Sitepu',     kelas:'Kelas 4', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:88,pembagian:76,penjumlahan:95,pengurangan:82,akar:70,kuadrat:65}), x_05: JSON.stringify({waktu:{perkalian:'00:04:12',pembagian:'00:05:30',penjumlahan:'00:03:55',pengurangan:'00:04:40',akar:'00:06:10',kuadrat:'00:06:45'}}) },
+  { x_02: JSON.stringify({nama:'Budi Tarigan',    kelas:'Kelas 4', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:72,pembagian:68,penjumlahan:80,pengurangan:75,akar:60,kuadrat:55}), x_05: JSON.stringify({waktu:{perkalian:'00:05:00',pembagian:'00:05:50',penjumlahan:'00:04:30',pengurangan:'00:05:10',akar:'00:06:40',kuadrat:'00:07:00'}}) },
+  { x_02: JSON.stringify({nama:'Citra Sembiring', kelas:'Kelas 4', sekolah:'SD Negeri 01 Bambu'}),   x_03: JSON.stringify({perkalian:60,pembagian:55,penjumlahan:70,pengurangan:65,akar:50,kuadrat:45}), x_05: JSON.stringify({waktu:{perkalian:'00:05:30',pembagian:'00:06:10',penjumlahan:'00:04:50',pengurangan:'00:05:40',akar:'00:07:00',kuadrat:'00:07:30'}}) },
+  { x_02: JSON.stringify({nama:'David Ginting',   kelas:'Kelas 4', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:50,pembagian:48,penjumlahan:62,pengurangan:58,akar:42,kuadrat:38}), x_05: JSON.stringify({waktu:{perkalian:'00:06:00',pembagian:'00:06:30',penjumlahan:'00:05:20',pengurangan:'00:06:00',akar:'00:07:20',kuadrat:'00:07:50'}}) },
+  // ── GRUP A — Kelas 5 ──
+  { x_02: JSON.stringify({nama:'Elsa Br Karo',    kelas:'Kelas 5', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:92,pembagian:88,penjumlahan:96,pengurangan:90,akar:80,kuadrat:78}), x_05: JSON.stringify({waktu:{perkalian:'00:03:50',pembagian:'00:04:10',penjumlahan:'00:03:30',pengurangan:'00:04:00',akar:'00:05:00',kuadrat:'00:05:20'}}) },
+  { x_02: JSON.stringify({nama:'Franky Sinuraya', kelas:'Kelas 5', sekolah:'SD Negeri 02 Raya'}),    x_03: JSON.stringify({perkalian:78,pembagian:72,penjumlahan:84,pengurangan:79,akar:65,kuadrat:62}), x_05: JSON.stringify({waktu:{perkalian:'00:04:30',pembagian:'00:04:55',penjumlahan:'00:04:05',pengurangan:'00:04:35',akar:'00:05:50',kuadrat:'00:06:10'}}) },
+  { x_02: JSON.stringify({nama:'Grace Purba',     kelas:'Kelas 5', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:65,pembagian:60,penjumlahan:72,pengurangan:68,akar:55,kuadrat:50}), x_05: JSON.stringify({waktu:{perkalian:'00:05:10',pembagian:'00:05:40',penjumlahan:'00:04:45',pengurangan:'00:05:15',akar:'00:06:30',kuadrat:'00:07:00'}}) },
+  { x_02: JSON.stringify({nama:'Hendra Perangin', kelas:'Kelas 5', sekolah:'SD Negeri 01 Bambu'}),   x_03: JSON.stringify({perkalian:55,pembagian:52,penjumlahan:60,pengurangan:58,akar:45,kuadrat:40}), x_05: JSON.stringify({waktu:{perkalian:'00:05:45',pembagian:'00:06:05',penjumlahan:'00:05:10',pengurangan:'00:05:50',akar:'00:06:55',kuadrat:'00:07:20'}}) },
+  // ── GRUP A — Kelas 6 ──
+  { x_02: JSON.stringify({nama:'Indah Br Barus',  kelas:'Kelas 6', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:85,pembagian:80,penjumlahan:88,pengurangan:83,akar:75,kuadrat:70}), x_05: JSON.stringify({waktu:{perkalian:'00:04:05',pembagian:'00:04:25',penjumlahan:'00:03:45',pengurangan:'00:04:15',akar:'00:05:15',kuadrat:'00:05:40'}}) },
+  { x_02: JSON.stringify({nama:'Joko Siahaan',    kelas:'Kelas 6', sekolah:'SD Negeri 02 Raya'}),    x_03: JSON.stringify({perkalian:70,pembagian:65,penjumlahan:78,pengurangan:72,akar:58,kuadrat:54}), x_05: JSON.stringify({waktu:{perkalian:'00:04:50',pembagian:'00:05:20',penjumlahan:'00:04:20',pengurangan:'00:04:55',akar:'00:06:05',kuadrat:'00:06:30'}}) },
+  { x_02: JSON.stringify({nama:'Kesya Br Sinaga', kelas:'Kelas 6', sekolah:'SD GBKP Bambu Raya'}),   x_03: JSON.stringify({perkalian:58,pembagian:54,penjumlahan:66,pengurangan:62,akar:48,kuadrat:44}), x_05: JSON.stringify({waktu:{perkalian:'00:05:25',pembagian:'00:05:55',penjumlahan:'00:04:55',pengurangan:'00:05:30',akar:'00:06:45',kuadrat:'00:07:10'}}) },
+  // ── GRUP A — Kelas 7 ──
+  { x_02: JSON.stringify({nama:'Leo Ginting',        kelas:'Kelas 7', sekolah:'SMP GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:95,pembagian:90,penjumlahan:98,pengurangan:93,akar:88,kuadrat:85}), x_05: JSON.stringify({waktu:{perkalian:'00:03:30',pembagian:'00:03:50',penjumlahan:'00:03:10',pengurangan:'00:03:45',akar:'00:04:30',kuadrat:'00:04:55'}}) },
+  { x_02: JSON.stringify({nama:'Maya Br Tarigan',    kelas:'Kelas 7', sekolah:'SMP Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:82,pembagian:78,penjumlahan:86,pengurangan:81,akar:72,kuadrat:68}), x_05: JSON.stringify({waktu:{perkalian:'00:04:15',pembagian:'00:04:40',penjumlahan:'00:03:58',pengurangan:'00:04:22',akar:'00:05:25',kuadrat:'00:05:48'}}) },
+  { x_02: JSON.stringify({nama:'Nando Sitepu',       kelas:'Kelas 7', sekolah:'SMP GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:68,pembagian:64,penjumlahan:74,pengurangan:70,akar:59,kuadrat:55}), x_05: JSON.stringify({waktu:{perkalian:'00:05:00',pembagian:'00:05:28',penjumlahan:'00:04:35',pengurangan:'00:05:05',akar:'00:06:15',kuadrat:'00:06:40'}}) },
+  // ── GRUP A — Kelas 8 ──
+  { x_02: JSON.stringify({nama:'Olivia Br Sembiring',kelas:'Kelas 8', sekolah:'SMP GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:90,pembagian:85,penjumlahan:92,pengurangan:88,akar:80,kuadrat:76}), x_05: JSON.stringify({waktu:{perkalian:'00:03:45',pembagian:'00:04:00',penjumlahan:'00:03:20',pengurangan:'00:03:55',akar:'00:04:45',kuadrat:'00:05:10'}}) },
+  { x_02: JSON.stringify({nama:'Putra Kaban',        kelas:'Kelas 8', sekolah:'SMP Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:76,pembagian:70,penjumlahan:82,pengurangan:77,akar:65,kuadrat:60}), x_05: JSON.stringify({waktu:{perkalian:'00:04:35',pembagian:'00:05:00',penjumlahan:'00:04:10',pengurangan:'00:04:45',akar:'00:05:45',kuadrat:'00:06:05'}}) },
+  { x_02: JSON.stringify({nama:'Qori Br Perangin',   kelas:'Kelas 8', sekolah:'SMP GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:62,pembagian:58,penjumlahan:68,pengurangan:63,akar:52,kuadrat:48}), x_05: JSON.stringify({waktu:{perkalian:'00:05:20',pembagian:'00:05:48',penjumlahan:'00:04:58',pengurangan:'00:05:25',akar:'00:06:38',kuadrat:'00:07:00'}}) },
+  { x_02: JSON.stringify({nama:'Ricky Sinuraya',     kelas:'Kelas 8', sekolah:'SMP Negeri 2 Raya'}),   x_03: JSON.stringify({perkalian:48,pembagian:45,penjumlahan:55,pengurangan:50,akar:38,kuadrat:35}), x_05: JSON.stringify({waktu:{perkalian:'00:06:10',pembagian:'00:06:40',penjumlahan:'00:05:30',pengurangan:'00:06:05',akar:'00:07:10',kuadrat:'00:07:35'}}) },
+  { x_02: JSON.stringify({nama:'Sari Br Ginting',    kelas:'Kelas 8', sekolah:'SMP GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:40,pembagian:38,penjumlahan:48,pengurangan:43,akar:30,kuadrat:28}), x_05: JSON.stringify({waktu:{perkalian:'00:06:30',pembagian:'00:07:00',penjumlahan:'00:05:50',pengurangan:'00:06:20',akar:'00:07:30',kuadrat:'00:07:55'}}) },
+  { x_02: JSON.stringify({nama:'Tono Purba',         kelas:'Kelas 8', sekolah:'SMP Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:35,pembagian:32,penjumlahan:42,pengurangan:38,akar:25,kuadrat:22}), x_05: JSON.stringify({waktu:{perkalian:'00:06:50',pembagian:'00:07:15',penjumlahan:'00:06:05',pengurangan:'00:06:35',akar:'00:07:45',kuadrat:'00:08:00'}}) },
+
+  // ── GRUP B — Kelas 9 ──
+  { x_02: JSON.stringify({nama:'Ursula Br Barus',  kelas:'Kelas 9',  sekolah:'SMP GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:96,pembagian:92,penjumlahan:98,pengurangan:94,akar:90,kuadrat:88}), x_05: JSON.stringify({waktu:{perkalian:'00:03:20',pembagian:'00:03:40',penjumlahan:'00:03:00',pengurangan:'00:03:30',akar:'00:04:15',kuadrat:'00:04:40'}}) },
+  { x_02: JSON.stringify({nama:'Victor Tarigan',   kelas:'Kelas 9',  sekolah:'SMP Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:84,pembagian:80,penjumlahan:88,pengurangan:85,akar:76,kuadrat:72}), x_05: JSON.stringify({waktu:{perkalian:'00:04:05',pembagian:'00:04:28',penjumlahan:'00:03:48',pengurangan:'00:04:12',akar:'00:05:10',kuadrat:'00:05:32'}}) },
+  { x_02: JSON.stringify({nama:'Winda Br Siahaan', kelas:'Kelas 9',  sekolah:'SMP GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:70,pembagian:66,penjumlahan:75,pengurangan:71,akar:62,kuadrat:58}), x_05: JSON.stringify({waktu:{perkalian:'00:04:50',pembagian:'00:05:15',penjumlahan:'00:04:25',pengurangan:'00:04:55',akar:'00:05:58',kuadrat:'00:06:18'}}) },
+  // ── GRUP B — Kelas 10 ──
+  { x_02: JSON.stringify({nama:'Xena Br Karo',   kelas:'Kelas 10', sekolah:'SMA GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:93,pembagian:89,penjumlahan:95,pengurangan:91,akar:85,kuadrat:82}), x_05: JSON.stringify({waktu:{perkalian:'00:03:35',pembagian:'00:03:55',penjumlahan:'00:03:15',pengurangan:'00:03:45',akar:'00:04:30',kuadrat:'00:04:50'}}) },
+  { x_02: JSON.stringify({nama:'Yogi Sembiring', kelas:'Kelas 10', sekolah:'SMA Negeri 1 Raya'}),    x_03: JSON.stringify({perkalian:80,pembagian:76,penjumlahan:84,pengurangan:80,akar:72,kuadrat:68}), x_05: JSON.stringify({waktu:{perkalian:'00:04:18',pembagian:'00:04:42',penjumlahan:'00:04:00',pengurangan:'00:04:28',akar:'00:05:22',kuadrat:'00:05:45'}}) },
+  { x_02: JSON.stringify({nama:'Zara Br Ginting',kelas:'Kelas 10', sekolah:'SMA GBKP Bambu Raya'}),  x_03: JSON.stringify({perkalian:66,pembagian:62,penjumlahan:71,pengurangan:67,akar:57,kuadrat:53}), x_05: JSON.stringify({waktu:{perkalian:'00:05:02',pembagian:'00:05:28',penjumlahan:'00:04:40',pengurangan:'00:05:08',akar:'00:06:10',kuadrat:'00:06:32'}}) },
+  { x_02: JSON.stringify({nama:'Arif Sitepu',    kelas:'Kelas 10', sekolah:'SMA Negeri 2 Raya'}),    x_03: JSON.stringify({perkalian:55,pembagian:50,penjumlahan:60,pengurangan:56,akar:45,kuadrat:42}), x_05: JSON.stringify({waktu:{perkalian:'00:05:35',pembagian:'00:06:00',penjumlahan:'00:05:12',pengurangan:'00:05:40',akar:'00:06:45',kuadrat:'00:07:05'}}) },
+  // ── GRUP B — Kelas 11 ──
+  { x_02: JSON.stringify({nama:'Bella Br Purba',  kelas:'Kelas 11', sekolah:'SMA GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:88,pembagian:84,penjumlahan:91,pengurangan:87,akar:79,kuadrat:75}), x_05: JSON.stringify({waktu:{perkalian:'00:03:52',pembagian:'00:04:14',penjumlahan:'00:03:32',pengurangan:'00:04:02',akar:'00:04:58',kuadrat:'00:05:20'}}) },
+  { x_02: JSON.stringify({nama:'Calvin Tarigan',  kelas:'Kelas 11', sekolah:'SMA Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:75,pembagian:70,penjumlahan:80,pengurangan:75,akar:65,kuadrat:61}), x_05: JSON.stringify({waktu:{perkalian:'00:04:28',pembagian:'00:04:55',penjumlahan:'00:04:08',pengurangan:'00:04:40',akar:'00:05:38',kuadrat:'00:06:00'}}) },
+  { x_02: JSON.stringify({nama:'Dina Br Sinaga',  kelas:'Kelas 11', sekolah:'SMA GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:62,pembagian:58,penjumlahan:67,pengurangan:63,akar:53,kuadrat:49}), x_05: JSON.stringify({waktu:{perkalian:'00:05:05',pembagian:'00:05:30',penjumlahan:'00:04:48',pengurangan:'00:05:15',akar:'00:06:20',kuadrat:'00:06:42'}}) },
+  { x_02: JSON.stringify({nama:'Eko Kaban',       kelas:'Kelas 11', sekolah:'SMA Negeri 2 Raya'}),   x_03: JSON.stringify({perkalian:50,pembagian:46,penjumlahan:55,pengurangan:51,akar:40,kuadrat:37}), x_05: JSON.stringify({waktu:{perkalian:'00:05:40',pembagian:'00:06:05',penjumlahan:'00:05:18',pengurangan:'00:05:45',akar:'00:06:52',kuadrat:'00:07:12'}}) },
+  // ── GRUP B — Kelas 12 ──
+  { x_02: JSON.stringify({nama:'Fani Br Perangin',kelas:'Kelas 12', sekolah:'SMA GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:97,pembagian:94,penjumlahan:99,pengurangan:96,akar:92,kuadrat:90}), x_05: JSON.stringify({waktu:{perkalian:'00:03:10',pembagian:'00:03:28',penjumlahan:'00:02:50',pengurangan:'00:03:18',akar:'00:04:05',kuadrat:'00:04:25'}}) },
+  { x_02: JSON.stringify({nama:'Gilang Sinuraya', kelas:'Kelas 12', sekolah:'SMA Negeri 1 Raya'}),   x_03: JSON.stringify({perkalian:86,pembagian:82,penjumlahan:89,pengurangan:85,akar:77,kuadrat:74}), x_05: JSON.stringify({waktu:{perkalian:'00:04:00',pembagian:'00:04:22',penjumlahan:'00:03:40',pengurangan:'00:04:10',akar:'00:05:05',kuadrat:'00:05:27'}}) },
+  { x_02: JSON.stringify({nama:'Hana Br Barus',   kelas:'Kelas 12', sekolah:'SMA GBKP Bambu Raya'}), x_03: JSON.stringify({perkalian:73,pembagian:69,penjumlahan:77,pengurangan:74,akar:63,kuadrat:59}), x_05: JSON.stringify({waktu:{perkalian:'00:04:42',pembagian:'00:05:05',penjumlahan:'00:04:22',pengurangan:'00:04:50',akar:'00:05:48',kuadrat:'00:06:10'}}) },
+  { x_02: JSON.stringify({nama:'Ivan Ginting',    kelas:'Kelas 12', sekolah:'SMA Negeri 2 Raya'}),   x_03: JSON.stringify({perkalian:60,pembagian:56,penjumlahan:65,pengurangan:61,akar:50,kuadrat:46}), x_05: JSON.stringify({waktu:{perkalian:'00:05:15',pembagian:'00:05:42',penjumlahan:'00:04:55',pengurangan:'00:05:22',akar:'00:06:28',kuadrat:'00:06:50'}}) },
+  // ── GRUP B — Mahasiswa ──
+  { x_02: JSON.stringify({nama:'Jessika Br Sembiring',kelas:'Mahasiswa', sekolah:'Universitas Sumatera Utara'}),    x_03: JSON.stringify({perkalian:99,pembagian:97,penjumlahan:100,pengurangan:98,akar:95,kuadrat:93}), x_05: JSON.stringify({waktu:{perkalian:'00:02:55',pembagian:'00:03:12',penjumlahan:'00:02:38',pengurangan:'00:03:05',akar:'00:03:50',kuadrat:'00:04:10'}}) },
+  { x_02: JSON.stringify({nama:'Kevin Sitepu',        kelas:'Mahasiswa', sekolah:'Universitas HKBP Nommensen'}),   x_03: JSON.stringify({perkalian:91,pembagian:87,penjumlahan:94,pengurangan:90,akar:83,kuadrat:80}), x_05: JSON.stringify({waktu:{perkalian:'00:03:28',pembagian:'00:03:48',penjumlahan:'00:03:08',pengurangan:'00:03:38',akar:'00:04:25',kuadrat:'00:04:48'}}) },
+  { x_02: JSON.stringify({nama:'Laura Br Tarigan',    kelas:'Mahasiswa', sekolah:'Universitas Sumatera Utara'}),    x_03: JSON.stringify({perkalian:78,pembagian:74,penjumlahan:82,pengurangan:78,akar:70,kuadrat:66}), x_05: JSON.stringify({waktu:{perkalian:'00:04:10',pembagian:'00:04:35',penjumlahan:'00:03:52',pengurangan:'00:04:20',akar:'00:05:18',kuadrat:'00:05:40'}}) },
+  { x_02: JSON.stringify({nama:'Melvin Sinaga',        kelas:'Mahasiswa', sekolah:'Universitas Methodist Indonesia'}),x_03: JSON.stringify({perkalian:65,pembagian:61,penjumlahan:69,pengurangan:65,akar:56,kuadrat:52}), x_05: JSON.stringify({waktu:{perkalian:'00:04:55',pembagian:'00:05:20',penjumlahan:'00:04:38',pengurangan:'00:05:05',akar:'00:06:05',kuadrat:'00:06:28'}}) },
+  { x_02: JSON.stringify({nama:'Novita Br Karo',       kelas:'Mahasiswa', sekolah:'Universitas HKBP Nommensen'}),   x_03: JSON.stringify({perkalian:52,pembagian:48,penjumlahan:57,pengurangan:53,akar:43,kuadrat:40}), x_05: JSON.stringify({waktu:{perkalian:'00:05:38',pembagian:'00:06:02',penjumlahan:'00:05:20',pengurangan:'00:05:48',akar:'00:06:48',kuadrat:'00:07:08'}}) },
+];
+
+// ══════════════════════════════════════════════════════════
+//  HELPERS LOG & PROGRESS
+// ══════════════════════════════════════════════════════════
+const logEl  = document.getElementById('log');
+const barEl  = document.getElementById('bar');
+const progEl = document.getElementById('prog-label');
+
+function log(msg, type='dim'){
+  const span = document.createElement('span');
+  span.className = type;
+  span.textContent = msg;
+  if(logEl.querySelector('.dim')?.textContent.startsWith('//')) logEl.innerHTML = '';
+  logEl.appendChild(span);
+  logEl.appendChild(document.createTextNode('\n'));
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function setProgress(pct, label){
+  barEl.style.width = pct + '%';
+  progEl.textContent = label;
+}
+
+function setBtns(disabled){
+  document.getElementById('btn-kirim').disabled = disabled;
+  document.getElementById('btn-hapus').disabled = disabled;
+}
+
+// ══════════════════════════════════════════════════════════
+//  KIRIM DATA — bulk_insert
+// ══════════════════════════════════════════════════════════
+async function kirimData(){
+  setBtns(true);
+  logEl.innerHTML = '';
+  setProgress(0, 'Mengirim...');
+  log(`[INFO] Memulai bulk insert ${PESERTA.length} peserta ke tabel "${TABLE}"...`, 'inf');
+
+  try {
+    const res = await fetch(`${API}?table=${TABLE}&action=bulk_insert`, {
+      method: 'POST',
+      headers: HEADERS,
+      body: JSON.stringify(PESERTA)
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      setProgress(100, `Selesai — ${data.inserted} baris berhasil dimasukkan`);
+      log(`[OK] Berhasil! ${data.inserted} dari ${data.total} baris berhasil dikirim.`, 'ok');
+      log(`[OK] Pesan API: ${data.message}`, 'ok');
+      log('', 'dim');
+      log('[INFO] Sekarang buka score.html — data akan muncul di leaderboard.', 'inf');
+    } else {
+      setProgress(0, 'Gagal');
+      log(`[ERROR] API mengembalikan success=false`, 'err');
+      log(JSON.stringify(data), 'err');
+    }
+  } catch(e){
+    setProgress(0, 'Error jaringan');
+    log(`[ERROR] ${e.message}`, 'err');
+  }
+
+  setBtns(false);
+}
+
+// ══════════════════════════════════════════════════════════
+//  HAPUS SEMUA DATA — clear_table
+// ══════════════════════════════════════════════════════════
+async function hapusData(){
+  if(!confirm(`⚠️ Yakin ingin menghapus SEMUA data di tabel "${TABLE}"?\nTindakan ini tidak bisa dibatalkan.`)) return;
+
+  setBtns(true);
+  logEl.innerHTML = '';
+  setProgress(10, 'Menghapus...');
+  log(`[INFO] Menghapus semua data di tabel "${TABLE}"...`, 'inf');
+
+  try {
+    const res = await fetch(`${API}?table=${TABLE}&action=clear_table`, {
+      method: 'DELETE',
+      headers: HEADERS
+    });
+
+    const data = await res.json();
+
+    if(data.success){
+      setProgress(100, 'Tabel berhasil dikosongkan');
+      log(`[OK] ${data.message}`, 'ok');
+      log('[INFO] Tabel sudah kosong. Siap untuk kirim data baru.', 'inf');
+    } else {
+      setProgress(0, 'Gagal');
+      log(`[ERROR] ${JSON.stringify(data)}`, 'err');
+    }
+  } catch(e){
+    setProgress(0, 'Error jaringan');
+    log(`[ERROR] ${e.message}`, 'err');
+  }
+
+  setBtns(false);
+}
+</script>
+</body>
+</html>
