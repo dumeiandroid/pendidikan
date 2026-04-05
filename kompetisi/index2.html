@@ -1151,16 +1151,15 @@ async function endGame(){
   const newAwal={...awal};
   const meta=getMeta();
   let changed=false;
-  const netScore=correctScore-wrongScore;
 
   if(isFirstTime){
-    newAwal[activeGame]=netScore;
-    newBest[activeGame]=netScore;
+    newAwal[activeGame]=correctScore;
+    newBest[activeGame]=correctScore;
     meta.waktu=meta.waktu||{};
     meta.waktu[activeGame]=now;
     changed=true;
-  } else if(netScore>existing){
-    newBest[activeGame]=netScore;
+  } else if(correctScore>existing){
+    newBest[activeGame]=correctScore;
     meta.waktu=meta.waktu||{};
     meta.waktu[activeGame]=now;
     changed=true;
@@ -1226,11 +1225,10 @@ function _handleFinish(){
       const best=getBest(), awal=getAwal();
       const existing=parseInt(best[activeGame])||0;
       const isFirstTime=!(activeGame in awal)||!awal[activeGame];
-      const netScore=correctScore-wrongScore;
-      if(isFirstTime || netScore > existing){
+      if(isFirstTime || correctScore > existing){
         const newBest={...best}; const newAwal={...awal};
-        if(isFirstTime){ newAwal[activeGame]=netScore; }
-        newBest[activeGame]=Math.max(netScore, existing);
+        if(isFirstTime){ newAwal[activeGame]=correctScore; }
+        newBest[activeGame]=Math.max(correctScore, existing);
         await fetch(`${API}?table=${T_NILAI}&id_x=${currentUser.id_x}`,{
           method:'PUT',headers:H(),
           body:JSON.stringify({x_03:JSON.stringify(newBest),x_04:JSON.stringify(newAwal)})
