@@ -61,27 +61,23 @@ const KompetisiCD = (() => {
 }
 /* ── KompetisiCD finish bar ── */
 #kcd-finish-bar {
-  position: fixed; top: 16px; right: 16px; z-index: 9999;
-  background: linear-gradient(135deg,#2d0000,#1a0000);
-  border: 2px solid #ff4757;
-  border-radius: 12px;
-  padding: 10px 16px;
-  display: flex; align-items: center; gap: 10px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: linear-gradient(90deg,#1a0000,#2d0000,#1a0000);
+  border-bottom: 2px solid #ff4757;
+  padding: 10px 20px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
   font-family: 'Space Mono', monospace;
-  box-shadow: 0 4px 20px rgba(255,71,87,.35);
   animation: kcd-bar-slide .4s ease;
-  min-width: 180px;
 }
-@keyframes kcd-bar-slide { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
-#kcd-finish-bar .kcd-bar-icon { font-size: 18px; }
-#kcd-finish-bar .kcd-bar-label { color: #ff4757; font-size: 10px; letter-spacing: 1px; display: block; line-height: 1; }
+@keyframes kcd-bar-slide { from { transform:translateY(-100%); } to { transform:translateY(0); } }
+#kcd-finish-bar .kcd-bar-icon { font-size: 20px; }
+#kcd-finish-bar .kcd-bar-label { color: #ff4757; font-size: 13px; letter-spacing: 1px; }
 #kcd-finish-bar .kcd-bar-time {
   font-size: 22px; font-weight: 700; color: #fff;
   font-family: 'Space Mono', 'Orbitron', monospace;
-  min-width: 80px; text-align: center; display: block; line-height: 1.2;
+  min-width: 90px; text-align: center;
 }
-#kcd-finish-bar .kcd-bar-note { font-size: 10px; color: rgba(255,255,255,.4); display: block; line-height: 1; }
-#kcd-finish-bar .kcd-bar-text { display: flex; flex-direction: column; gap: 3px; }
+#kcd-finish-bar .kcd-bar-note { font-size: 12px; color: rgba(255,255,255,.45); }
 /* ── Overlay SELESAI (saat jam = 0) ── */
 #kcd-finish-overlay {
   position: fixed; inset: 0; z-index: 99998;
@@ -188,11 +184,9 @@ const KompetisiCD = (() => {
       _finBarEl.id = 'kcd-finish-bar';
       _finBarEl.innerHTML = `
         <span class="kcd-bar-icon">⏱</span>
-        <div class="kcd-bar-text">
-          <span class="kcd-bar-label">WAKTU TERSISA</span>
-          <span class="kcd-bar-time" id="kcd-bar-time">${_formatHMS(remaining)}</span>
-          <span class="kcd-bar-note">Kerjakan sebelum waktu habis</span>
-        </div>
+        <span class="kcd-bar-label">WAKTU TERSISA</span>
+        <span class="kcd-bar-time" id="kcd-bar-time">${_formatHMS(remaining)}</span>
+        <span class="kcd-bar-note">Kerjakan sebelum waktu habis</span>
       `;
       document.body.prepend(_finBarEl);
     }
