@@ -271,67 +271,6 @@ function _initScoreCD(ctrlData){
     }
   });
 
-  // Jika kompetisi aktif dan ada jam_selesai, juga jalankan
-  // finish bar manual sebagai fallback visual
-  if(isOn && jamSelesai){
-    _runScoreFinishBar(jamSelesai);
-  }
-}
-
-// Finish bar independen di score.html (tidak bergantung pada KompetisiCD overlay)
-let _scoreBarTimer = null;
-function _runScoreFinishBar(jamSelesai){
-  if(_scoreBarTimer){ clearInterval(_scoreBarTimer); _scoreBarTimer = null; }
-
-  function _ensureBar(){
-    let bar = document.getElementById('kcd-score-time-bar');
-    if(!bar){
-      bar = document.createElement('div');
-      bar.id = 'kcd-score-time-bar';
-      bar.style.cssText = [
-        'position:fixed','top:0','left:0','right:0','z-index:9999',
-        'background:linear-gradient(90deg,#1a0000,#2d0000,#1a0000)',
-        'border-bottom:2px solid #ff4757',
-        'padding:8px 20px',
-        'display:flex','align-items:center','justify-content:center','gap:12px',
-        'font-family:"Space Mono","Orbitron",monospace'
-      ].join(';');
-      bar.innerHTML = `
-        <span style="font-size:16px;">⏱</span>
-        <span style="color:#ff4757;font-size:12px;letter-spacing:1px;">WAKTU TERSISA</span>
-        <span id="kcd-score-bar-time" style="font-size:20px;font-weight:700;color:#fff;min-width:80px;text-align:center;">--:--</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.4);">Kompetisi aktif</span>
-      `;
-      document.body.prepend(bar);
-    }
-    return bar;
-  }
-
-  function tick(){
-    const rem = Math.floor((new Date(jamSelesai) - Date.now()) / 1000);
-    if(rem <= 0){
-      clearInterval(_scoreBarTimer); _scoreBarTimer = null;
-      const bar = document.getElementById('kcd-score-time-bar');
-      if(bar) bar.remove();
-      _scoreShowFinishBanner();
-      return;
-    }
-    _ensureBar();
-    const el = document.getElementById('kcd-score-bar-time');
-    if(!el) return;
-    const h = Math.floor(rem/3600);
-    const m = Math.floor((rem%3600)/60);
-    const s = rem%60;
-    const fmt = h>0
-      ? `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-      : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    el.textContent = fmt;
-    el.style.color = rem<=60 ? '#ff4757' : rem<=300 ? '#ffa502' : '#fff';
-    if(rem<=10) el.style.animation = 'blink 0.5s step-end infinite';
-  }
-
-  tick();
-  _scoreBarTimer = setInterval(tick, 1000);
 }
 
 // Banner SELESAI ringan — tidak menutupi ranking, disisipkan di atas konten
