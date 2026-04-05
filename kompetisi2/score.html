@@ -192,7 +192,6 @@ const GRUP_A_KELAS = ['Kelas 4','Kelas 5','Kelas 6','Kelas 7','Kelas 8'];
 const GRUP_B_KELAS = ['Kelas 9','Kelas 10','Kelas 11','Kelas 12','Mahasiswa'];
 
 let kompetisiOn = false;
-let _kcdInitialized = false; // jaga agar KompetisiCD.init hanya dipanggil sekali
 
 function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
 function totalSkor(row){const b=parseJSON(row.x_03,{});return GAMES.reduce((s,g)=>s+(parseInt(b[g.key])||0),0);}
@@ -207,13 +206,11 @@ async function fetchAll(){
     // Fetch kontrol admin
     const rc = await fetch(`${API}?table=${T_KONTROL}`, {headers:H()});
     const dc = await rc.json();
-    let ctrlData = {kompetisi:false};
-
     if(dc.success && dc.data){
       const row = dc.data.find(x=> x.id_x == 2);
       if(row && row.x_01){
-        ctrlData = parseJSON(row.x_01, {kompetisi:false});
-        kompetisiOn = ctrlData.kompetisi === true;
+        const ctrl = parseJSON(row.x_01, {kompetisi:false});
+        kompetisiOn = ctrl.kompetisi === true;
       }
     }
 
@@ -233,43 +230,7 @@ async function fetchAll(){
     } else {
       renderWaiting(valid);
     }
-
-    // Inisialisasi KompetisiCD hanya sekali (saat pertama fetch)
-    if(!_kcdInitialized){
-      _kcdInitialized = true;
-      KompetisiCD.init(ctrlData, {
-        onStartDone: () => {
-          // countdown awal selesai — leaderboard sudah tampil, tidak perlu aksi
-        },
-        onFinished: () => {
-          _scoreShowFinishBanner();
-        }
-      });
-    }
   } catch(err){ console.error(err); }
-}
-
-// Banner SELESAI ringan — tidak menutupi ranking, disisipkan di atas konten
-function _scoreShowFinishBanner(){
-  if(document.getElementById('kcd-score-finish-banner')) return;
-  const banner = document.createElement('div');
-  banner.id = 'kcd-score-finish-banner';
-  banner.style.cssText = [
-    'background:linear-gradient(90deg,#1a0000,#2d0000,#1a0000)',
-    'border:2px solid #ffa502','border-radius:12px',
-    'padding:18px 28px','text-align:center',
-    'margin:16px auto','max-width:700px',
-    'font-family:"Space Mono",monospace'
-  ].join(';');
-  banner.innerHTML = `
-    <div style="font-size:32px;margin-bottom:8px;">🏁</div>
-    <div style="color:#ffa502;font-size:20px;font-weight:700;letter-spacing:2px;">KOMPETISI SELESAI</div>
-    <div style="color:rgba(255,255,255,.55);font-size:13px;margin-top:6px;">
-      Waktu telah habis. Berikut adalah hasil akhir kompetisi.
-    </div>
-  `;
-  const main = document.getElementById('main');
-  if(main) main.prepend(banner);
 }
 
 function updateStatusBar(){
@@ -487,6 +448,5 @@ function startCountdown(){
 fetchAll();
 startCountdown();
 </script>
-<script src="kompetisi.js"></script>
 </body>
 </html>

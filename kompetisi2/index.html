@@ -528,19 +528,18 @@ async function fetchKontrolAdmin(){
 async function checkAdminStatus(isFirstCheck){
   const isOn = await fetchKontrolAdmin();
   if(isOn){
+    // Kompetisi aktif
     stopPolling();
-    // Gunakan KompetisiCD: countdown 10→0 sinkron, lalu masuk game
-    KompetisiCD.init(kontrolAdmin, {
-      onStartDone: async () => {
-        await loadIndex();
-      },
-      onFinished: () => {
-        _handleFinish();
-      }
-    });
+    if(isFirstCheck){
+      await loadIndex();
+    } else {
+      // Polling menemukan aktif → masuk ke dashboard
+      await loadIndex();
+    }
   } else {
     // Kompetisi belum aktif
     if(currentUser){
+      // User sudah daftar → tampilkan halaman tunggu
       if(isFirstCheck) showWaiting();
       startPolling();
     }
@@ -567,10 +566,7 @@ function startPolling(){
     updateWaitingCounter();
     if(isOn){
       stopPolling();
-      KompetisiCD.init(kontrolAdmin, {
-        onStartDone: async () => { await loadIndex(); },
-        onFinished: () => { _handleFinish(); }
-      });
+      await loadIndex();
     }
   }, POLL_INTERVAL);
 }
@@ -1214,40 +1210,9 @@ function ucfirst(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function parseJSON(str,def){try{const r=JSON.parse(str);return r??def;}catch(e){return def;}}
 
 // ═══════════════════════════════════════════════════════
-//  HANDLER WAKTU SELESAI
-// ═══════════════════════════════════════════════════════
-function _handleFinish(){
-  // Hentikan game jika sedang berjalan
-  if(activeGame){
-    clearInterval(timerInterval);
-    // Simpan skor saat ini apa adanya
-    (async()=>{
-      const best=getBest(), awal=getAwal();
-      const existing=parseInt(best[activeGame])||0;
-      const isFirstTime=!(activeGame in awal)||!awal[activeGame];
-      if(isFirstTime || correctScore > existing){
-        const newBest={...best}; const newAwal={...awal};
-        if(isFirstTime){ newAwal[activeGame]=correctScore; }
-        newBest[activeGame]=Math.max(correctScore, existing);
-        await fetch(`${API}?table=${T_NILAI}&id_x=${currentUser.id_x}`,{
-          method:'PUT',headers:H(),
-          body:JSON.stringify({x_03:JSON.stringify(newBest),x_04:JSON.stringify(newAwal)})
-        });
-        currentUser.x_03=JSON.stringify(newBest);
-        currentUser.x_04=JSON.stringify(newAwal);
-        localStorage.setItem(LS_USER,JSON.stringify(currentUser));
-      }
-    })();
-  }
-  stopPolling();
-  KompetisiCD.showFinishScreen();
-}
-
-// ═══════════════════════════════════════════════════════
 //  START
 // ═══════════════════════════════════════════════════════
 init();
 </script>
-<script src="kompetisi.js"></script>
 </body>
 </html>

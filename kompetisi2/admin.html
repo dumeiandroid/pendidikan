@@ -374,7 +374,7 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
               <span style="font-size:13px;color:var(--muted);margin-left:8px;" id="toggle-hint">Kompetisi belum aktif</span>
             </div>
 
-            <div class="kontrol-body" style="grid-template-columns:1fr 1fr 1fr;">
+            <div class="kontrol-body">
               <div class="kontrol-field">
                 <label>Waktu per Soal (detik)</label>
                 <div class="kontrol-input-row">
@@ -383,29 +383,12 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
                 </div>
                 <div class="field-desc">Default: 60 detik. Berlaku untuk setiap jenis soal.</div>
               </div>
-              <div class="kontrol-field">
-                <label>Jam Selesai Kompetisi</label>
-                <div class="kontrol-input-row">
-                  <input type="time" class="kontrol-input" id="input-jam-selesai" style="width:150px;">
-                </div>
-                <div class="field-desc">Waktu selesai hari ini. Kosongkan jika tidak ada batas waktu.</div>
-                <div id="jam-selesai-preview" style="font-size:11px;color:var(--accent);margin-top:4px;"></div>
-              </div>
               <div class="kontrol-field" style="align-self:flex-end;">
                 <button class="btn-save-kontrol" id="btn-save-kontrol" onclick="saveKontrol()">
                   <i class="fas fa-save"></i> Simpan Pengaturan
                 </button>
                 <div class="kontrol-saved-info" id="kontrol-saved-info"></div>
               </div>
-            </div>
-
-            <!-- Countdown display untuk admin -->
-            <div id="admin-countdown-wrap" style="display:none;margin-top:20px;padding:16px 20px;border-radius:12px;background:rgba(255,165,2,.06);border:1px solid rgba(255,165,2,.2);">
-              <div style="font-size:12px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;">
-                <i class="fas fa-clock"></i> Status Waktu Kompetisi
-              </div>
-              <div id="admin-countdown-display" style="font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);">—</div>
-              <div id="admin-countdown-label" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
             </div>
           </div>
 
@@ -415,9 +398,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
             </div>
             <ul style="font-size:13px;color:var(--muted);line-height:2;padding-left:16px;">
               <li>Peserta dapat mendaftar kapan saja, tapi <b style="color:var(--text)">tidak bisa mengerjakan soal</b> sampai kompetisi diaktifkan.</li>
-              <li>Setelah Toggle <b style="color:var(--green)">ON</b>, hitung mundur 10 detik tampil sinkron di semua peserta, lalu game dimulai.</li>
+              <li>Setelah Toggle <b style="color:var(--green)">ON</b>, tombol mulai akan muncul di halaman peserta secara otomatis (tanpa refresh).</li>
               <li>Papan skor hanya menampilkan leaderboard setelah kompetisi diaktifkan.</li>
-              <li>Jika <b style="color:var(--text)">Jam Selesai</b> diisi, countdown tampil di semua halaman dan game terkunci otomatis saat waktu habis.</li>
               <li>Pengaturan <b style="color:var(--text)">waktu per soal</b> berlaku untuk semua peserta yang baru memulai.</li>
             </ul>
           </div>
@@ -654,8 +636,6 @@ function updateKontrolUI(){
       </button>
     </div>`;
   }
-  _syncJamSelesaiInput();
-  if(isOn) _startAdminCountdown();
 }
 
 function onToggleChange(){
@@ -665,45 +645,23 @@ function onToggleChange(){
 }
 
 async function saveKontrol(){
-  const isOn   = document.getElementById('toggle-kompetisi').checked;
-  const waktu  = parseInt(document.getElementById('input-waktu').value)||60;
-  const jamEl  = document.getElementById('input-jam-selesai');
-  const btn    = document.getElementById('btn-save-kontrol');
-  const infoEl = document.getElementById('kontrol-saved-info');
+  const isOn    = document.getElementById('toggle-kompetisi').checked;
+  const waktu   = parseInt(document.getElementById('input-waktu').value)||60;
+  const btn     = document.getElementById('btn-save-kontrol');
+  const infoEl  = document.getElementById('kontrol-saved-info');
 
   if(waktu < 10 || waktu > 300){ showToast('Waktu per soal harus antara 10–300 detik.','error'); return; }
-
-  // Hitung jam_selesai sebagai ISO string (hari ini + jam yang dipilih)
-  let jamSelesaiISO = null;
-  if(jamEl && jamEl.value){
-    const [hh, mm] = jamEl.value.split(':').map(Number);
-    const d = new Date();
-    d.setHours(hh, mm, 0, 0);
-    jamSelesaiISO = d.toISOString();
-  }
 
   btn.disabled=true;
   btn.innerHTML='<span class="spin"></span> Menyimpan...';
   infoEl.textContent='';
 
-  // Jika toggle baru dinyalakan → simpan activated_at sekarang
-  const wasOn = kontrolData.kompetisi === true;
-  const activated_at = (isOn && !wasOn)
-    ? new Date().toISOString()
-    : (kontrolData.activated_at || null);
-
-  const newData = {
-    ...kontrolData,
-    kompetisi      : isOn,
-    waktu_per_soal : waktu,
-    activated_at   : isOn ? activated_at : null,
-    jam_selesai    : jamSelesaiISO,
-    finished       : false
-  };
+  const newData = {...kontrolData, kompetisi: isOn, waktu_per_soal: waktu};
 
   try{
     let ok = false;
     if(kontrolIdX){
+      // Update baris yang sudah ada (id_x=2)
       const r = await fetch(`${API}?table=${T_KONTROL}&id_x=${kontrolIdX}`,{
         method:'PUT', headers:H(),
         body: JSON.stringify({x_01: JSON.stringify(newData)})
@@ -711,24 +669,22 @@ async function saveKontrol(){
       const d = await r.json();
       ok = d.success;
     } else {
+      // Buat baru (seharusnya sudah ada, ini fallback)
       const r = await fetch(`${API}?table=${T_KONTROL}`,{
         method:'POST', headers:H(),
         body: JSON.stringify({x_01: JSON.stringify(newData)})
       });
       const d = await r.json();
       ok = d.success;
-      if(ok) await loadKontrol();
+      if(ok) await loadKontrol(); // refresh untuk dapat id_x
     }
 
     if(ok){
       kontrolData = newData;
       updateKontrolUI();
-      _syncJamSelesaiInput();
-      _startAdminCountdown();
       const waktuStr = waktu + ' detik';
       const statusStr = isOn ? 'AKTIF ✅' : 'OFF ⏳';
-      const jamStr = jamSelesaiISO ? `, Selesai=${new Date(jamSelesaiISO).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}` : '';
-      infoEl.textContent = `Tersimpan: Status=${statusStr}, Waktu=${waktuStr}${jamStr}`;
+      infoEl.textContent = `Tersimpan: Status=${statusStr}, Waktu=${waktuStr}`;
       showToast('✅ Pengaturan berhasil disimpan!','success');
     } else {
       showToast('Gagal menyimpan. Coba lagi.','error');
@@ -971,86 +927,6 @@ function exportHasilCsv(){
   a.click();
   URL.revokeObjectURL(a.href);
   showToast('✅ CSV diunduh!','success');
-}
-
-// ═══════════════════════════════════════════════════════
-//  ADMIN COUNTDOWN DISPLAY
-// ═══════════════════════════════════════════════════════
-let _adminCDTimer = null;
-
-function _startAdminCountdown(){
-  if(_adminCDTimer){ clearInterval(_adminCDTimer); _adminCDTimer=null; }
-  _renderAdminCD();
-  _adminCDTimer = setInterval(_renderAdminCD, 1000);
-}
-
-function _renderAdminCD(){
-  const wrap = document.getElementById('admin-countdown-wrap');
-  const disp = document.getElementById('admin-countdown-display');
-  const lbl  = document.getElementById('admin-countdown-label');
-  if(!wrap||!disp||!lbl) return;
-
-  const isOn        = kontrolData.kompetisi === true;
-  const activatedAt = kontrolData.activated_at;
-  const jamSelesai  = kontrolData.jam_selesai;
-
-  if(!isOn){ wrap.style.display='none'; clearInterval(_adminCDTimer); _adminCDTimer=null; return; }
-  wrap.style.display='block';
-
-  // Fase 1: 10 detik pertama sejak aktif (countdown awal)
-  if(activatedAt){
-    const elapsed = Math.floor((Date.now() - new Date(activatedAt).getTime())/1000);
-    if(elapsed < 10){
-      const rem = 10 - elapsed;
-      disp.textContent = String(rem);
-      disp.style.color = '#ffa502';
-      lbl.textContent  = '⏳ Countdown awal — peserta menunggu sebelum mulai';
-      return;
-    }
-  }
-
-  // Fase 2: countdown menuju jam selesai
-  if(jamSelesai){
-    const rem = Math.floor((new Date(jamSelesai).getTime() - Date.now())/1000);
-    if(rem <= 0){
-      disp.textContent = '00:00:00';
-      disp.style.color = '#ff4757';
-      lbl.textContent  = '🏁 Waktu kompetisi telah habis';
-      clearInterval(_adminCDTimer); _adminCDTimer=null;
-      return;
-    }
-    const h = Math.floor(rem/3600);
-    const m = Math.floor((rem%3600)/60);
-    const s = rem%60;
-    const fmt = h>0
-      ? `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-      : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-    disp.textContent = fmt;
-    disp.style.color = rem<=60 ? '#ff4757' : rem<=300 ? '#ffa502' : '#2ed573';
-    lbl.textContent  = `⏱ Kompetisi aktif — selesai ${new Date(jamSelesai).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB`;
-    return;
-  }
-
-  // Tidak ada jam selesai
-  disp.textContent = '∞';
-  disp.style.color = '#2ed573';
-  lbl.textContent  = '✅ Kompetisi aktif — tidak ada batas waktu';
-}
-
-function _syncJamSelesaiInput(){
-  const jamEl = document.getElementById('input-jam-selesai');
-  const prev  = document.getElementById('jam-selesai-preview');
-  if(!jamEl) return;
-  if(kontrolData.jam_selesai){
-    const d  = new Date(kontrolData.jam_selesai);
-    const hh = String(d.getHours()).padStart(2,'0');
-    const mm = String(d.getMinutes()).padStart(2,'0');
-    jamEl.value = `${hh}:${mm}`;
-    if(prev) prev.textContent = `→ Selesai pukul ${d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})} WIB`;
-  } else {
-    jamEl.value = '';
-    if(prev) prev.textContent = '';
-  }
 }
 </script>
 </body>
