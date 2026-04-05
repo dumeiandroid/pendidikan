@@ -207,11 +207,46 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
 .empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
 .empty-state i{font-size:40px;margin-bottom:12px;display:block;opacity:.3;}
 
+/* ── BURGER & MOBILE SIDEBAR ── */
+.burger-btn{display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;transition:background .2s;color:var(--text);}
+.burger-btn:hover{background:rgba(255,255,255,.07);}
+.burger-btn span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;border-radius:2px;transition:all .3s;}
+.burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger-btn.open span:nth-child(2){opacity:0;}
+.burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:199;backdrop-filter:blur(2px);}
+.sidebar-overlay.show{display:block;}
+
 @media(max-width:768px){
-  .sidebar{display:none;}
-  .page-content{padding:16px;}
-  .topbar{padding:14px 16px;}
+  .sidebar{
+    display:flex;
+    position:fixed;left:-240px;top:0;bottom:0;
+    width:240px;z-index:200;
+    transition:left .28s cubic-bezier(.4,0,.2,1);
+    box-shadow:4px 0 24px rgba(0,0,0,.5);
+  }
+  .sidebar.open{left:0;}
+  .burger-btn{display:block;}
+  .page-content{padding:14px 12px;}
+  .topbar{padding:12px 16px;}
   .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .kontrol-body{grid-template-columns:1fr !important;}
+  .topbar-title{font-size:11px;}
+  .section-title{font-size:13px;}
+  .table-controls{flex-direction:column;align-items:stretch;}
+  .search-box{max-width:100%;}
+  .filter-sel{width:100%;}
+  .btn-export{width:100%;justify-content:center;}
+  .data-table th:nth-child(5),
+  .data-table td:nth-child(5){display:none;}
+  .pagination{flex-direction:column;gap:10px;align-items:center;}
+  .admin-login-box{width:92vw;padding:32px 24px;}
+  .modal-box{padding:20px 16px;}
+  .game-detail-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .stat-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -231,6 +266,12 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
       <label>Password</label>
       <input type="password" id="adm-pass" placeholder="••••••••">
     </div>
+    <div class="field" style="margin-bottom:8px;">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;text-transform:none;letter-spacing:0;font-size:13px;color:var(--muted);">
+        <input type="checkbox" id="adm-remember" style="width:16px;height:16px;accent-color:var(--accent);cursor:pointer;">
+        Ingat saya (tetap login setelah refresh)
+      </label>
+    </div>
     <button class="btn-admin-login" onclick="adminLogin()">
       <i class="fas fa-sign-in-alt"></i> Masuk
     </button>
@@ -238,12 +279,15 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
   </div>
 </div>
 
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
 <!-- ═══ DASHBOARD ═══ -->
 <div id="page-dashboard">
   <div class="layout">
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-logo">
         <div class="logo-text">ADMIN PANEL</div>
         <div class="logo-sub">Kompetisi Matematika</div>
@@ -276,7 +320,12 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);min
     <!-- MAIN -->
     <div class="main-content">
       <div class="topbar">
-        <div class="topbar-title">KOMPETISI MATEMATIKA — ADMIN</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="burger-btn" id="burger-btn" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+          <div class="topbar-title">KOMPETISI MATEMATIKA — ADMIN</div>
+        </div>
         <div class="topbar-right">
           <div class="live-dot-wrap">
             <div class="live-dot"></div> Live Data
@@ -550,6 +599,7 @@ function showToast(msg, type='info'){
 async function adminLogin(){
   const u   = document.getElementById('adm-user').value.trim();
   const p   = document.getElementById('adm-pass').value.trim();
+  const rem = document.getElementById('adm-remember').checked;
   const err = document.getElementById('adm-err');
   const btn = document.querySelector('.btn-admin-login');
 
@@ -565,13 +615,15 @@ async function adminLogin(){
     const admin=d.data[0];
     if(admin.x_02!==p){ err.textContent='Password salah.'; err.style.display='block'; return; }
     loggedInAdmin=admin;
-    document.getElementById('page-admin-login').style.display='none';
-    document.getElementById('page-dashboard').style.display='block';
-    const adminName=admin.x_03||u;
-    document.querySelector('.admin-info .name').textContent=adminName;
-    document.querySelector('.admin-avatar').textContent=adminName.charAt(0).toUpperCase();
-    await loadKontrol();
-    await loadAllData();
+
+    // Remember Me: simpan ke localStorage jika dicentang
+    if(rem){
+      localStorage.setItem('adm_session', JSON.stringify({u, p, name: admin.x_03||u}));
+    } else {
+      localStorage.removeItem('adm_session');
+    }
+
+    _showDashboard(admin);
   } catch(e){
     err.textContent='Terjadi kesalahan jaringan. Coba lagi.'; err.style.display='block'; console.error(e);
   } finally {
@@ -580,15 +632,44 @@ async function adminLogin(){
   }
 }
 
+function _showDashboard(admin){
+  const adminName = admin.x_03 || admin.x_01 || 'Admin';
+  document.getElementById('page-admin-login').style.display='none';
+  document.getElementById('page-dashboard').style.display='block';
+  document.querySelector('.admin-info .name').textContent = adminName;
+  document.querySelector('.admin-avatar').textContent = adminName.charAt(0).toUpperCase();
+  loadKontrol();
+  loadAllData();
+}
+
+// Auto-login dari localStorage jika ada session tersimpan
+async function _tryAutoLogin(){
+  const saved = localStorage.getItem('adm_session');
+  if(!saved) return;
+  try{
+    const {u, p, name} = JSON.parse(saved);
+    const r = await fetch(`${API}?table=admins&x_01_eq=${encodeURIComponent(u)}`,{headers:H()});
+    const d = await r.json();
+    if(!d.success||d.count===0){ localStorage.removeItem('adm_session'); return; }
+    const admin = d.data[0];
+    if(admin.x_02 !== p){ localStorage.removeItem('adm_session'); return; }
+    loggedInAdmin = admin;
+    _showDashboard(admin);
+  } catch(e){ console.error('auto-login failed', e); }
+}
+_tryAutoLogin();
+
 document.getElementById('adm-pass').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
 document.getElementById('adm-user').addEventListener('keydown',e=>{ if(e.key==='Enter') adminLogin(); });
 
 function adminLogout(){
   loggedInAdmin=null;
+  localStorage.removeItem('adm_session');
   document.getElementById('page-dashboard').style.display='none';
   document.getElementById('page-admin-login').style.display='flex';
   document.getElementById('adm-pass').value='';
   document.getElementById('adm-user').value='';
+  document.getElementById('adm-remember').checked=false;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -599,6 +680,26 @@ function showSection(name){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('sec-'+name).classList.add('active');
   document.querySelector(`.nav-item[data-sec="${name}"]`).classList.add('active');
+  closeSidebar(); // tutup sidebar di mobile setelah pilih menu
+}
+
+function toggleSidebar(){
+  const sidebar  = document.getElementById('sidebar');
+  const overlay  = document.getElementById('sidebar-overlay');
+  const burger   = document.getElementById('burger-btn');
+  const isOpen   = sidebar.classList.contains('open');
+  if(isOpen){ closeSidebar(); }
+  else {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+    burger.classList.add('open');
+  }
+}
+
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('show');
+  document.getElementById('burger-btn').classList.remove('open');
 }
 
 // ═══════════════════════════════════════════════════════
